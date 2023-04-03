@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { getAuth, signOut } from 'firebase/auth';
+import React, {useState} from "react";
+import styled from "styled-components";
+import {getAuth, signOut} from "firebase/auth";
+import {useNavigate} from "react-router-dom";
 
 const LogOutButton = styled.button`
   width: 150px;
@@ -59,31 +60,32 @@ export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const auth = getAuth();
+  const navigate = useNavigate();
   const bars: IBar[] = [
     {
-      name: 'ESIDE BOND',
-      type: ['night', 'special', 'visual', 'together'],
+      name: "ESIDE BOND",
+      type: ["night", "special", "visual", "together"],
     },
     {
-      name: 'Pico Pico',
-      type: ['afternoon', 'special', 'simple', 'alone'],
+      name: "Pico Pico",
+      type: ["afternoon", "special", "simple", "alone"],
     },
     {
-      name: 'Attic Trade co.',
-      type: ['night', 'alone', 'simple', 'special'],
+      name: "Attic Trade co.",
+      type: ["night", "alone", "simple", "special"],
     },
   ];
   const [options, setOptions] = useState<IOption[]>([
-    { text: 'Afternoon', hashtag: 'afternoon' },
-    { text: 'Night', hashtag: 'night' },
-    { text: 'Alone', hashtag: 'alone' },
-    { text: 'Together', hashtag: 'together' },
-    { text: 'Classic', hashtag: 'classic' },
-    { text: 'Special', hashtag: 'special' },
-    { text: 'Simple', hashtag: 'simple' },
-    { text: 'Vision', hashtag: 'vision' },
-    { text: 'Couple', hashtag: 'couple' },
-    { text: 'Friend', hashtag: 'friend' },
+    {text: "Afternoon", hashtag: "afternoon"},
+    {text: "Night", hashtag: "night"},
+    {text: "Alone", hashtag: "alone"},
+    {text: "Together", hashtag: "together"},
+    {text: "Classic", hashtag: "classic"},
+    {text: "Special", hashtag: "special"},
+    {text: "Simple", hashtag: "simple"},
+    {text: "Vision", hashtag: "vision"},
+    {text: "Couple", hashtag: "couple"},
+    {text: "Friend", hashtag: "friend"},
   ]);
   const [selectedOption, setSelectedOption] = useState<IOption[]>([]);
   const [showHashtag, setShowHashtag] = useState<boolean>(false);
@@ -111,6 +113,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
         return bar.type.includes(option.hashtag);
       });
     });
+    console.log(matchingBars);
     setMatchingBars(matchingBars);
     e.preventDefault();
     setShowHashtag(true);

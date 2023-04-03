@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from "react";
+import styled from "styled-components";
+import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import {useNavigate} from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 500px;
@@ -27,7 +27,7 @@ const LoginButton = styled.button`
 
 export interface ILoginPageProps {}
 
-const LoginPage: React.FunctionComponent<ILoginPageProps> = (props) => {
+const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const auth = getAuth();
   const navigate = useNavigate();
   const [authing, setAuthing] = useState(false);
@@ -38,7 +38,7 @@ const LoginPage: React.FunctionComponent<ILoginPageProps> = (props) => {
     signInWithPopup(auth, new GoogleAuthProvider())
       .then((res) => {
         console.log(res.user.uid);
-        navigate('/');
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
