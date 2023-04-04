@@ -23,7 +23,7 @@ const BarImg = styled.img`
   padding-bottom: 10px;
 `;
 
-interface IBar {
+interface IMainBar {
   id: string;
   name: string;
   img: string;
@@ -32,20 +32,22 @@ interface IBar {
 export interface IMainProps {}
 
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
-  const [bars, setBars] = useState<IBar[]>([]);
+  const [bars, setBars] = useState<IMainBar[]>([]);
   const barsCollectionRef = collection(db, "bars");
 
   useEffect(() => {
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
-      setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
+      setBars(
+        data.docs.map((doc) => ({...(doc.data() as IMainBar), id: doc.id}))
+      );
     };
 
     getBars();
   }, []);
   return (
     <Wrapper>
-      {bars.map((bar: IBar) => {
+      {bars.map((bar: IMainBar) => {
         return (
           <BarSection key={bar.id}>
             <BarTitle>{bar.name}</BarTitle>

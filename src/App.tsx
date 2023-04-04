@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Question from "./pages/Question";
 import LoginPage from "./pages/Login";
 import Main from "./pages/Main";
+import Bar from "./pages/Bar/Bar";
 import {initializeApp} from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
 import {config} from "./config/config";
@@ -29,6 +30,7 @@ const App: React.FC<IAppProps> = (props) => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/recommendation" element={<RecommendationPage />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/bar" element={<Bar />} />
       </Routes>
     </BrowserRouter>
   );
