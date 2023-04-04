@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import {useState, useEffect} from "react";
+import {db} from "../../App";
+import {collection, getDocs} from "firebase/firestore";
 
 const Wrapper = styled.div`
   display: flex;
@@ -84,6 +86,62 @@ function useScript(src: string) {
   );
   return [state.loaded, state.error];
 }
+interface LatLng {
+  lat: number;
+  lng: number;
+}
+interface IBar {
+  address: string;
+}
+
+export interface IMainProps {}
+
+const Address: React.FC<IMainProps> = (props: IMainProps) => {
+  const [bars, setBars] = useState<IBar[] | null>(null);
+  const [address, setAddress] = useState<string>("");
+  const barsCollectionRef = collection(db, "bars");
+
+  useEffect(() => {
+    const getBars = async () => {
+      const data = await getDocs(barsCollectionRef);
+      setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
+    };
+
+    getBars();
+  }, []);
+
+  useEffect(() => {
+    if (bars !== null && bars.length > 0) {
+      setAddress(bars[0].address);
+    }
+  }, [bars]);
+
+  return <AddressToLatLng address={address} />;
+};
+interface IAddressToLatLngProps {
+  address: string;
+}
+function AddressToLatLng(props: IAddressToLatLngProps) {
+  // const [rightAddress, setRightAddress] = useState<string>("");
+  const [latLng, setLatLng] = useState<LatLng>({lat: 0, lng: 0});
+
+  useEffect(() => {
+    async function fetchData() {
+      const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=${apiKey}`
+      );
+      const data = await response.json();
+      const {lat, lng} = data.results[0].geometry.location;
+      setLatLng({lat, lng});
+    }
+    if (props.address !== "") {
+      fetchData();
+    }
+  }, [props.address]);
+  // console.log(latLng);
+  return <></>;
+}
 
 function BarMap() {
   const [loaded] = useScript(
@@ -93,12 +151,7 @@ function BarMap() {
 
   useEffect(() => {
     if (loaded) {
-      const myLatLng = [
-        {lat: 25.030553536720603, lng: 121.55142011571756},
-        {lat: 25.03062126392793, lng: 121.55145444019128},
-        {lat: 25.030809884752056, lng: 121.55141012632296},
-        {lat: 25.030680091245774, lng: 121.55130707081523},
-      ];
+      const myLatLng = [{lat: 25.030553536720603, lng: 121.55142011571756}];
 
       const map = new window.google.maps.Map(document.getElementById("map"), {
         zoom: 20,
@@ -138,6 +191,8 @@ function BarMap() {
 
   return (
     <Wrapper>
+      <Address />
+      <AddressToLatLng />
       <GoogleMap>
         <Map id="map" />
       </GoogleMap>
