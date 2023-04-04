@@ -1,6 +1,11 @@
 import React, {useState} from "react";
 
-function Star({marked, starId}) {
+interface StarProps {
+  marked: boolean;
+  starId: number;
+}
+
+function Star({marked, starId}: StarProps) {
   return (
     <span
       star-id={starId}
@@ -13,23 +18,35 @@ function Star({marked, starId}) {
   );
 }
 
-function StarRating(props) {
-  const [rating, setRating] = useState(
+interface StarRatingProps {
+  rating: number;
+  onRatingChange: (rating: number) => void;
+}
+
+function StarRating(props: StarRatingProps) {
+  const [rating, setRating] = useState<number>(
     typeof props.rating === "number" ? props.rating : 0
   );
   const [selection, setSelection] = useState(0);
-  const hoverOver = (e) => {
+  const hoverOver = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     let val = 0;
-    if (e && e.target && e.target.getAttribute("star-id"))
-      val = e.target.getAttribute("star-id");
+    if (e && e.target && (e.target as HTMLElement).getAttribute("star-id"))
+      val = parseInt((e.target as HTMLElement).getAttribute("star-id") ?? "");
     setSelection(val);
   };
   return (
     <div
-      onMouseOut={() => hoverOver(null)}
+      onMouseOut={() => hoverOver()}
       onClick={(e) => {
-        setRating(e.target.getAttribute("star-id") || rating);
-        props.onRatingChange(parseInt(e.target.getAttribute("star-id")));
+        setRating(
+          (prevRating) =>
+            parseInt(
+              (e.target as HTMLElement)?.getAttribute("star-id") ?? ""
+            ) || prevRating
+        );
+        props.onRatingChange(
+          parseInt((e.target as HTMLElement)?.getAttribute("star-id") ?? "0")
+        );
       }}
       onMouseOver={hoverOver}
     >
@@ -45,11 +62,11 @@ function StarRating(props) {
 }
 
 function MemberScore() {
-  const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState([]);
-  const [ratings, setRatings] = useState([]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [messages, setMessages] = useState<string[]>([]);
+  const [ratings, setRatings] = useState<number[]>([]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMessages([...messages, inputValue]);
     setRatings([...ratings, 0]);
@@ -71,6 +88,7 @@ function MemberScore() {
         <label>
           您的評分：
           <StarRating
+            rating={0}
             onRatingChange={(rating) => setRatings([...ratings, rating])}
           />
         </label>
