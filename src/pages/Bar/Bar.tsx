@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import MemberScore from "./MemberScore";
+import BarMap from "./BarMap";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -109,6 +110,8 @@ const BarRecIngredientsItem = styled.li`
 const MemberScoreSection = styled.div``;
 
 const MemberScoreTitle = styled.h2``;
+
+const BarMapTitle = styled.h2``;
 
 interface IBar {
   id: string;
@@ -225,6 +228,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               <MemberScoreTitle>您的評分 & 留言</MemberScoreTitle>
               <MemberScore />
             </MemberScoreSection>
+            <BarMapTitle>店家位置</BarMapTitle>
+            <BarMap />
           </>
         )}
       </Wrapper>

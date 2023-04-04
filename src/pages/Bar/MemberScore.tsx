@@ -78,15 +78,15 @@ function MemberScore() {
       <form onSubmit={handleSubmit}>
         <label>
           您的留言
-          <input
-            type="text"
+          <br />
+          <textarea
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
-          />
+          ></textarea>
         </label>
         <br />
         <label>
-          您的評分：
+          您的評分
           <StarRating
             rating={0}
             onRatingChange={(rating) => setRatings([...ratings, rating])}
