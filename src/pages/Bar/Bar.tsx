@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import MemberScore from "./MemberScore";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -105,7 +106,7 @@ const BarRecIngredientsItem = styled.li`
   list-style: none;
 `;
 
-const MemberScore = styled.div``;
+const MemberScoreSection = styled.div``;
 
 const MemberScoreTitle = styled.h2``;
 
@@ -220,9 +221,10 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                 ))}
               </BarRecIngredients>
             </BarRec>
-            <MemberScore>
+            <MemberScoreSection>
               <MemberScoreTitle>您的評分 & 留言</MemberScoreTitle>
-            </MemberScore>
+              <MemberScore />
+            </MemberScoreSection>
           </>
         )}
       </Wrapper>
