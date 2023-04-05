@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {getAuth, signOut} from "firebase/auth";
-// import {useNavigate} from "react-router-dom";
 import {db} from "../App";
 import {collection, getDocs} from "firebase/firestore";
 
@@ -15,7 +14,7 @@ const LogOutButton = styled.button`
 
 const Wrapper = styled.div`
   width: 500px;
-  height: 500px;
+  height: 800px;
   margin: 50px auto;
   padding: 10px;
   text-align: center;
@@ -23,11 +22,13 @@ const Wrapper = styled.div`
   border-radius: 5px;
 `;
 
-const QuestionForm = styled.form``;
+const QuestionSection = styled.div``;
 
 const QuestionTitle = styled.legend`
   font-size: 25px;
 `;
+
+const QuestionFieldset = styled.fieldset``;
 
 const QuestionLabel = styled.label`
   display: flex;
@@ -48,34 +49,6 @@ const HashtagItem = styled.li``;
 
 const NoMatch = styled.div``;
 
-// interface IBars {
-//   id: string;
-//   name: string;
-//   img: string;
-//   type: string;
-// }
-
-// export interface IBarsProps {}
-
-// const Bars: React.FC<IBarsProps> = (props: IBarsProps) => {
-//   const [bars, setBars] = useState<IBars[] | null>(null);
-//   const barsCollectionRef = collection(db, "bars");
-
-//   useEffect(() => {
-//     const getBars = async () => {
-//       const data = await getDocs(barsCollectionRef);
-//       setBars(data.docs.map((doc) => ({...(doc.data() as IBars), id: doc.id})));
-//     };
-
-//     getBars();
-//   }, []);
-//   return (
-//     <Wrapper>
-//       {bars === null ? <p>Loading...</p> : <p>{bars[0].type[0]}</p>}
-//     </Wrapper>
-//   );
-// };
-
 interface IBar {
   id: string;
   name: string;
@@ -86,14 +59,35 @@ interface IBar {
 interface IOption {
   text: string;
   hashtag: string;
+  group: string; // 新增屬性
 }
+
+const options = [
+  {text: "Afternoon", hashtag: "afternoon", group: "time"},
+  {text: "Night", hashtag: "night", group: "time"},
+  {text: "Alone", hashtag: "alone", group: "situation"},
+  {text: "Together", hashtag: "together", group: "situation"},
+  {text: "Classic", hashtag: "classic", group: "mood"},
+  {text: "Special", hashtag: "special", group: "mood"},
+  {text: "Simple", hashtag: "simple", group: "atmosphere"},
+  {text: "Vision", hashtag: "vision", group: "atmosphere"},
+  {text: "Couple", hashtag: "couple", group: "relationship"},
+  {text: "Friend", hashtag: "friend", group: "relationship"},
+];
+
+const groups = {
+  time: "Time",
+  situation: "Situation",
+  mood: "Mood",
+  atmosphere: "Atmosphere",
+  relationship: "Relationship",
+};
 
 export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const auth = getAuth();
-  // const navigate = useNavigate();
-  const [bars, setBars] = useState<IBar[] | null>(null);
+  const [bars, setBars] = useState<IBar[]>([]);
   const barsCollectionRef = collection(db, "bars");
 
   useEffect(() => {
@@ -104,51 +98,57 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
 
     getBars();
   }, []);
-
-  const [options, setOptions] = useState<IOption[]>([
-    {text: "Afternoon", hashtag: "afternoon"},
-    {text: "Night", hashtag: "night"},
-    {text: "Alone", hashtag: "alone"},
-    {text: "Together", hashtag: "together"},
-    {text: "Classic", hashtag: "classic"},
-    {text: "Special", hashtag: "special"},
-    {text: "Simple", hashtag: "simple"},
-    {text: "Vision", hashtag: "vision"},
-    {text: "Couple", hashtag: "couple"},
-    {text: "Friend", hashtag: "friend"},
-  ]);
-  const [selectedOption, setSelectedOption] = useState<IOption[]>([]);
-  const [showHashtag, setShowHashtag] = useState<boolean>(false);
-  const [matchingBars, setMatchingBars] = useState<IBar[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
+  const [matchingBars, setMatchingBars] = useState<string[]>([]);
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const option = options.find((option) => option.text === value)!;
 
-    const option = options.find((option, index) => option.text === value);
+    if (option.group in groups) {
+      const existingOption = selectedOptions.find(
+        (o) => o.group === option.group
+      );
 
-    setSelectedOption((prevSelectedOptions: IOption[]) => {
-      if (prevSelectedOptions.includes(option as IOption)) {
-        return prevSelectedOptions.filter(
-          (selectedOption) => selectedOption !== option
+      if (existingOption) {
+        if (existingOption.text === option.text) {
+          return;
+        }
+
+        setSelectedOptions((prev) =>
+          prev.filter((o) => o.group !== option.group)
         );
-      } else {
-        return [...prevSelectedOptions, option as IOption];
       }
-    });
-    setShowHashtag(false);
+    }
+
+    setSelectedOptions((prev) => [
+      ...prev.filter((o) => o.group !== option.group),
+      option,
+    ]);
+
+    const selectedGroupOptions = selectedOptions.filter(
+      (o) => o.group === option.group
+    );
+    const selectedGroupOptionHashtags = selectedGroupOptions.map(
+      (o) => o.hashtag
+    );
+    const selectedBars = bars?.filter((bar) =>
+      selectedGroupOptionHashtags.every((hashtag) =>
+        bar?.type?.includes(hashtag)
+      )
+    );
+    setBars(selectedBars);
   };
-  const handleButtonClick = (e: React.FormEvent<HTMLButtonElement>) => {
-    const matchingBars = bars
-      ? bars.filter((bar) => {
-          return selectedOption.some((option) => {
-            return bar.type.includes(option.hashtag);
-          });
-        })
+
+  const handleButtonClick = () => {
+    const selectedHashtags = selectedOptions.map((option) => option.hashtag);
+    const selectedBars = bars
+      ? bars.filter((bar) =>
+          selectedHashtags.every((hashtag) => bar.type.includes(hashtag))
+        )
       : [];
-    console.log(matchingBars);
-    setMatchingBars(matchingBars);
-    e.preventDefault();
-    setShowHashtag(true);
+    const matchingBarNames = selectedBars.map((bar) => bar.name);
+    setMatchingBars(matchingBarNames);
   };
 
   return (
@@ -157,40 +157,45 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
         Sign out of Firebase
       </LogOutButton>
       <Wrapper>
-        <QuestionForm>
-          <QuestionTitle>Select Your Favorite Bar Category!</QuestionTitle>
-
-          {options.map((option) => (
-            <QuestionLabel key={option.text}>
-              <Checkbox
-                type="checkbox"
-                name={option.text}
-                value={option.text}
-                onChange={handleOptionChange}
-                checked={selectedOption.includes(option)}
-              />
-              {option.text}
-            </QuestionLabel>
+        <QuestionSection>
+          {Object.entries(groups).map(([key, label]) => (
+            <QuestionFieldset key={key}>
+              <QuestionTitle>{label}</QuestionTitle>
+              {options
+                .filter((option) => option.group === key)
+                .map((option) => (
+                  <div key={option.hashtag}>
+                    <QuestionLabel>
+                      <Checkbox
+                        type="checkbox"
+                        value={option.text}
+                        checked={selectedOptions.some(
+                          (o) => o.text === option.text
+                        )}
+                        onChange={handleOptionChange}
+                      />
+                      {option.hashtag}
+                    </QuestionLabel>
+                  </div>
+                ))}
+            </QuestionFieldset>
           ))}
-
-          <SubmitButton onClick={handleButtonClick}>Submit</SubmitButton>
-
-          {showHashtag && (
-            <Hashtags>
-              {matchingBars.length > 0 ? (
-                <HashtagList>
-                  {matchingBars.map((bar) => (
-                    <HashtagItem key={bar.name}>{bar.name}</HashtagItem>
-                  ))}
-                </HashtagList>
-              ) : (
-                <NoMatch>No matching bars found.</NoMatch>
-              )}
-            </Hashtags>
-          )}
-        </QuestionForm>
+          <SubmitButton onClick={handleButtonClick}>
+            Show Selected Bars
+          </SubmitButton>
+          <Hashtags>
+            {matchingBars.length > 0 ? (
+              <HashtagList>
+                {matchingBars.map((matchingBar, index) => (
+                  <HashtagItem key={index}>{matchingBar}</HashtagItem>
+                ))}
+              </HashtagList>
+            ) : (
+              <NoMatch>No matching bars found.</NoMatch>
+            )}
+          </Hashtags>
+        </QuestionSection>
       </Wrapper>
-      <div>{bars === null ? <p>Loading...</p> : <p>{bars[0].type}</p>}</div>
     </>
   );
 };
