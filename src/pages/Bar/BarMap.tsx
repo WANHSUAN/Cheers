@@ -13,15 +13,13 @@ const Wrapper = styled.div`
 `;
 const GoogleMap = styled.div`
   display: flex;
-  gap: 50px;
   width: 100%;
-  margin-top: 60px;
 `;
 
 const Map = styled.div`
   height: 550px;
   width: 1280px;
-  border: 20px solid #bdb0a4;
+  border: 10px solid beige;
 `;
 
 declare const window: Window & {

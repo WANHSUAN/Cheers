@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import {db} from "../../App";
+import {collection} from "firebase/firestore";
 
 interface StarProps {
   marked: boolean;
@@ -66,8 +68,9 @@ function MemberScore() {
   const [messages, setMessages] = useState<string[]>([]);
   const [ratings, setRatings] = useState<number[]>([]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     setMessages([...messages, inputValue]);
     setRatings([...ratings, 0]);
     setInputValue("");
@@ -81,7 +84,7 @@ function MemberScore() {
           <br />
           <textarea
             value={inputValue}
-            onChange={(event) => setInputValue(event.target.value)}
+            onChange={(e) => setInputValue(e.target.value)}
           ></textarea>
         </label>
         <br />

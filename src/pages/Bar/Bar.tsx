@@ -7,11 +7,11 @@ import BarMap from "./BarMap";
 
 const Wrapper = styled.div`
   text-align: center;
+  width: 800px;
+  margin: 0 auto;
 `;
 
 const BarInfoSection = styled.div`
-  width: 700px;
-  margin: 0 auto;
   background-color: beige;
 `;
 
@@ -21,9 +21,10 @@ const BarTitle = styled.h1`
 `;
 
 const BarImg = styled.img`
-  width: 500px;
-  height: 350px;
-  padding-bottom: 10px;
+  width: 350px;
+  height: 300px;
+  border-radius: 50%;
+  padding: 10px;
 `;
 
 const BarScore = styled.span``;
@@ -46,13 +47,16 @@ const BarOpeninghours = styled.p``;
 const BarTel = styled.p``;
 
 const BarContent = styled.div`
-  background-color: lightgrey;
+  /* background-color: lightgrey; */
 `;
 
 const BarIntro = styled.h2``;
 
 const BarHashTagSection = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  background-color: beige;
 `;
 
 const BarHashTag = styled.p`
@@ -175,6 +179,10 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               <BarImg src={bars[0].img[0]} />
               <BarTitle>{bars[0].name}</BarTitle>
               <BarScore>{"\u2605"}</BarScore>
+              <BarScore>{"\u2605"}</BarScore>
+              <BarScore>{"\u2605"}</BarScore>
+              <BarScore>{"\u2605"}</BarScore>
+              <BarScore>{"\u2605"}</BarScore>
               <BarAddress>地址：{bars[0].address}</BarAddress>
               <BarLink href={bars[0].link}>Go to the Website!</BarLink>
               <BarOpeningTime>
@@ -201,7 +209,14 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <CommentSection>
               <CommentTitle>會員評分和留言</CommentTitle>
               <CommentArea>
-                <CommentScore>{bars[0].member_comment[0].score}</CommentScore>
+                <CommentScore>
+                  {/* {bars[0].member_comment[0].score} */}
+                  <BarScore>{"\u2605"}</BarScore>
+                  <BarScore>{"\u2605"}</BarScore>
+                  <BarScore>{"\u2605"}</BarScore>
+                  <BarScore>{"\u2605"}</BarScore>
+                  <BarScore>{"\u2606"}</BarScore>
+                </CommentScore>
                 <Comment>{bars[0].member_comment[0].comment}</Comment>
               </CommentArea>
             </CommentSection>
