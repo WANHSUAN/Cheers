@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import {useState, useEffect} from "react";
-// import {db} from "../../App";
-// import {collection, getDocs} from "firebase/firestore";
+import {db} from "../../App";
+import {collection, getDocs} from "firebase/firestore";
 
 const Wrapper = styled.div`
   display: flex;
@@ -126,7 +126,7 @@ function AddressToLatLng(props: IAddressToLatLngProps) {
 
   useEffect(() => {
     async function fetchData() {
-      // const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
+      const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=${apiKey}`
       );
@@ -138,16 +138,18 @@ function AddressToLatLng(props: IAddressToLatLngProps) {
       fetchData();
     }
   }, [props.address]);
+
+  // console.log(latLng.lat, latLng.lng);
   return <></>;
 }
 
 function BarMap() {
   const [map, setDataMap] = useState();
-  const [loaded] =
-    useScript();
-    // "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
-  function initMap() {
-    const myLatLng = [{lat: 25.030553536720603, lng: 121.55142011571756}];
+  const [loaded] = useScript(
+    "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
+  );
+  function selectedMap() {
+    const myLatLng = [{lat: 25.0267652, lng: 121.5398757}];
 
     const map = new window.google.maps.Map(document.getElementById("map"), {
       zoom: 20,
@@ -171,7 +173,7 @@ function BarMap() {
 
   useEffect(() => {
     if (loaded) {
-      initMap();
+      selectedMap();
     }
   }, [loaded]);
 

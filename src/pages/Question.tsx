@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import {getAuth, signOut} from "firebase/auth";
 import {db} from "../App";
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, addDoc} from "firebase/firestore";
 
 const LogOutButton = styled.button`
   width: 150px;
@@ -10,6 +11,7 @@ const LogOutButton = styled.button`
   border: 1px solid #87c3e1;
   border-radius: 5px;
   font-size: 15px;
+  cursor: pointer;
 `;
 
 const Wrapper = styled.div`
@@ -39,16 +41,6 @@ const Checkbox = styled.input``;
 
 const SubmitButton = styled.button``;
 
-const Hashtags = styled.div``;
-
-const HashtagList = styled.ul`
-  list-style: none;
-`;
-
-const HashtagItem = styled.li``;
-
-const NoMatch = styled.div``;
-
 interface IBar {
   id: string;
   name: string;
@@ -59,7 +51,7 @@ interface IBar {
 interface IOption {
   text: string;
   hashtag: string;
-  group: string; // 新增屬性
+  group: string;
 }
 
 const options = [
@@ -87,6 +79,7 @@ export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const auth = getAuth();
+  const navigate = useNavigate();
   const [bars, setBars] = useState<IBar[]>([]);
   const barsCollectionRef = collection(db, "bars");
 
@@ -99,7 +92,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     getBars();
   }, []);
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
-  const [matchingBars, setMatchingBars] = useState<string[]>([]);
+  const [matchingBars, setMatchingBars] = useState<Array<Object>>([]);
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -140,15 +133,23 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     setBars(selectedBars);
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     const selectedHashtags = selectedOptions.map((option) => option.hashtag);
     const selectedBars = bars
       ? bars.filter((bar) =>
           selectedHashtags.every((hashtag) => bar.type.includes(hashtag))
         )
       : [];
-    const matchingBarNames = selectedBars.map((bar) => bar.name);
-    setMatchingBars(matchingBarNames);
+
+    const matchingBars = selectedBars.map((bar) => {
+      return {name: bar.name, img: bar.img};
+    });
+
+    const docRef = await addDoc(collection(db, "recommendation"), {
+      matchingBars: matchingBars,
+    });
+
+    navigate("/recommendation");
   };
 
   return (
@@ -183,17 +184,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
           <SubmitButton onClick={handleButtonClick}>
             Show Selected Bars
           </SubmitButton>
-          <Hashtags>
-            {matchingBars.length > 0 ? (
-              <HashtagList>
-                {matchingBars.map((matchingBar, index) => (
-                  <HashtagItem key={index}>{matchingBar}</HashtagItem>
-                ))}
-              </HashtagList>
-            ) : (
-              <NoMatch>No matching bars found.</NoMatch>
-            )}
-          </Hashtags>
         </QuestionSection>
       </Wrapper>
     </>

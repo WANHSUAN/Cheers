@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
-// import {db} from "../../App";
-// import {collection, getDocs} from "firebase/firestore";
+import {db} from "../../App";
+import {collection, getDocs} from "firebase/firestore";
 import MemberScore from "./MemberScore";
 import BarMap from "./BarMap";
 
