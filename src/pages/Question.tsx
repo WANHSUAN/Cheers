@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {getAuth, signOut} from "firebase/auth";
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
+import {db} from "../App";
+import {collection, getDocs} from "firebase/firestore";
 
 const LogOutButton = styled.button`
   width: 150px;
@@ -46,8 +48,38 @@ const HashtagItem = styled.li``;
 
 const NoMatch = styled.div``;
 
+// interface IBars {
+//   id: string;
+//   name: string;
+//   img: string;
+//   type: string;
+// }
+
+// export interface IBarsProps {}
+
+// const Bars: React.FC<IBarsProps> = (props: IBarsProps) => {
+//   const [bars, setBars] = useState<IBars[] | null>(null);
+//   const barsCollectionRef = collection(db, "bars");
+
+//   useEffect(() => {
+//     const getBars = async () => {
+//       const data = await getDocs(barsCollectionRef);
+//       setBars(data.docs.map((doc) => ({...(doc.data() as IBars), id: doc.id})));
+//     };
+
+//     getBars();
+//   }, []);
+//   return (
+//     <Wrapper>
+//       {bars === null ? <p>Loading...</p> : <p>{bars[0].type[0]}</p>}
+//     </Wrapper>
+//   );
+// };
+
 interface IBar {
+  id: string;
   name: string;
+  img: string;
   type: string[];
 }
 
@@ -60,21 +92,19 @@ export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const auth = getAuth();
-  const navigate = useNavigate();
-  const bars: IBar[] = [
-    {
-      name: "ESIDE BOND",
-      type: ["night", "special", "visual", "together"],
-    },
-    {
-      name: "Pico Pico",
-      type: ["afternoon", "special", "simple", "alone"],
-    },
-    {
-      name: "Attic Trade co.",
-      type: ["night", "alone", "simple", "special"],
-    },
-  ];
+  // const navigate = useNavigate();
+  const [bars, setBars] = useState<IBar[] | null>(null);
+  const barsCollectionRef = collection(db, "bars");
+
+  useEffect(() => {
+    const getBars = async () => {
+      const data = await getDocs(barsCollectionRef);
+      setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
+    };
+
+    getBars();
+  }, []);
+
   const [options, setOptions] = useState<IOption[]>([
     {text: "Afternoon", hashtag: "afternoon"},
     {text: "Night", hashtag: "night"},
@@ -108,11 +138,13 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     setShowHashtag(false);
   };
   const handleButtonClick = (e: React.FormEvent<HTMLButtonElement>) => {
-    const matchingBars = bars.filter((bar) => {
-      return selectedOption.some((option) => {
-        return bar.type.includes(option.hashtag);
-      });
-    });
+    const matchingBars = bars
+      ? bars.filter((bar) => {
+          return selectedOption.some((option) => {
+            return bar.type.includes(option.hashtag);
+          });
+        })
+      : [];
     console.log(matchingBars);
     setMatchingBars(matchingBars);
     e.preventDefault();
@@ -158,6 +190,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
           )}
         </QuestionForm>
       </Wrapper>
+      <div>{bars === null ? <p>Loading...</p> : <p>{bars[0].type}</p>}</div>
     </>
   );
 };

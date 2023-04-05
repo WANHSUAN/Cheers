@@ -122,7 +122,6 @@ interface IAddressToLatLngProps {
   address: string;
 }
 function AddressToLatLng(props: IAddressToLatLngProps) {
-  // const [rightAddress, setRightAddress] = useState<string>("");
   const [latLng, setLatLng] = useState<LatLng>({lat: 0, lng: 0});
 
   useEffect(() => {
@@ -139,49 +138,40 @@ function AddressToLatLng(props: IAddressToLatLngProps) {
       fetchData();
     }
   }, [props.address]);
-  // console.log(latLng);
   return <></>;
 }
 
 function BarMap() {
+  const [map, setDataMap] = useState();
   const [loaded] = useScript(
     "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
   );
-  const [map, setDataMap] = useState();
+  function initMap() {
+    const myLatLng = [{lat: 25.030553536720603, lng: 121.55142011571756}];
+
+    const map = new window.google.maps.Map(document.getElementById("map"), {
+      zoom: 20,
+      center: myLatLng[0],
+    });
+
+    const icons = {
+      url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
+      scaledSize: new window.google.maps.Size(50, 50),
+    };
+
+    myLatLng.forEach((location, index) => {
+      const marker = new window.google.maps.Marker({
+        position: location,
+        map,
+        icon: icons,
+      });
+    });
+    setDataMap(map);
+  }
 
   useEffect(() => {
     if (loaded) {
-      const myLatLng = [{lat: 25.030553536720603, lng: 121.55142011571756}];
-
-      const map = new window.google.maps.Map(document.getElementById("map"), {
-        zoom: 20,
-        center: myLatLng[0],
-      });
-
-      const icons = {
-        red: {
-          url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
-          scaledSize: new window.google.maps.Size(50, 50),
-        },
-        blue: {
-          url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-          scaledSize: new window.google.maps.Size(50, 50),
-        },
-        green: {
-          url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png",
-          scaledSize: new window.google.maps.Size(50, 50),
-        },
-      };
-      myLatLng.forEach((location, index) => {
-        const marker = new window.google.maps.Marker({
-          position: location,
-          map,
-          icon: icons[
-            index % 3 === 0 ? "red" : index % 3 === 1 ? "blue" : "green"
-          ],
-        });
-      });
-      setDataMap(map);
+      initMap();
     }
   }, [loaded]);
 
@@ -192,11 +182,11 @@ function BarMap() {
   return (
     <Wrapper>
       <Address />
-      <AddressToLatLng />
       <GoogleMap>
         <Map id="map" />
       </GoogleMap>
     </Wrapper>
   );
 }
+
 export default BarMap;
