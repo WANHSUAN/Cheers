@@ -197,7 +197,22 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <BarInfoSection>
               <BarImg src={bars[0].img[0]} />
               <BarTitle>{bars[0].name}</BarTitle>
-              <BarScore>{"\u2605"}</BarScore>
+              <BarScore>
+                <Score>
+                  {[
+                    ...Array(
+                      Math.round(
+                        bars[0].member_comment
+                          .map((item, index) => parseInt(item.score))
+                          .reduce((total, score) => total + score, 0) /
+                          bars[0].member_comment.length
+                      )
+                    ),
+                  ].map((_, i) => (
+                    <CommentScore key={i}>{"\u2605"}</CommentScore>
+                  ))}
+                </Score>
+              </BarScore>
               <BarAddress>地址：{bars[0].address}</BarAddress>
               <BarLink href={bars[0].link}>Go to the Website!</BarLink>
               <BarOpeningTime>
