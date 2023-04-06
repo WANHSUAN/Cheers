@@ -75,10 +75,24 @@ const CommentSection = styled.div``;
 
 const CommentTitle = styled.h2``;
 
-const CommentArea = styled.ul``;
+const CommentArea = styled.ul`
+  border: 1px solid #000;
+  padding-left: 0;
+`;
+
+const CommentItem = styled.div`
+  border: 1px solid #000;
+`;
+
+const Score = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const CommentScore = styled.li`
   list-style: none;
+  text-align: center;
+  padding: 10px;
 `;
 
 const Comment = styled.li`
@@ -164,7 +178,6 @@ export interface IMainProps {}
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bars, setBars] = useState<IBar[] | null>(null);
   const barsCollectionRef = collection(db, "bars");
-
   useEffect(() => {
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
@@ -213,8 +226,16 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <CommentSection>
               <CommentTitle>會員評分和留言</CommentTitle>
               <CommentArea>
-                <CommentScore>{bars[0].member_comment[0].score}</CommentScore>
-                <Comment>{bars[0].member_comment[0].comment}</Comment>
+                {bars[0].member_comment.map((item, index) => (
+                  <CommentItem key={index}>
+                    <Score>
+                      {[...Array(item.score)].map((_, i) => (
+                        <CommentScore key={i}>{"\u2605"}</CommentScore>
+                      ))}
+                    </Score>
+                    <Comment>{item.comment}</Comment>
+                  </CommentItem>
+                ))}
               </CommentArea>
             </CommentSection>
             <BarRec>
