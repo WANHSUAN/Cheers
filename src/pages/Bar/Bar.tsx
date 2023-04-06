@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import MemberScore from "./MemberScore";
-import Address from "./BarMap";
+// import BarMap from "./BarMap";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -206,8 +206,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               <BarIntro>店家介紹</BarIntro>
               <BarHashTagSection>
                 {Array.isArray(bars[0].type) &&
-                  bars[0].type.map((bar: string) => (
-                    <BarHashtagLink href={"/hashtag"}>
+                  bars[0].type.map((bar: string, index) => (
+                    <BarHashtagLink href={"/hashtag"} key={index}>
                       <BarHashTag key={bar}>#{bar}</BarHashTag>
                     </BarHashtagLink>
                   ))}
@@ -252,7 +252,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               <MemberScore />
             </MemberScoreSection>
             <BarMapTitle>店家位置</BarMapTitle>
-            <Address />
+            {/* <BarMap /> */}
           </>
         )}
       </Wrapper>
