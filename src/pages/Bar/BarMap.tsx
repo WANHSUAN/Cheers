@@ -137,17 +137,21 @@ function AddressToLatLng(props: IAddressToLatLngProps) {
     }
   }, [props.address]);
 
-  // console.log(latLng.lat, latLng.lng);
-  return <></>;
+  console.log(latLng.lat, latLng.lng);
+  return <BarMap latLng={latLng} />;
 }
 
-function BarMap() {
+interface IBarMapProps {
+  latLng: {};
+}
+
+function BarMap(props: IBarMapProps) {
   const [map, setDataMap] = useState();
   const [loaded] = useScript(
     "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
   );
   function selectedMap() {
-    const myLatLng = [{lat: 25.0267652, lng: 121.5398757}];
+    const myLatLng = [props.latLng];
 
     const map = new window.google.maps.Map(document.getElementById("map"), {
       zoom: 20,
@@ -173,7 +177,7 @@ function BarMap() {
     if (loaded) {
       selectedMap();
     }
-  }, [loaded]);
+  }, [loaded, props.latLng]);
 
   if (!loaded) {
     return null;
@@ -181,7 +185,6 @@ function BarMap() {
 
   return (
     <Wrapper>
-      <Address />
       <GoogleMap>
         <Map id="map" />
       </GoogleMap>
@@ -189,4 +192,4 @@ function BarMap() {
   );
 }
 
-export default BarMap;
+export default Address;

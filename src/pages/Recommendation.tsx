@@ -27,6 +27,10 @@ const RecImg = styled.img`
   border-radius: 50%;
 `;
 
+const ReLink = styled.a`
+  text-decoration: none;
+`;
+
 interface IRecommendation {
   matchingBars: IBar[];
   id: string;
@@ -69,7 +73,9 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
             {recommendation.matchingBars.map((bar: IBar, index) => (
               <RecItem key={index}>
                 <RecName>{bar.name}</RecName>
-                <RecImg src={bar.img[1]} alt={bar.name} />
+                <ReLink href={"/bar"}>
+                  <RecImg src={bar.img[1]} alt={bar.name} />
+                </ReLink>
               </RecItem>
             ))}
           </RecSection>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import MemberScore from "./MemberScore";
-import BarMap from "./BarMap";
+import Address from "./BarMap";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -53,10 +53,16 @@ const BarContent = styled.div`
 const BarIntro = styled.h2``;
 
 const BarHashTagSection = styled.div`
+  height: 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   background-color: beige;
+`;
+
+const BarHashtagLink = styled.a`
+  text-decoration: none;
+  color: #398102;
 `;
 
 const BarHashTag = styled.p`
@@ -201,7 +207,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               <BarHashTagSection>
                 {Array.isArray(bars[0].type) &&
                   bars[0].type.map((bar: string) => (
-                    <BarHashTag key={bar}>#{bar}</BarHashTag>
+                    <BarHashtagLink href={"/hashtag"}>
+                      <BarHashTag key={bar}>#{bar}</BarHashTag>
+                    </BarHashtagLink>
                   ))}
               </BarHashTagSection>
               <BarIntroText>{bars[0].introduction}</BarIntroText>
@@ -221,7 +229,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               </CommentArea>
             </CommentSection>
             <BarRec>
-              <BarRecTitle>店家主推</BarRecTitle>
+              <BarRecTitle>店家主推飲品</BarRecTitle>
               <BarRecImg src={bars[0].menu[0].img} />
               <BarRecName>{bars[0].menu[0].name}</BarRecName>
               <BarRecConceptTitle>Concept</BarRecConceptTitle>
@@ -244,7 +252,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               <MemberScore />
             </MemberScoreSection>
             <BarMapTitle>店家位置</BarMapTitle>
-            <BarMap />
+            <Address />
           </>
         )}
       </Wrapper>

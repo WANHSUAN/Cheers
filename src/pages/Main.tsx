@@ -47,9 +47,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   }, []);
   return (
     <Wrapper>
-      {bars.map((bar: IMainBar) => {
+      {bars.map((bar: IMainBar, index) => {
         return (
-          <BarSection key={bar.id}>
+          <BarSection key={index}>
             <BarTitle>{bar.name}</BarTitle>
             <BarImg src={bar.img[0]} />
           </BarSection>

@@ -59,10 +59,10 @@ const options = [
   {text: "Night", hashtag: "night", group: "time"},
   {text: "Alone", hashtag: "alone", group: "situation"},
   {text: "Together", hashtag: "together", group: "situation"},
-  {text: "Classic", hashtag: "classic", group: "mood"},
-  {text: "Special", hashtag: "special", group: "mood"},
-  {text: "Simple", hashtag: "simple", group: "atmosphere"},
-  {text: "Vision", hashtag: "vision", group: "atmosphere"},
+  {text: "Classic", hashtag: "classic", group: "category"},
+  {text: "Special", hashtag: "special", group: "category"},
+  {text: "Simple", hashtag: "simple", group: "visual"},
+  {text: "Vision", hashtag: "vision", group: "visual"},
   {text: "Couple", hashtag: "couple", group: "relationship"},
   {text: "Friend", hashtag: "friend", group: "relationship"},
 ];
@@ -70,8 +70,8 @@ const options = [
 const groups = {
   time: "Time",
   situation: "Situation",
-  mood: "Mood",
-  atmosphere: "Atmosphere",
+  category: "Liquor Category",
+  visual: "Visual",
   relationship: "Relationship",
 };
 
@@ -145,11 +145,15 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       return {name: bar.name, img: bar.img};
     });
 
-    const docRef = await addDoc(collection(db, "recommendation"), {
-      matchingBars: matchingBars,
-    });
+    if (matchingBars.length > 0) {
+      const docRef = await addDoc(collection(db, "recommendation"), {
+        matchingBars: matchingBars,
+      });
 
-    navigate("/recommendation");
+      navigate("/recommendation");
+    } else {
+      alert("No matching Bar!");
+    }
   };
 
   return (
