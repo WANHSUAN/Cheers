@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {db} from "../../App";
-import {collection} from "firebase/firestore";
+import {doc, updateDoc, arrayUnion} from "firebase/firestore";
 
 interface StarProps {
   marked: boolean;
@@ -35,6 +35,7 @@ function StarRating(props: StarRatingProps) {
     if (e && e.target && (e.target as HTMLElement).getAttribute("star-id"))
       val = parseInt((e.target as HTMLElement).getAttribute("star-id") ?? "");
     setSelection(val);
+    setRating(0);
   };
   return (
     <div
@@ -66,13 +67,21 @@ function StarRating(props: StarRatingProps) {
 function MemberScore() {
   const [inputValue, setInputValue] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [ratings, setRatings] = useState<number[]>([]);
+  const [ratings, setRatings] = useState<number>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const commentRef = doc(db, "bars", "0EIRgWnTos8MkfFG0HYc");
+    await updateDoc(commentRef, {
+      member_comment: arrayUnion({
+        comment: inputValue,
+        score: ratings,
+      }),
+    });
+
     setMessages([...messages, inputValue]);
-    setRatings([...ratings, 0]);
+    setRatings(ratings);
     setInputValue("");
   };
 
@@ -92,19 +101,12 @@ function MemberScore() {
           您的評分
           <StarRating
             rating={0}
-            onRatingChange={(rating) => setRatings([...ratings, rating])}
+            onRatingChange={(rating) => setRatings(rating)}
           />
         </label>
         <br />
         <button type="submit">Submit</button>
       </form>
-      <ul>
-        {messages.map((message, index) => (
-          <li key={index}>
-            {message} (Rating: {ratings[index]})
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
