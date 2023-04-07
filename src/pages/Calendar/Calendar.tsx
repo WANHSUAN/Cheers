@@ -1,7 +1,8 @@
+/* eslint-disable array-callback-return */
 import React from "react";
 import styled from "styled-components/macro";
 import {useState, useEffect} from "react";
-// import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import "./Calendar.css";
@@ -222,9 +223,8 @@ function CalendarDays({
   setSelectedDate: (date: Date) => void;
   events: IEvent[];
 }) {
-  const [bar, setBar] = useState("");
-  const [content, setContent] = useState("");
-  // const navigate = useNavigate();
+  const [seconds, setSeconds] = useState(0);
+  const navigate = useNavigate();
 
   const startOfMonth = new Date(
     selectedDate.getFullYear(),
@@ -260,13 +260,7 @@ function CalendarDays({
       const targetDate = new Date(date);
       targetDate.setHours(0, 0, 0, 0); // 將時間設定為 0
       const targetSeconds = Math.floor(targetDate.getTime() / 1000);
-      events.forEach((event) => {
-        const daySeconds = event.time.seconds;
-        if (targetSeconds < daySeconds && daySeconds < targetSeconds + 86400) {
-          setBar(event.bar);
-          setContent(event.content);
-        }
-      });
+      setSeconds(targetSeconds);
     };
 
     days.push(
@@ -282,20 +276,27 @@ function CalendarDays({
     );
   }
 
-  // function HandleToBarPage () {
-  //   navigate("/event");
-  // };
+  function HandleToBarPage() {
+    navigate("/event");
+  }
 
   return (
     <>
       <CalendarDaysSection>{days}</CalendarDaysSection>
-      <EventSection>
-        <EventBar>{bar}</EventBar>
-        <EventContent>{content}</EventContent>
-        {/* <EventButton onClick={HandleToBarPage}>
-          Go to the Bar Event!
-        </EventButton> */}
-      </EventSection>
+      {events.map((event, index) => {
+        const daySeconds = event.time.seconds;
+        if (seconds < daySeconds && daySeconds < seconds + 86400) {
+          return (
+            <EventSection key={index}>
+              <EventBar>{event.bar}</EventBar>
+              <EventContent>{event.content}</EventContent>
+              <EventButton onClick={HandleToBarPage}>
+                Go to the Bar Event!
+              </EventButton>
+            </EventSection>
+          );
+        }
+      })}
     </>
   );
 }
