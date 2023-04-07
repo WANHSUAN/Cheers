@@ -1,0 +1,9 @@
+.calendar__day--selected {
+  background-color: #000;
+  color: #fff;
+}
+
+.calendar__day--today {
+  background-color: #903489;
+  color: #fff;
+}

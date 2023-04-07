@@ -2,7 +2,7 @@ import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Question from "./pages/Question";
 import LoginPage from "./pages/Login";
-import Main from "./pages/Main";
+import Main from "./pages/Main/Main";
 import Bar from "./pages/Bar/Bar";
 import {initializeApp} from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
