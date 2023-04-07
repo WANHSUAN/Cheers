@@ -2,15 +2,13 @@ import React from "react";
 import styled from "styled-components";
 // import {useState} from "react";
 
-const Wrapper = styled.div``;
-const MainMapTitle = styled.h2``;
+const MainMapTitle = styled.h2`
+  height: 300px;
+  background-color: #209384;
+`;
 
 function MainMap() {
-  return (
-    <Wrapper>
-      <MainMapTitle>Category Map</MainMapTitle>
-    </Wrapper>
-  );
+  return <MainMapTitle>Category Map</MainMapTitle>;
 }
 
 export default MainMap;

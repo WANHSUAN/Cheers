@@ -1,22 +1,20 @@
 import React from "react";
 import styled from "styled-components/macro";
 import {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import "./Calendar.css";
 
 const CalendarWrapper = styled.div`
-  width: 800px;
-  background-color: beige;
-  display: flex;
+  width: 350px;
   margin: 0 auto;
 `;
 
 const CalendarSection = styled.div`
   font-family: Arial, sans-serif;
   width: 350px;
-  height: 370px;
+  height: 380px;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -95,17 +93,14 @@ const CalendarDayHeader = styled.div`
   color: #666;
 `;
 
-const CalendarEvent = styled.div``;
-
-const EventSection = styled.div``;
+const EventSection = styled.div`
+  padding-top: 50px;
+  height: 200px;
+`;
 
 const EventBar = styled.h2``;
 
-const EventDate = styled.p``;
-
 const EventContent = styled.p``;
-
-const EventTime = styled.p``;
 
 const EventButton = styled.button`
   border: 1px solid #839102;
@@ -130,7 +125,6 @@ const Calendar: React.FC<ICalendarProps> = (props: ICalendarProps) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState<IEvent[]>([]);
   const eventsCollectionRef = collection(db, "events");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getEvents = async () => {
@@ -165,10 +159,6 @@ const Calendar: React.FC<ICalendarProps> = (props: ICalendarProps) => {
     });
   };
 
-  const HandleToBarPage = () => {
-    navigate("/event");
-  };
-
   return (
     <CalendarWrapper>
       <CalendarSection>
@@ -184,27 +174,6 @@ const Calendar: React.FC<ICalendarProps> = (props: ICalendarProps) => {
           events={events}
         />
       </CalendarSection>
-      <CalendarEvent>
-        {/* {(events as IEvent[]).map((event: IEvent, index) => {
-          return (
-            <EventSection key={index}>
-              <EventContent>{event.content}</EventContent>
-              <EventDate>{event.date}</EventDate>
-            </EventSection>
-          );
-        })} */}
-        {events[0] === undefined ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <EventBar>{events[0].bar}</EventBar>
-            <EventContent>{events[0].content}</EventContent>
-            <EventButton onClick={HandleToBarPage}>
-              Go to the Event!
-            </EventButton>
-          </>
-        )}
-      </CalendarEvent>
     </CalendarWrapper>
   );
 };
@@ -255,6 +224,7 @@ function CalendarDays({
 }) {
   const [bar, setBar] = useState("");
   const [content, setContent] = useState("");
+  // const navigate = useNavigate();
 
   const startOfMonth = new Date(
     selectedDate.getFullYear(),
@@ -295,8 +265,6 @@ function CalendarDays({
         if (targetSeconds < daySeconds && daySeconds < targetSeconds + 86400) {
           setBar(event.bar);
           setContent(event.content);
-          console.log(event.bar);
-          console.log(event.content);
         }
       });
     };
@@ -314,11 +282,20 @@ function CalendarDays({
     );
   }
 
+  // function HandleToBarPage () {
+  //   navigate("/event");
+  // };
+
   return (
     <>
       <CalendarDaysSection>{days}</CalendarDaysSection>
-      <EventSection>{bar}</EventSection>
-      {content}
+      <EventSection>
+        <EventBar>{bar}</EventBar>
+        <EventContent>{content}</EventContent>
+        {/* <EventButton onClick={HandleToBarPage}>
+          Go to the Bar Event!
+        </EventButton> */}
+      </EventSection>
     </>
   );
 }
