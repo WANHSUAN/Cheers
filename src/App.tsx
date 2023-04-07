@@ -9,6 +9,7 @@ import {getFirestore} from "@firebase/firestore";
 import {config} from "./config/config";
 import AuthRoute from "./components/AuthRoute";
 import RecommendationPage from "./pages/Recommendation";
+import Event from "./pages/Event/Event";
 
 const app = initializeApp(config.firebaseConfig);
 export const db = getFirestore(app);
@@ -31,6 +32,7 @@ const App: React.FC<IAppProps> = (props) => {
         <Route path="/recommendation" element={<RecommendationPage />} />
         <Route path="/main" element={<Main />} />
         <Route path="/bar" element={<Bar />} />
+        <Route path="/event" element={<Event />} />
       </Routes>
     </BrowserRouter>
   );

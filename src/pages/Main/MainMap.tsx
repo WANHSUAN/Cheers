@@ -8,7 +8,7 @@ const MainMapTitle = styled.h2``;
 function MainMap() {
   return (
     <Wrapper>
-      <MainMapTitle>Map</MainMapTitle>
+      <MainMapTitle>Category Map</MainMapTitle>
     </Wrapper>
   );
 }
