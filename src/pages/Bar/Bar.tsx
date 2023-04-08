@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {db} from "../../App";
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, addDoc} from "firebase/firestore";
 import MemberScore from "./MemberScore";
 // import BarMap from "./BarMap";
 
@@ -18,6 +18,17 @@ const BarInfoSection = styled.div`
 const BarTitle = styled.h1`
   font-size: 30px;
   padding-top: 10px;
+`;
+
+const Heart = styled.span`
+  font-size: 25px;
+  cursor: pointer;
+  margin: 10px;
+`;
+
+const Collection = styled.span`
+  font-size: 25px;
+  cursor: pointer;
 `;
 
 const BarImg = styled.img`
@@ -46,9 +57,7 @@ const BarOpeninghours = styled.p``;
 
 const BarTel = styled.p``;
 
-const BarContent = styled.div`
-  /* background-color: lightgrey; */
-`;
+const BarContent = styled.div``;
 
 const BarIntro = styled.h2``;
 
@@ -171,6 +180,45 @@ interface IMenu {
   ingredients: string[];
 }
 
+function CollectionButton(name: any, address: any, link: any) {
+  const [isHeart, setIsHeart] = useState(false);
+  const [isCollection, setIsCollection] = useState(false);
+
+  const handleHeartButtonClick = async () => {
+    alert("已收藏！");
+    setIsHeart(!isHeart);
+    console.log(name.name);
+    console.log(name.address);
+    console.log(name.link);
+    try {
+      await addDoc(collection(db, "collections"), {
+        name: name.name,
+        address: name.address,
+        link: name.link,
+      });
+      console.log("Bar data has been added to Firestore");
+    } catch (error) {
+      console.error("Error adding bar data to Firestore:", error);
+    }
+  };
+
+  function handleCollectionButtonClick() {
+    alert("已去過！");
+    setIsCollection(!isCollection);
+  }
+
+  return (
+    <>
+      <Heart onClick={handleHeartButtonClick}>
+        {isHeart ? "\u2665" : "\u2661"}
+      </Heart>
+      <Collection onClick={handleCollectionButtonClick}>
+        {isCollection ? "\u263B" : "\u263A"}
+      </Collection>
+    </>
+  );
+}
+
 interface IMenuArray extends Array<IMenu> {}
 
 export interface IMainProps {}
@@ -197,6 +245,11 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <BarInfoSection>
               <BarImg src={bars[0].img[0]} />
               <BarTitle>{bars[0].name}</BarTitle>
+              <CollectionButton
+                name={bars[0].name}
+                address={bars[0].address}
+                link={bars[0].link}
+              />
               <BarScore>
                 <Score>
                   {[

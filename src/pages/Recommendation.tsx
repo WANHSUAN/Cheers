@@ -49,7 +49,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
 ) => {
   // const navigate = useNavigate();
   const [recommendations, setRecommendations] = useState<IRecommendation[]>([]);
-  const recommendationsRef = collection(db, "recommendation");
+  const recommendationsRef = collection(db, "recommendations");
 
   useEffect(() => {
     const getRecommendations = async () => {

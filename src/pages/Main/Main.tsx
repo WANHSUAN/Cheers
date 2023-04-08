@@ -69,9 +69,10 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           );
         })}
       </AllBar>
+      <MainMap />
       <CalendarTitle>Calendar</CalendarTitle>
+
       <Calendar />
-      {/* <MainMap /> */}
     </Wrapper>
   );
 };

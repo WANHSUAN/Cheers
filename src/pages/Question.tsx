@@ -146,7 +146,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     });
 
     if (matchingBars.length > 0) {
-      const docRef = await addDoc(collection(db, "recommendation"), {
+      const docRef = await addDoc(collection(db, "recommendations"), {
         matchingBars: matchingBars,
       });
 
