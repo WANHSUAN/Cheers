@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {db} from "../../App";
-import {collection, getDocs, addDoc} from "firebase/firestore";
+import {collection, getDocs, addDoc, doc, deleteDoc} from "firebase/firestore";
 import MemberScore from "./MemberScore";
 // import BarMap from "./BarMap";
 
@@ -20,7 +20,7 @@ const BarTitle = styled.h1`
   padding-top: 10px;
 `;
 
-const Heart = styled.span`
+const Like = styled.span`
   font-size: 25px;
   cursor: pointer;
   margin: 10px;
@@ -181,37 +181,83 @@ interface IMenu {
 }
 
 function CollectionButton(name: any, address: any, link: any) {
-  const [isHeart, setIsHeart] = useState(false);
-  const [isCollection, setIsCollection] = useState(false);
+  const [isLike, setIsLike] = useState(
+    JSON.parse(localStorage.getItem("isLike") || "false")
+  );
+  const [isCollection, setIsCollection] = useState(
+    JSON.parse(localStorage.getItem("isCollection") || "false")
+  );
+
+  useEffect(() => {
+    const storedIsLike = localStorage.getItem("isLike");
+    const storedIsCollection = localStorage.getItem("isCollection");
+    if (storedIsLike && storedIsCollection) {
+      setIsLike(JSON.parse(storedIsLike));
+      setIsCollection(JSON.parse(storedIsCollection));
+    }
+  }, []);
 
   const handleHeartButtonClick = async () => {
-    alert("已收藏！");
-    setIsHeart(!isHeart);
-    console.log(name.name);
-    console.log(name.address);
-    console.log(name.link);
+    const newIsLike = !isLike;
+    localStorage.setItem("isLike", JSON.stringify(newIsLike));
+    setIsLike(newIsLike);
+    try {
+      if (newIsLike) {
+        alert("已收藏！");
+        await addDoc(collection(db, "likes"), {
+          name: name.name,
+          address: name.address,
+          link: name.link,
+        });
+        console.log("Likes data has been added to Firestore");
+      } else {
+        alert("我沒興趣了，取消收藏！");
+
+        const likesRef = collection(db, "likes");
+        const likesSnapshot = await getDocs(likesRef);
+
+        let likeDocId;
+        likesSnapshot.forEach((doc) => {
+          likeDocId = doc.id;
+        });
+
+        if (likeDocId) {
+          const likeRef = doc(db, "likes", likeDocId);
+          await deleteDoc(likeRef);
+        }
+        console.log("Likes data has been deleted from Firestore");
+      }
+    } catch (error) {
+      console.error("Error adding bar data to Firestore:", error);
+    }
+  };
+
+  const handleCollectionButtonClick = async () => {
+    if (!isCollection) {
+      alert("已去過！");
+    } else {
+      alert("其實沒去過，我要取消！！");
+    }
+    const newIsCollection = !isCollection;
+    localStorage.setItem("isCollection", JSON.stringify(newIsCollection));
+    setIsCollection(newIsCollection);
     try {
       await addDoc(collection(db, "collections"), {
         name: name.name,
         address: name.address,
         link: name.link,
       });
-      console.log("Bar data has been added to Firestore");
+      console.log("Collections data has been added to Firestore");
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
     }
   };
 
-  function handleCollectionButtonClick() {
-    alert("已去過！");
-    setIsCollection(!isCollection);
-  }
-
   return (
     <>
-      <Heart onClick={handleHeartButtonClick}>
-        {isHeart ? "\u2665" : "\u2661"}
-      </Heart>
+      <Like onClick={handleHeartButtonClick}>
+        {isLike ? "\u2665" : "\u2661"}
+      </Like>
       <Collection onClick={handleCollectionButtonClick}>
         {isCollection ? "\u263B" : "\u263A"}
       </Collection>
