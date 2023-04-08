@@ -158,6 +158,7 @@ interface IBar {
   type: string;
   member_comment: ICommentArray;
   menu: IMenuArray;
+  score: string;
 }
 
 interface IOpeningTime {
@@ -180,7 +181,7 @@ interface IMenu {
   ingredients: string[];
 }
 
-function CollectionButton(name: any, address: any, link: any) {
+function CollectionButton(name: any) {
   const [isLike, setIsLike] = useState(
     JSON.parse(localStorage.getItem("isLike") || "false")
   );
@@ -208,8 +209,8 @@ function CollectionButton(name: any, address: any, link: any) {
           name: name.name,
           address: name.address,
           link: name.link,
+          img: name.img,
         });
-        console.log("Likes data has been added to Firestore");
       } else {
         alert("我沒興趣了，取消收藏！");
 
@@ -225,7 +226,6 @@ function CollectionButton(name: any, address: any, link: any) {
           const likeRef = doc(db, "likes", likeDocId);
           await deleteDoc(likeRef);
         }
-        console.log("Likes data has been deleted from Firestore");
       }
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
@@ -233,21 +233,34 @@ function CollectionButton(name: any, address: any, link: any) {
   };
 
   const handleCollectionButtonClick = async () => {
-    if (!isCollection) {
-      alert("已去過！");
-    } else {
-      alert("其實沒去過，我要取消！！");
-    }
     const newIsCollection = !isCollection;
     localStorage.setItem("isCollection", JSON.stringify(newIsCollection));
     setIsCollection(newIsCollection);
     try {
-      await addDoc(collection(db, "collections"), {
-        name: name.name,
-        address: name.address,
-        link: name.link,
-      });
-      console.log("Collections data has been added to Firestore");
+      if (newIsCollection) {
+        alert("已去過！");
+        await addDoc(collection(db, "collections"), {
+          name: name.name,
+          address: name.address,
+          link: name.link,
+          img: name.img,
+        });
+      } else {
+        alert("其實沒去過，我要取消！！");
+
+        const collectionssRef = collection(db, "collections");
+        const collectionsSnapshot = await getDocs(collectionssRef);
+
+        let collectionDocId;
+        collectionsSnapshot.forEach((doc) => {
+          collectionDocId = doc.id;
+        });
+
+        if (collectionDocId) {
+          const collectionsRef = doc(db, "collections", collectionDocId);
+          await deleteDoc(collectionsRef);
+        }
+      }
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
     }
@@ -295,6 +308,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                 name={bars[0].name}
                 address={bars[0].address}
                 link={bars[0].link}
+                img={bars[0].img[1]}
+                score={bars[0].score}
               />
               <BarScore>
                 <Score>
