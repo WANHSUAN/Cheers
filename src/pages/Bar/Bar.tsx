@@ -294,6 +294,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     getBars();
   }, []);
 
+  console.log(bars);
   return (
     <>
       <Wrapper>
