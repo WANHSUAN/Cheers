@@ -210,23 +210,25 @@ function CollectionButton(name: any) {
           address: name.address,
           link: name.link,
           img: name.img,
+          score: name.score,
         });
-      } else {
-        alert("我沒興趣了，取消收藏！");
-
-        const likesRef = collection(db, "likes");
-        const likesSnapshot = await getDocs(likesRef);
-
-        let likeDocId;
-        likesSnapshot.forEach((doc) => {
-          likeDocId = doc.id;
-        });
-
-        if (likeDocId) {
-          const likeRef = doc(db, "likes", likeDocId);
-          await deleteDoc(likeRef);
-        }
       }
+      // else {
+      //   alert("我沒興趣了，取消收藏！");
+
+      //   const likesRef = collection(db, "likes");
+      //   const likesSnapshot = await getDocs(likesRef);
+
+      //   let likeDocId;
+      //   likesSnapshot.forEach((doc) => {
+      //     likeDocId = doc.id;
+      //   });
+
+      //   if (likeDocId) {
+      //     const likeRef = doc(db, "likes", likeDocId);
+      //     await deleteDoc(likeRef);
+      //   }
+      // }
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
     }
@@ -244,23 +246,25 @@ function CollectionButton(name: any) {
           address: name.address,
           link: name.link,
           img: name.img,
+          score: name.score,
         });
-      } else {
-        alert("其實沒去過，我要取消！！");
-
-        const collectionssRef = collection(db, "collections");
-        const collectionsSnapshot = await getDocs(collectionssRef);
-
-        let collectionDocId;
-        collectionsSnapshot.forEach((doc) => {
-          collectionDocId = doc.id;
-        });
-
-        if (collectionDocId) {
-          const collectionsRef = doc(db, "collections", collectionDocId);
-          await deleteDoc(collectionsRef);
-        }
       }
+      // else {
+      //   alert("其實沒去過，我要取消！！");
+
+      //   const collectionssRef = collection(db, "collections");
+      //   const collectionsSnapshot = await getDocs(collectionssRef);
+
+      //   let collectionDocId;
+      //   collectionsSnapshot.forEach((doc) => {
+      //     collectionDocId = doc.id;
+      //   });
+
+      //   if (collectionDocId) {
+      //     const collectionsRef = doc(db, "collections", collectionDocId);
+      //     await deleteDoc(collectionsRef);
+      //   }
+      // }
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
     }
@@ -293,8 +297,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
     getBars();
   }, []);
-
-  console.log(bars);
   return (
     <>
       <Wrapper>
