@@ -1,7 +1,15 @@
 import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {db} from "../../App";
-import {collection, getDocs, addDoc, doc, deleteDoc} from "firebase/firestore";
+import {
+  collection,
+  getDoc,
+  addDoc,
+  doc,
+  query,
+  where,
+} from "firebase/firestore";
 import MemberScore from "./MemberScore";
 // import BarMap from "./BarMap";
 
@@ -287,116 +295,117 @@ interface IMenuArray extends Array<IMenu> {}
 export interface IMainProps {}
 
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
-  const [bars, setBars] = useState<IBar[] | null>(null);
-  const barsCollectionRef = collection(db, "bars");
-  useEffect(() => {
-    const getBars = async () => {
-      const data = await getDocs(barsCollectionRef);
-      setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
-    };
+  const [bar, setBar] = useState<IBar>();
+  const [loading, setLoading] = useState(true);
+  const {id} = useParams();
+  const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
-    getBars();
-  }, []);
+  useEffect(() => {
+    async function getBar() {
+      if (barCollectionRef) {
+        const barSnapshot = await getDoc(barCollectionRef);
+        setBar(barSnapshot.data() as any);
+        setLoading(false);
+      }
+    }
+
+    getBar();
+  }, [id]);
+
+  if (bar === undefined) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <Wrapper>
-        {bars === null ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <BarInfoSection>
-              <BarImg src={bars[0].img[0]} />
-              <BarTitle>{bars[0].name}</BarTitle>
-              <CollectionButton
-                name={bars[0].name}
-                address={bars[0].address}
-                link={bars[0].link}
-                img={bars[0].img[1]}
-                score={bars[0].score}
-              />
-              <BarScore>
+        <BarInfoSection>
+          <BarImg src={bar.img[0]} />
+          <BarTitle>{bar.name}</BarTitle>
+          <CollectionButton
+            name={bar.name}
+            address={bar.address}
+            link={bar.link}
+            img={bar.img[1]}
+            score={bar.score}
+          />
+          <BarScore>
+            <Score>
+              {[
+                ...Array(
+                  Math.round(
+                    bar.member_comment
+                      .map((item, index) => parseInt(item.score))
+                      .reduce((total, score) => total + score, 0) /
+                      bar.member_comment.length
+                  )
+                ),
+              ].map((_, i) => (
+                <CommentScore key={i}>{"\u2605"}</CommentScore>
+              ))}
+            </Score>
+          </BarScore>
+          <BarAddress>地址：{bar.address}</BarAddress>
+          <BarLink href={bar.link}>Go to the Website!</BarLink>
+          <BarOpeningTime>
+            營業時間：
+            <BarOpeningDate>{bar.opening_time.opening_date}</BarOpeningDate>
+            <BarOpeninghours>{bar.opening_time.opening_hours}</BarOpeninghours>
+          </BarOpeningTime>
+          <BarTel>聯絡電話：{bar.tel}</BarTel>
+        </BarInfoSection>
+        <BarContent>
+          <BarIntro>店家介紹</BarIntro>
+          <BarHashTagSection>
+            {Array.isArray(bar.type) &&
+              bar.type.map((bar: string, index) => (
+                <BarHashtagLink href={"/hashtag"} key={index}>
+                  <BarHashTag key={bar}>#{bar}</BarHashTag>
+                </BarHashtagLink>
+              ))}
+          </BarHashTagSection>
+          <BarIntroText>{bar.introduction}</BarIntroText>
+        </BarContent>
+        <CommentSection>
+          <CommentTitle>會員評分和留言</CommentTitle>
+          <CommentArea>
+            {bar.member_comment.map((item, index) => (
+              <CommentItem key={index}>
                 <Score>
-                  {[
-                    ...Array(
-                      Math.round(
-                        bars[0].member_comment
-                          .map((item, index) => parseInt(item.score))
-                          .reduce((total, score) => total + score, 0) /
-                          bars[0].member_comment.length
-                      )
-                    ),
-                  ].map((_, i) => (
+                  {[...Array(item.score)].map((_, i) => (
                     <CommentScore key={i}>{"\u2605"}</CommentScore>
                   ))}
                 </Score>
-              </BarScore>
-              <BarAddress>地址：{bars[0].address}</BarAddress>
-              <BarLink href={bars[0].link}>Go to the Website!</BarLink>
-              <BarOpeningTime>
-                營業時間：
-                <BarOpeningDate>
-                  {bars[0].opening_time.opening_date}
-                </BarOpeningDate>
-                <BarOpeninghours>
-                  {bars[0].opening_time.opening_hours}
-                </BarOpeninghours>
-              </BarOpeningTime>
-              <BarTel>聯絡電話：{bars[0].tel}</BarTel>
-            </BarInfoSection>
-            <BarContent>
-              <BarIntro>店家介紹</BarIntro>
-              <BarHashTagSection>
-                {Array.isArray(bars[0].type) &&
-                  bars[0].type.map((bar: string, index) => (
-                    <BarHashtagLink href={"/hashtag"} key={index}>
-                      <BarHashTag key={bar}>#{bar}</BarHashTag>
-                    </BarHashtagLink>
-                  ))}
-              </BarHashTagSection>
-              <BarIntroText>{bars[0].introduction}</BarIntroText>
-            </BarContent>
-            <CommentSection>
-              <CommentTitle>會員評分和留言</CommentTitle>
-              <CommentArea>
-                {bars[0].member_comment.map((item, index) => (
-                  <CommentItem key={index}>
-                    <Score>
-                      {[...Array(item.score)].map((_, i) => (
-                        <CommentScore key={i}>{"\u2605"}</CommentScore>
-                      ))}
-                    </Score>
-                    <Comment>{item.comment}</Comment>
-                  </CommentItem>
-                ))}
-              </CommentArea>
-            </CommentSection>
-            <BarRec>
-              <BarRecTitle>店家主推飲品</BarRecTitle>
-              <BarRecImg src={bars[0].menu[0].img} />
-              <BarRecName>{bars[0].menu[0].name}</BarRecName>
-              <BarRecConceptTitle>Concept</BarRecConceptTitle>
-              <BarRecConcept>{bars[0].menu[0].concept}</BarRecConcept>
-              <BarRecGarnishTitle>Garnish</BarRecGarnishTitle>
-              <BarRecGarnish>
-                {bars[0].menu[0].garnish.map((gar: string) => (
-                  <BarRecGarnishItem key={gar}>{gar}</BarRecGarnishItem>
-                ))}
-              </BarRecGarnish>
-              <BarRecIngredientsTitle>Ingredients</BarRecIngredientsTitle>
-              <BarRecIngredients>
-                {bars[0].menu[0].ingredients.map((gar: string) => (
-                  <BarRecIngredientsItem key={gar}>{gar}</BarRecIngredientsItem>
-                ))}
-              </BarRecIngredients>
-            </BarRec>
-            <MemberScoreSection>
-              <MemberScoreTitle>您的評分 & 留言</MemberScoreTitle>
-              <MemberScore />
-            </MemberScoreSection>
-            <BarMapTitle>店家位置</BarMapTitle>
-            {/* <BarMap /> */}
-          </>
-        )}
+                <Comment>{item.comment}</Comment>
+              </CommentItem>
+            ))}
+          </CommentArea>
+        </CommentSection>
+        <BarRec>
+          <BarRecTitle>店家主推飲品</BarRecTitle>
+          <BarRecImg src={bar.menu[0].img} />
+          <BarRecName>{bar.menu[0].name}</BarRecName>
+          <BarRecConceptTitle>Concept</BarRecConceptTitle>
+          <BarRecConcept>{bar.menu[0].concept}</BarRecConcept>
+          <BarRecGarnishTitle>Garnish</BarRecGarnishTitle>
+          <BarRecGarnish>
+            {bar.menu[0].garnish.map((gar: string) => (
+              <BarRecGarnishItem key={gar}>{gar}</BarRecGarnishItem>
+            ))}
+          </BarRecGarnish>
+          <BarRecIngredientsTitle>Ingredients</BarRecIngredientsTitle>
+          <BarRecIngredients>
+            {bar.menu[0].ingredients.map((gar: string) => (
+              <BarRecIngredientsItem key={gar}>{gar}</BarRecIngredientsItem>
+            ))}
+          </BarRecIngredients>
+        </BarRec>
+        <MemberScoreSection>
+          <MemberScoreTitle>您的評分 & 留言</MemberScoreTitle>
+          <MemberScore />
+        </MemberScoreSection>
+        <BarMapTitle>店家位置</BarMapTitle>
+        {/* <BarMap /> */}
       </Wrapper>
     </>
   );

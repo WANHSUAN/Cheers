@@ -32,7 +32,7 @@ const App: React.FC<IAppProps> = (props) => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/recommendation" element={<RecommendationPage />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/bar" element={<Bar />} />
+        <Route path="/bars/:id" element={<Bar />} />
         <Route path="/event" element={<Event />} />
         <Route path="/member" element={<Member />} />
       </Routes>

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
+import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
@@ -18,7 +19,7 @@ const AllBar = styled.div`
 
 const AllBarTitle = styled.h2``;
 
-const BarSection = styled.div``;
+const BarSection = styled(Link)``;
 
 const BarTitle = styled.h1`
   font-size: 20px;
@@ -62,7 +63,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       <AllBar>
         {bars.map((bar: IMainBar) => {
           return (
-            <BarSection key={bar.id}>
+            <BarSection to={`/bars/${bar.id}`} key={bar.id}>
               <BarTitle>{bar.name}</BarTitle>
               <BarImg src={bar.img[0]} />
             </BarSection>
