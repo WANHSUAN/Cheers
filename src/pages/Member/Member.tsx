@@ -97,6 +97,7 @@ export interface IMemberProps {}
 const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
   const [likes, setLikes] = useState<ILikes[] | null>(null);
   const [collections, setCollections] = useState<ICollections[] | null>(null);
+
   const likesCollectionRef = collection(db, "likes");
   const collectionsCollectionRef = collection(db, "collections");
   useEffect(() => {
@@ -117,33 +118,56 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
     getDatas();
   }, []);
 
-  const handleDeleteLikeClick = async () => {
+  const handleDeleteLikeClick = async (likeDocId: string) => {
     const likesRef = collection(db, "likes");
     const likesSnapshot = await getDocs(likesRef);
 
-    let likeDocId;
     likesSnapshot.forEach((doc) => {
       likeDocId = doc.id;
     });
 
     if (likeDocId) {
       const likeRef = doc(db, "likes", likeDocId);
-      await deleteDoc(likeRef);
+      let confirmDelete = window.confirm("確定要刪除嗎？");
+
+      if (confirmDelete === true) {
+        await deleteDoc(likeRef);
+        likes === null ? (
+          <p>Loading...</p>
+        ) : (
+          setLikes(
+            (likes) => likes?.filter((like) => like.id !== likeDocId) ?? null
+          )
+        );
+      }
     }
   };
 
-  const handleDeleteScoreClick = async () => {
+  const handleDeleteScoreClick = async (collectionDocId: string) => {
     const collectionsRef = collection(db, "collections");
     const collectionsSnapshot = await getDocs(collectionsRef);
 
-    let collectionDocId;
     collectionsSnapshot.forEach((doc) => {
       collectionDocId = doc.id;
     });
 
     if (collectionDocId) {
       const collectionRef = doc(db, "collections", collectionDocId);
-      await deleteDoc(collectionRef);
+      let confirmDelete = window.confirm("確定要刪除嗎？");
+
+      if (confirmDelete === true) {
+        await deleteDoc(collectionRef);
+        collections === null ? (
+          <p>Loading...</p>
+        ) : (
+          setCollections(
+            (collections) =>
+              collections?.filter(
+                (collection) => collection.id !== collectionDocId
+              ) ?? null
+          )
+        );
+      }
     }
   };
 
@@ -154,8 +178,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
         <p>Loading...</p>
       ) : (
         <>
-          {console.log(likes)}
-
           <LikeTitle>{"\u2661"}您收藏的酒吧</LikeTitle>
           <LikeSection>
             {likes.map((like, index) => (
@@ -171,7 +193,9 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
                     <LikeScore key={i.toString()}>{"\u2605"}</LikeScore>
                   ))}
                 </LikeScoreSection>
-                <LikeDeleteButton onClick={handleDeleteLikeClick}>
+                <LikeDeleteButton
+                  onClick={() => handleDeleteLikeClick(like.id)}
+                >
                   Delete
                 </LikeDeleteButton>
               </LikeCard>
@@ -183,7 +207,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
         <p>Loading...</p>
       ) : (
         <>
-          {console.log(collections)}
           <CollectionTitle>{"\u2661"}您已去過的酒吧</CollectionTitle>
           <CollectionSection>
             {collections.map((collection, index) => (
@@ -203,7 +226,9 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
                     )
                   )}
                 </CollectionScoreSection>
-                <CollectionDeleteButton onClick={handleDeleteScoreClick}>
+                <CollectionDeleteButton
+                  onClick={() => handleDeleteScoreClick(collection.id)}
+                >
                   Delete
                 </CollectionDeleteButton>
               </CollectionCard>
