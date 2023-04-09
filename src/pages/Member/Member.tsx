@@ -119,55 +119,29 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
   }, []);
 
   const handleDeleteLikeClick = async (likeDocId: string) => {
-    const likesRef = collection(db, "likes");
-    const likesSnapshot = await getDocs(likesRef);
+    const likeRef = doc(db, "likes", likeDocId);
+    let confirmDelete = window.confirm("確定要刪除嗎？");
 
-    likesSnapshot.forEach((doc) => {
-      likeDocId = doc.id;
-    });
-
-    if (likeDocId) {
-      const likeRef = doc(db, "likes", likeDocId);
-      let confirmDelete = window.confirm("確定要刪除嗎？");
-
-      if (confirmDelete === true) {
-        await deleteDoc(likeRef);
-        likes === null ? (
-          <p>Loading...</p>
-        ) : (
-          setLikes(
-            (likes) => likes?.filter((like) => like.id !== likeDocId) ?? null
-          )
-        );
-      }
+    if (confirmDelete === true) {
+      await deleteDoc(likeRef);
+      setLikes(
+        (likes) => likes?.filter((like) => like.id !== likeDocId) ?? null
+      );
     }
   };
 
-  const handleDeleteScoreClick = async (collectionDocId: string) => {
-    const collectionsRef = collection(db, "collections");
-    const collectionsSnapshot = await getDocs(collectionsRef);
+  const handleDeleteCollectionClick = async (collectionDocId: string) => {
+    const collectionRef = doc(db, "collections", collectionDocId);
+    let confirmDelete = window.confirm("確定要刪除嗎？");
 
-    collectionsSnapshot.forEach((doc) => {
-      collectionDocId = doc.id;
-    });
-
-    if (collectionDocId) {
-      const collectionRef = doc(db, "collections", collectionDocId);
-      let confirmDelete = window.confirm("確定要刪除嗎？");
-
-      if (confirmDelete === true) {
-        await deleteDoc(collectionRef);
-        collections === null ? (
-          <p>Loading...</p>
-        ) : (
-          setCollections(
-            (collections) =>
-              collections?.filter(
-                (collection) => collection.id !== collectionDocId
-              ) ?? null
-          )
-        );
-      }
+    if (confirmDelete === true) {
+      await deleteDoc(collectionRef);
+      setCollections(
+        (collections) =>
+          collections?.filter(
+            (collection) => collection.id !== collectionDocId
+          ) ?? null
+      );
     }
   };
 
@@ -178,21 +152,22 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
         <p>Loading...</p>
       ) : (
         <>
+          {/* {console.log(likes)} */}
           <LikeTitle>{"\u2661"}您收藏的酒吧</LikeTitle>
           <LikeSection>
             {likes.map((like, index) => (
               <LikeCard
-                key={index}
+                key={like.id}
                 style={{
                   backgroundImage: `url(${like.img})`,
                   backgroundSize: "cover",
                 }}
               >
-                <LikeScoreSection>
+                {/* <LikeScoreSection>
                   {[...Array(parseInt(like.score.toString()))].map((_, i) => (
                     <LikeScore key={i.toString()}>{"\u2605"}</LikeScore>
                   ))}
-                </LikeScoreSection>
+                </LikeScoreSection> */}
                 <LikeDeleteButton
                   onClick={() => handleDeleteLikeClick(like.id)}
                 >
@@ -211,13 +186,13 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
           <CollectionSection>
             {collections.map((collection, index) => (
               <CollectionCard
-                key={index}
+                key={collection.id}
                 style={{
                   backgroundImage: `url(${collection.img})`,
                   backgroundSize: "cover",
                 }}
               >
-                <CollectionScoreSection>
+                {/* <CollectionScoreSection>
                   {[...Array(parseInt(collection.score.toString()))].map(
                     (_, i) => (
                       <CollectionScore key={i.toString()}>
@@ -225,9 +200,9 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
                       </CollectionScore>
                     )
                   )}
-                </CollectionScoreSection>
+                </CollectionScoreSection> */}
                 <CollectionDeleteButton
-                  onClick={() => handleDeleteScoreClick(collection.id)}
+                  onClick={() => handleDeleteCollectionClick(collection.id)}
                 >
                   Delete
                 </CollectionDeleteButton>

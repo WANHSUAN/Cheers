@@ -5,10 +5,10 @@ import {db} from "../../App";
 import {
   collection,
   getDoc,
+  getDocs,
+  deleteDoc,
   addDoc,
   doc,
-  query,
-  where,
 } from "firebase/firestore";
 import MemberScore from "./MemberScore";
 // import BarMap from "./BarMap";
@@ -190,25 +190,33 @@ interface IMenu {
 }
 
 function CollectionButton(name: any) {
+  const {id} = useParams();
+  const likeStorageKey = `isLike_${id}`;
+  const collectionStorageKey = `isCollection_${id}`;
+
   const [isLike, setIsLike] = useState(
-    JSON.parse(localStorage.getItem("isLike") || "false")
+    JSON.parse(localStorage.getItem(likeStorageKey) || "false")
   );
+
   const [isCollection, setIsCollection] = useState(
-    JSON.parse(localStorage.getItem("isCollection") || "false")
+    JSON.parse(localStorage.getItem(collectionStorageKey) || "false")
   );
 
   useEffect(() => {
-    const storedIsLike = localStorage.getItem("isLike");
-    const storedIsCollection = localStorage.getItem("isCollection");
-    if (storedIsLike && storedIsCollection) {
+    const storedIsLike = localStorage.getItem(likeStorageKey);
+    if (storedIsLike) {
       setIsLike(JSON.parse(storedIsLike));
+    }
+    const storedIsCollection = localStorage.getItem(collectionStorageKey);
+    if (storedIsCollection) {
       setIsCollection(JSON.parse(storedIsCollection));
     }
   }, []);
 
   const handleHeartButtonClick = async () => {
     const newIsLike = !isLike;
-    localStorage.setItem("isLike", JSON.stringify(newIsLike));
+
+    localStorage.setItem(likeStorageKey, JSON.stringify(newIsLike));
     setIsLike(newIsLike);
     try {
       if (newIsLike) {
@@ -218,25 +226,24 @@ function CollectionButton(name: any) {
           address: name.address,
           link: name.link,
           img: name.img,
-          score: name.score,
+          // score: name.score,
         });
+      } else {
+        alert("我沒興趣了，取消收藏！");
+
+        const likesRef = collection(db, "likes");
+        const likesSnapshot = await getDocs(likesRef);
+
+        let likeDocId;
+        likesSnapshot.forEach((doc) => {
+          likeDocId = doc.id;
+        });
+
+        if (likeDocId) {
+          const likeRef = doc(db, "likes", likeDocId);
+          await deleteDoc(likeRef);
+        }
       }
-      // else {
-      //   alert("我沒興趣了，取消收藏！");
-
-      //   const likesRef = collection(db, "likes");
-      //   const likesSnapshot = await getDocs(likesRef);
-
-      //   let likeDocId;
-      //   likesSnapshot.forEach((doc) => {
-      //     likeDocId = doc.id;
-      //   });
-
-      //   if (likeDocId) {
-      //     const likeRef = doc(db, "likes", likeDocId);
-      //     await deleteDoc(likeRef);
-      //   }
-      // }
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
     }
@@ -244,7 +251,7 @@ function CollectionButton(name: any) {
 
   const handleCollectionButtonClick = async () => {
     const newIsCollection = !isCollection;
-    localStorage.setItem("isCollection", JSON.stringify(newIsCollection));
+    localStorage.setItem(collectionStorageKey, JSON.stringify(newIsCollection));
     setIsCollection(newIsCollection);
     try {
       if (newIsCollection) {
@@ -254,25 +261,24 @@ function CollectionButton(name: any) {
           address: name.address,
           link: name.link,
           img: name.img,
-          score: name.score,
+          // score: name.score,
         });
+      } else {
+        alert("其實沒去過，我要取消！！");
+
+        const collectionsRef = collection(db, "collections");
+        const collectionsSnapshot = await getDocs(collectionsRef);
+
+        let collectionDocId;
+        collectionsSnapshot.forEach((doc) => {
+          collectionDocId = doc.id;
+        });
+
+        if (collectionDocId) {
+          const collectionsRef = doc(db, "collections", collectionDocId);
+          await deleteDoc(collectionsRef);
+        }
       }
-      // else {
-      //   alert("其實沒去過，我要取消！！");
-
-      //   const collectionssRef = collection(db, "collections");
-      //   const collectionsSnapshot = await getDocs(collectionssRef);
-
-      //   let collectionDocId;
-      //   collectionsSnapshot.forEach((doc) => {
-      //     collectionDocId = doc.id;
-      //   });
-
-      //   if (collectionDocId) {
-      //     const collectionsRef = doc(db, "collections", collectionDocId);
-      //     await deleteDoc(collectionsRef);
-      //   }
-      // }
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
     }
@@ -316,6 +322,17 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     return <p>Loading...</p>;
   }
 
+  const scoreArray = [
+    ...Array(
+      Math.round(
+        bar.member_comment
+          .map((item, index) => parseInt(item.score))
+          .reduce((total, score) => total + score, 0) /
+          bar.member_comment.length
+      )
+    ),
+  ];
+
   return (
     <>
       <Wrapper>
@@ -331,16 +348,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           />
           <BarScore>
             <Score>
-              {[
-                ...Array(
-                  Math.round(
-                    bar.member_comment
-                      .map((item, index) => parseInt(item.score))
-                      .reduce((total, score) => total + score, 0) /
-                      bar.member_comment.length
-                  )
-                ),
-              ].map((_, i) => (
+              {scoreArray.map((_, i) => (
                 <CommentScore key={i}>{"\u2605"}</CommentScore>
               ))}
             </Score>

@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {db} from "../../App";
 import {doc, updateDoc, arrayUnion} from "firebase/firestore";
+import {useParams} from "react-router-dom";
 
 interface StarProps {
   marked: boolean;
@@ -68,11 +69,13 @@ function MemberScore() {
   const [inputValue, setInputValue] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
   const [ratings, setRatings] = useState<number>();
+  const {id} = useParams();
+  const [currentDocId, setCurrentDocId] = useState(id);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const commentRef = doc(db, "bars", "0EIRgWnTos8MkfFG0HYc");
+    const commentRef = doc(db, `bars/${currentDocId}`); // 使用 currentDocId 獲取檔案引用
     await updateDoc(commentRef, {
       member_comment: arrayUnion({
         comment: inputValue,
