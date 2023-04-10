@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 
@@ -89,6 +90,7 @@ interface LatLng {
   lng: number;
 }
 interface IBar {
+  id: string;
   address: string;
 }
 
@@ -98,6 +100,7 @@ const BarMap: React.FC<IMainProps> = (props: IMainProps) => {
   const [bars, setBars] = useState<IBar[] | null>(null);
   const [address, setAddress] = useState<string>("");
   const barsCollectionRef = collection(db, "bars");
+  const {id} = useParams();
 
   useEffect(() => {
     const getBars = async () => {
@@ -110,9 +113,13 @@ const BarMap: React.FC<IMainProps> = (props: IMainProps) => {
 
   useEffect(() => {
     if (bars !== null && bars.length > 0) {
-      setAddress(bars[0].address);
+      bars.map((bar) => {
+        if (bar.id === id) {
+          setAddress(bar.address);
+        }
+      });
     }
-  }, [bars]);
+  }, [bars, id]);
 
   return <AddressToLatLng address={address} />;
 };
@@ -129,6 +136,7 @@ function AddressToLatLng(props: IAddressToLatLngProps) {
         `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=${apiKey}`
       );
       const data = await response.json();
+
       const {lat, lng} = data.results[0].geometry.location;
       setLatLng({lat, lng});
     }
@@ -162,12 +170,13 @@ function Address(props: IAddressProps) {
     };
 
     myLatLng.forEach((location, index) => {
-      const marker = new window.google.maps.Marker({
+      new window.google.maps.Marker({
         position: location,
         map,
         icon: icons,
       });
     });
+
     setDataMap(map);
   }
 
