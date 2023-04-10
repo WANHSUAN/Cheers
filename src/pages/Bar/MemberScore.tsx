@@ -31,7 +31,11 @@ function StarRating(props: StarRatingProps) {
     typeof props.rating === "number" ? props.rating : 0
   );
   const [selection, setSelection] = useState(0);
+
+  const [isHoverDisabled, setIsHoverDisabled] = useState(false);
+
   const hoverOver = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (isHoverDisabled) return;
     let val = 0;
     if (e && e.target && (e.target as HTMLElement).getAttribute("star-id"))
       val = parseInt((e.target as HTMLElement).getAttribute("star-id") ?? "");
@@ -39,8 +43,10 @@ function StarRating(props: StarRatingProps) {
   };
   return (
     <div
-      // onMouseOut={() => hoverOver()}
+      onMouseOut={() => hoverOver()}
       onClick={(e) => {
+        setIsHoverDisabled(true); // 禁用hover
+
         setRating(
           (prevRating) =>
             parseInt(
@@ -70,6 +76,7 @@ function MemberScore() {
   const [ratings, setRatings] = useState<number>(0);
   const {id} = useParams();
   const [currentDocId, setCurrentDocId] = useState(id);
+  const [key, setKey] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,8 +89,9 @@ function MemberScore() {
       }),
     });
     setMessages([...messages, inputValue]);
-    setRatings(ratings);
     setInputValue("");
+    setRatings(0);
+    setKey(key + 1); // 每次 handleSubmit 後將 key 狀態加 1
   };
 
   return (
@@ -101,7 +109,8 @@ function MemberScore() {
         <label>
           您的評分
           <StarRating
-            rating={0}
+            key={key} // 將 key 綁定到 ratings 狀態
+            rating={ratings}
             onRatingChange={(rating) => setRatings(rating)}
           />
         </label>
