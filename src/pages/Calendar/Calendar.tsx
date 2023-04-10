@@ -5,7 +5,7 @@ import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
-import "./Calendar.css";
+import {issuedAtTime} from "@firebase/util";
 
 const CalendarWrapper = styled.div`
   width: 350px;
@@ -59,6 +59,19 @@ const CalendarDay = styled.div`
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
+
+  &.calendar__day--today {
+    background-color: #903489;
+    color: #fff;
+  }
+  &.calendar__day--event {
+    background-color: #483492;
+    color: #fff;
+  }
+  &.calendar__day--selected {
+    background-color: #000;
+    color: #fff;
+  }
 `;
 
 const CalendarDaysSection = styled.div`
@@ -126,7 +139,6 @@ const Calendar: React.FC<ICalendarProps> = (props: ICalendarProps) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState<IEvent[]>([]);
   const eventsCollectionRef = collection(db, "events");
-
   useEffect(() => {
     const getEvents = async () => {
       const data = await getDocs(eventsCollectionRef);
@@ -226,6 +238,10 @@ function CalendarDays({
   const [seconds, setSeconds] = useState(0);
   const navigate = useNavigate();
 
+  if (events.length === 0) {
+    return <p>Loading...</p>;
+  }
+
   const startOfMonth = new Date(
     selectedDate.getFullYear(),
     selectedDate.getMonth(),
@@ -252,8 +268,13 @@ function CalendarDays({
       selectedDate.getMonth(),
       i
     );
+
     const isToday = date.toDateString() === new Date().toDateString();
     const isSelected = date.toDateString() === selectedDate.toDateString();
+    const hasEvent = events.some((event) => {
+      const eventDate = new Date(event.time.seconds * 1000); // 將時間戳記轉換為日期
+      return eventDate.toDateString() === date.toDateString();
+    });
 
     const handleClick = () => {
       setSelectedDate(date);
@@ -266,9 +287,11 @@ function CalendarDays({
     days.push(
       <CalendarDay
         key={`day-${i}`}
-        className={`${isToday ? "calendar__day--today" : ""} ${
-          isSelected ? "calendar__day--selected" : ""
-        }`}
+        className={`
+        ${isToday ? "calendar__day--today" : ""} 
+        ${isSelected ? "calendar__day--selected" : ""}
+        ${hasEvent ? "calendar__day--event" : ""}
+        `}
         onClick={handleClick}
       >
         {i}
@@ -285,7 +308,8 @@ function CalendarDays({
       <CalendarDaysSection>{days}</CalendarDaysSection>
       {events.map((event, index) => {
         const daySeconds = event.time.seconds;
-        if (seconds < daySeconds && daySeconds < seconds + 86400) {
+
+        if (seconds < daySeconds && daySeconds <= seconds + 86400) {
           return (
             <EventSection key={index}>
               <EventBar>{event.bar}</EventBar>

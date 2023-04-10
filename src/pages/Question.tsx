@@ -92,7 +92,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     getBars();
   }, []);
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
-  const [matchingBars, setMatchingBars] = useState<Array<Object>>([]);
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
