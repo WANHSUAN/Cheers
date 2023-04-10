@@ -169,7 +169,7 @@ function Address(props: IAddressProps) {
       scaledSize: new window.google.maps.Size(50, 50),
     };
 
-    myLatLng.forEach((location, index) => {
+    myLatLng.forEach((location) => {
       new window.google.maps.Marker({
         position: location,
         map,

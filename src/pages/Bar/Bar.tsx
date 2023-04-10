@@ -331,6 +331,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     ),
   ];
 
+  // bar.score = scoreArray;
+  // console.log(bar.score);
+
   return (
     <>
       <Wrapper>
@@ -342,7 +345,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             address={bar.address}
             link={bar.link}
             img={bar.img[1]}
-            score={bar.score}
+            // score={bar.score}
           />
           <BarScore>
             <Score>

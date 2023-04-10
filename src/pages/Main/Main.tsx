@@ -19,6 +19,13 @@ const AllBar = styled.div`
 
 const AllBarTitle = styled.h2``;
 
+const MemberLink = styled(Link)`
+  text-decoration: none;
+  background-color: #60add3;
+  padding: 10px;
+  border-radius: 5px;
+`;
+
 const BarSection = styled(Link)`
   text-decoration: none;
 `;
@@ -62,6 +69,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   return (
     <Wrapper>
       <AllBarTitle>All Bar</AllBarTitle>
+      <MemberLink to={"/member"}>Go to Member Page</MemberLink>
       <AllBar>
         {bars.map((bar: IMainBar) => {
           return (

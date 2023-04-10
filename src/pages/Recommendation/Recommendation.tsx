@@ -31,6 +31,16 @@ const RecImg = styled.img`
 
 const ReLink = styled.div``;
 
+const HomePageLink = styled(Link)`
+  width: 150px;
+  height: 50px;
+  padding: 5px;
+  background-color: #60add3;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+`;
+
 interface IRecommendation {
   matchingBars: [];
   id: string;
@@ -83,20 +93,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
           }
         )}
       </RecSection>
-      {/* {recommendations.map((recommendation: IRecommendation, index) => {
-        return (
-          <RecSection key={index}>
-            {recommendation.matchingBars.map((bar: IBar, index) => (
-              <RecItem to={`/bars/${bar.id}`} key={index}>
-                <RecName>{bar.name}</RecName>
-                <ReLink>
-                  <RecImg src={bar.img[1]} alt={bar.name} />
-                </ReLink>
-              </RecItem>
-            ))}
-          </RecSection>
-        );
-      })} */}
+      <HomePageLink to={"/main"}>Go to HomePage</HomePageLink>
     </Wrapper>
   );
 };

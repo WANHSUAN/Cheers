@@ -29,15 +29,15 @@ const LikeCard = styled.div`
   border-radius: 10px;
 `;
 
-const LikeScoreSection = styled.div`
-  display: flex;
-`;
+// const LikeScoreSection = styled.div`
+//   display: flex;
+// `;
 
-const LikeScore = styled.li`
-  color: #fff;
-  list-style: none;
-  text-align: center;
-`;
+// const LikeScore = styled.li`
+//   color: #fff;
+//   list-style: none;
+//   text-align: center;
+// `;
 
 const LikeDeleteButton = styled.button`
   width: 60px;
@@ -59,15 +59,15 @@ const CollectionCard = styled.div`
   border-radius: 10px;
 `;
 
-const CollectionScoreSection = styled.div`
-  display: flex;
-`;
+// const CollectionScoreSection = styled.div`
+//   display: flex;
+// `;
 
-const CollectionScore = styled.li`
-  color: #fff;
-  list-style: none;
-  text-align: center;
-`;
+// const CollectionScore = styled.li`
+//   color: #fff;
+//   list-style: none;
+//   text-align: center;
+// `;
 
 const CollectionDeleteButton = styled.button`
   width: 60px;
