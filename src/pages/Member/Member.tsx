@@ -152,7 +152,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
         <p>Loading...</p>
       ) : (
         <>
-          {/* {console.log(likes)} */}
           <LikeTitle>{"\u2661"}您收藏的酒吧</LikeTitle>
           <LikeSection>
             {likes.map((like, index) => (
@@ -182,7 +181,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
         <p>Loading...</p>
       ) : (
         <>
-          <CollectionTitle>{"\u2661"}您已去過的酒吧</CollectionTitle>
+          <CollectionTitle>{"\u263A"}您已去過的酒吧</CollectionTitle>
           <CollectionSection>
             {collections.map((collection, index) => (
               <CollectionCard

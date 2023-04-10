@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
-// import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import {db} from "../App";
+import {Link} from "react-router-dom";
+import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 
 const Wrapper = styled.div`
@@ -17,7 +17,9 @@ const RecSection = styled.div`
   text-align: center;
 `;
 
-const RecItem = styled.div``;
+const RecItem = styled(Link)`
+  text-decoration: none;
+`;
 
 const RecName = styled.h3``;
 
@@ -27,17 +29,11 @@ const RecImg = styled.img`
   border-radius: 50%;
 `;
 
-const ReLink = styled.a`
-  text-decoration: none;
-`;
+const ReLink = styled.div``;
 
 interface IRecommendation {
-  matchingBars: IBar[];
+  matchingBars: [];
   id: string;
-}
-
-interface IBar {
-  id: number;
   name: string;
   img: string[];
 }
@@ -47,7 +43,6 @@ export interface IRecommendationProps {}
 const RecommendationPage: React.FC<IRecommendationProps> = (
   props: IRecommendationProps
 ) => {
-  // const navigate = useNavigate();
   const [recommendations, setRecommendations] = useState<IRecommendation[]>([]);
   const recommendationsRef = collection(db, "recommendations");
 
@@ -65,22 +60,43 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
     getRecommendations();
   }, []);
 
+  if (recommendations[0] === undefined) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <Wrapper>
-      {recommendations.map((recommendation: IRecommendation) => {
+      <RecSection>
+        {recommendations[0].matchingBars.map(
+          (recommendation: IRecommendation, index) => {
+            return (
+              <RecItem to={`/bars/${recommendation.id}`} key={index}>
+                <RecName>{recommendation.name}</RecName>
+                <ReLink>
+                  <RecImg
+                    src={recommendation.img[1]}
+                    alt={recommendation.name}
+                  />
+                </ReLink>
+              </RecItem>
+            );
+          }
+        )}
+      </RecSection>
+      {/* {recommendations.map((recommendation: IRecommendation, index) => {
         return (
-          <RecSection key={recommendation.id}>
+          <RecSection key={index}>
             {recommendation.matchingBars.map((bar: IBar, index) => (
-              <RecItem key={index}>
+              <RecItem to={`/bars/${bar.id}`} key={index}>
                 <RecName>{bar.name}</RecName>
-                <ReLink href={"/bar"}>
+                <ReLink>
                   <RecImg src={bar.img[1]} alt={bar.name} />
                 </ReLink>
               </RecItem>
             ))}
           </RecSection>
         );
-      })}
+      })} */}
     </Wrapper>
   );
 };

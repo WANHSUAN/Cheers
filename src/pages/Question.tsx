@@ -142,7 +142,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       : [];
 
     const matchingBars = selectedBars.map((bar) => {
-      return {name: bar.name, img: bar.img};
+      return {name: bar.name, img: bar.img, id: bar.id};
     });
 
     if (matchingBars.length > 0) {

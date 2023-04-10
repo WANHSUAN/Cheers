@@ -11,7 +11,7 @@ import {
   doc,
 } from "firebase/firestore";
 import MemberScore from "./MemberScore";
-// import BarMap from "./BarMap";
+import BarMap from "./BarMap";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -302,7 +302,6 @@ export interface IMainProps {}
 
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bar, setBar] = useState<IBar>();
-  const [loading, setLoading] = useState(true);
   const {id} = useParams();
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
@@ -311,7 +310,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       if (barCollectionRef) {
         const barSnapshot = await getDoc(barCollectionRef);
         setBar(barSnapshot.data() as any);
-        setLoading(false);
       }
     }
 
@@ -413,7 +411,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           <MemberScore />
         </MemberScoreSection>
         <BarMapTitle>店家位置</BarMapTitle>
-        {/* <BarMap /> */}
+        <BarMap />
       </Wrapper>
     </>
   );

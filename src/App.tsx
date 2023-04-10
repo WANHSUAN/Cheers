@@ -8,7 +8,7 @@ import {initializeApp} from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
 import {config} from "./config/config";
 import AuthRoute from "./components/AuthRoute";
-import RecommendationPage from "./pages/Recommendation";
+import RecommendationPage from "./pages/Recommendation/Recommendation";
 import Event from "./pages/Event/Event";
 import Member from "./pages/Member/Member";
 

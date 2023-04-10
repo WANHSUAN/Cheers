@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {db} from "../../App";
 import {doc, updateDoc, arrayUnion} from "firebase/firestore";
 import {useParams} from "react-router-dom";
@@ -36,11 +36,10 @@ function StarRating(props: StarRatingProps) {
     if (e && e.target && (e.target as HTMLElement).getAttribute("star-id"))
       val = parseInt((e.target as HTMLElement).getAttribute("star-id") ?? "");
     setSelection(val);
-    setRating(0);
   };
   return (
     <div
-      onMouseOut={() => hoverOver()}
+      // onMouseOut={() => hoverOver()}
       onClick={(e) => {
         setRating(
           (prevRating) =>
@@ -68,7 +67,7 @@ function StarRating(props: StarRatingProps) {
 function MemberScore() {
   const [inputValue, setInputValue] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [ratings, setRatings] = useState<number>();
+  const [ratings, setRatings] = useState<number>(0);
   const {id} = useParams();
   const [currentDocId, setCurrentDocId] = useState(id);
 
@@ -82,7 +81,6 @@ function MemberScore() {
         score: ratings,
       }),
     });
-
     setMessages([...messages, inputValue]);
     setRatings(ratings);
     setInputValue("");
