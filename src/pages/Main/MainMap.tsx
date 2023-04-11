@@ -95,59 +95,48 @@ interface IBar {
 export interface IMainProps {}
 
 const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
-  const [bars, setBars] = useState<IBar[] | null>(null);
-  const [address, setAddress] = useState<string>("");
-  const barsCollectionRef = collection(db, "bars");
+  const [latLngArr, setLatLngArr] = useState<LatLng[]>([]);
+
   useEffect(() => {
-    const getBars = async () => {
+    const fetchDataAndSetLatLngArr = async () => {
+      const barsCollectionRef = collection(db, "bars");
       const data = await getDocs(barsCollectionRef);
-      setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
+      const bars = data.docs.map((doc) => ({
+        ...(doc.data() as IBar),
+        id: doc.id,
+      }));
+
+      const address = bars.map((bar) => bar.address);
+      const latLngPromises = address.map((address) => fetchData(address));
+      const latLngArr = await Promise.all(latLngPromises);
+      setLatLngArr(latLngArr);
     };
 
-    getBars();
+    fetchDataAndSetLatLngArr();
   }, []);
 
-  let barArray: string[] = [];
+  if (latLngArr.length === 0) {
+    return null;
+  }
 
-  useEffect(() => {
-    if (bars !== null && bars.length > 0) {
-      bars.map((bar) => {
-        barArray.push(bar.address);
-      });
-      // setAddress();
-    }
-  }, [bars]);
-
-  console.log(barArray);
-
-  return <AddressToLatLng address={address} />;
+  return (
+    <>
+      <Address latLng={latLngArr} />
+    </>
+  );
 };
-interface IAddressToLatLngProps {
-  address: string;
+
+async function fetchData(address: string) {
+  const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
+  );
+  const data = await response.json();
+  const {lat, lng} = data.results[0].geometry.location;
+  return {lat, lng};
 }
-function AddressToLatLng(props: IAddressToLatLngProps) {
-  const [latLng, setLatLng] = useState<LatLng>({lat: 0, lng: 0});
-
-  useEffect(() => {
-    async function fetchData() {
-      const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=${apiKey}`
-      );
-      const data = await response.json();
-
-      const {lat, lng} = data.results[0].geometry.location;
-      setLatLng({lat, lng});
-    }
-    if (props.address !== "") {
-      fetchData();
-    }
-  }, [props.address]);
-  return <Address latLng={latLng} />;
-}
-
 interface IAddressProps {
-  latLng: {};
+  latLng: LatLng[];
 }
 
 function Address(props: IAddressProps) {
@@ -156,37 +145,23 @@ function Address(props: IAddressProps) {
     "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
   );
   function selectedMap() {
-    const myLatLng = [props.latLng];
-    console.log(myLatLng);
+    const myLatLng = props.latLng;
 
     const map = new window.google.maps.Map(document.getElementById("map"), {
-      zoom: 20,
-      center: myLatLng[0],
+      zoom: 15,
+      center: myLatLng[3],
     });
 
-    const icons = {
-      red: {
-        url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
-        scaledSize: new window.google.maps.Size(50, 50),
-      },
-      blue: {
-        url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png",
-        scaledSize: new window.google.maps.Size(50, 50),
-      },
-      green: {
-        url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png",
-        scaledSize: new window.google.maps.Size(50, 50),
-      },
-    };
+    // const icons = {
+    //   url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
+    //   scaledSize: new window.google.maps.Size(50, 50)
+    // };
 
     myLatLng.forEach((location, index) => {
-      // console.log(location);
       new window.google.maps.Marker({
         position: location,
         map,
-        icon: icons[
-          index % 3 === 0 ? "red" : index % 3 === 1 ? "blue" : "green"
-        ],
+        // icon: icons,
       });
     });
 
