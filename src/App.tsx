@@ -20,22 +20,17 @@ export interface IAppProps {}
 const App: React.FC<IAppProps> = (props) => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <AuthRoute>
-              <Question />
-            </AuthRoute>
-          }
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/recommendation" element={<RecommendationPage />} />
-        <Route path="/main" element={<Main />} />
-        <Route path="/bars/:id" element={<Bar />} />
-        <Route path="/event" element={<Event />} />
-        <Route path="/member" element={<Member />} />
-      </Routes>
+      <AuthRoute>
+        <Routes>
+          <Route path="/" element={<Question />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/recommendation" element={<RecommendationPage />} />
+          <Route path="/main" element={<Main />} />
+          <Route path="/bars/:id" element={<Bar />} />
+          <Route path="/event" element={<Event />} />
+          <Route path="/member" element={<Member />} />
+        </Routes>
+      </AuthRoute>
     </BrowserRouter>
   );
 };

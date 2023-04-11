@@ -11,7 +11,7 @@ import {
   doc,
 } from "firebase/firestore";
 import MemberScore from "./MemberScore";
-import BarMap from "./BarMap";
+// import BarMap from "./BarMap";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -414,7 +414,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           <MemberScore />
         </MemberScoreSection>
         <BarMapTitle>店家位置</BarMapTitle>
-        <BarMap />
+        {/* <BarMap /> */}
       </Wrapper>
     </>
   );

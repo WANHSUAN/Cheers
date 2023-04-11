@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
-// import MainMap from "./MainMap";
+import MainMap from "./MainMap";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -80,7 +80,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           );
         })}
       </AllBar>
-      {/* <MainMap /> */}
+      <MainMap />
       <CalendarTitle>Calendar</CalendarTitle>
       <Calendar />
     </Wrapper>
