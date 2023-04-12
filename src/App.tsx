@@ -11,6 +11,7 @@ import AuthRoute from "./components/AuthRoute";
 import RecommendationPage from "./pages/Recommendation/Recommendation";
 import Event from "./pages/Event/Event";
 import Member from "./pages/Member/Member";
+import Category from "./pages/Category/Category";
 
 const app = initializeApp(config.firebaseConfig);
 export const db = getFirestore(app);
@@ -29,6 +30,7 @@ const App: React.FC<IAppProps> = (props) => {
           <Route path="/bars/:id" element={<Bar />} />
           <Route path="/event" element={<Event />} />
           <Route path="/member" element={<Member />} />
+          <Route path="/category" element={<Category />} />
         </Routes>
       </AuthRoute>
     </BrowserRouter>

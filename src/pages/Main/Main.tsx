@@ -4,12 +4,19 @@ import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
-import MainMap from "./MainMap";
+// import MainMap from "./MainMap";
+import SideMenu from "../../components/SideMenu/SideMenu";
+import Alert from "../../components/Alert";
 
 const Wrapper = styled.div`
   text-align: center;
   width: 1100px;
   margin: 0 auto;
+`;
+
+const MenuButton = styled.button`
+  width: 50px;
+  height: 30px;
 `;
 
 const AllBar = styled.div`
@@ -55,6 +62,7 @@ export interface IMainProps {}
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bars, setBars] = useState<IMainBar[]>([]);
   const barsCollectionRef = collection(db, "bars");
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     const getBars = async () => {
@@ -66,10 +74,22 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
     getBars();
   }, []);
+
+  function handleMenuClick() {
+    setShowMenu(!showMenu);
+  }
+
   return (
     <Wrapper>
+      <div>
+        {/* 显示带有 "Success" 内容和 "success" 样式的 Alert，持续 3 秒 */}
+        <Alert message="Success" type="success" duration={3000} />
+      </div>
+      <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
+      {showMenu && <SideMenu />}
       <AllBarTitle>All Bar</AllBarTitle>
       <MemberLink to={"/member"}>Go to Member Page</MemberLink>
+
       <AllBar>
         {bars.map((bar: IMainBar) => {
           return (
@@ -80,7 +100,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           );
         })}
       </AllBar>
-      <MainMap />
+      {/* <MainMap /> */}
       <CalendarTitle>Calendar</CalendarTitle>
       <Calendar />
     </Wrapper>
