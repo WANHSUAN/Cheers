@@ -28,7 +28,7 @@ const App: React.FC<IAppProps> = (props) => {
           <Route path="/recommendation" element={<RecommendationPage />} />
           <Route path="/main" element={<Main />} />
           <Route path="/bars/:id" element={<Bar />} />
-          <Route path="/event" element={<Event />} />
+          <Route path="/events/:id" element={<Event />} />
           <Route path="/member" element={<Member />} />
           <Route path="/category" element={<Category />} />
         </Routes>

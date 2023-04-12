@@ -40,6 +40,7 @@ interface IAlertEvent {
     seconds: number;
   };
   bar: string;
+  id: string;
 }
 
 const Alert = ({events}: {events: IAlertEvent[]}) => {
@@ -69,31 +70,32 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
 
   return (
     <>
-      {showAlert && (
-        <Wrapper>
-          {events.map((event, index) => {
-            return hasEvent[index] ? (
+      {showAlert &&
+        events.map((event, index) => {
+          return hasEvent[index] ? (
+            <Wrapper>
               <AlertMessage key={index}>
                 今日 {event.bar} 有特別活動！
                 <br />
                 邀請您來共襄盛舉～
               </AlertMessage>
-            ) : null;
-          })}
-          <CheckboxWrapper>
-            <CheckboxInput
-              type="checkbox"
-              checked={ischecked}
-              onChange={handleOnChange}
-            />
-            <CheckboxLabel>今日不再顯示</CheckboxLabel>
-          </CheckboxWrapper>
-          <StyledEnterButton>
-            <EnterButton to={"/member"}>Enter</EnterButton>
-          </StyledEnterButton>
-          <CloseButton onClick={handleCloseClick}>Close</CloseButton>
-        </Wrapper>
-      )}
+              <CheckboxWrapper>
+                <CheckboxInput
+                  type="checkbox"
+                  checked={ischecked}
+                  onChange={handleOnChange}
+                />
+                <CheckboxLabel>今日不再顯示</CheckboxLabel>
+              </CheckboxWrapper>
+              <StyledEnterButton>
+                <EnterButton to={`/events/${event.id}`} key={event.id}>
+                  Enter
+                </EnterButton>
+              </StyledEnterButton>
+              <CloseButton onClick={handleCloseClick}>Close</CloseButton>
+            </Wrapper>
+          ) : null;
+        })}
     </>
   );
 };
