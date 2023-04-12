@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 import {db} from "../../App";
-import {collection, getDocs} from "firebase/firestore";
+import {collection, getDocs, Timestamp} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
 // import MainMap from "./MainMap";
 import SideMenu from "../../components/SideMenu/SideMenu";
@@ -57,11 +57,19 @@ interface IMainBar {
   img: string;
 }
 
+interface IMainEvent {
+  bar: string;
+  content: string;
+  time: Timestamp;
+}
+
 export interface IMainProps {}
 
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bars, setBars] = useState<IMainBar[]>([]);
+  const [events, setEvents] = useState<IMainEvent[]>([]);
   const barsCollectionRef = collection(db, "bars");
+  const eventsCollectionRef = collection(db, "events");
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
@@ -72,7 +80,18 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       );
     };
 
+    const getEvents = async () => {
+      const data = await getDocs(eventsCollectionRef);
+      setEvents(
+        data.docs.map((doc) => ({
+          ...(doc.data() as IMainEvent),
+          id: doc.id,
+        }))
+      );
+    };
+
     getBars();
+    getEvents();
   }, []);
 
   function handleMenuClick() {
@@ -81,10 +100,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
   return (
     <Wrapper>
-      <div>
-        {/* 显示带有 "Success" 内容和 "success" 样式的 Alert，持续 3 秒 */}
-        <Alert message="Success" type="success" duration={3000} />
-      </div>
+      <Alert events={events} />
       <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
       {showMenu && <SideMenu />}
       <AllBarTitle>All Bar</AllBarTitle>

@@ -1,41 +1,101 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
+import {Link} from "react-router-dom";
 
 const AlertMessage = styled.p`
-  font-size: 20px;
+  font-size: 15px;
 `;
 
-const Alert = ({
-  message,
-  type,
-  duration,
-}: {
-  message: string;
-  type: string;
-  duration: number;
-}) => {
-  const [showAlert, setShowAlert] = useState(false);
+const Wrapper = styled.div`
+  width: 300px;
+  height: 130px;
+  border: 1px solid #5d4317;
+`;
 
-  useEffect(() => {
-    setShowAlert(true);
+const CheckboxWrapper = styled.label`
+  width: 100px;
+  height: 100px;
+`;
 
-    // 如果设置了 duration，则在 duration 后隐藏 Alert
-    if (duration) {
-      const timer = setTimeout(() => {
-        setShowAlert(false);
-      }, duration);
-      return () => clearTimeout(timer);
+const CheckboxInput = styled.input``;
+
+const CheckboxLabel = styled.span``;
+
+const StyledEnterButton = styled.button`
+  width: 50px;
+  height: 30px;
+`;
+
+const EnterButton = styled(Link)`
+  text-decoration: none;
+`;
+
+const CloseButton = styled.button`
+  width: 50px;
+  height: 30px;
+`;
+
+interface IAlertEvent {
+  time: {
+    seconds: number;
+  };
+  bar: string;
+}
+
+const Alert = ({events}: {events: IAlertEvent[]}) => {
+  const [showAlert, setShowAlert] = useState(true);
+  const [ischecked, setIsChecked] = useState(false);
+
+  if (events.length === 0) {
+    return null;
+  }
+
+  const isToday = new Date().toDateString();
+  const hasEvent = events.map((event) => {
+    const eventDate = new Date(event.time.seconds * 1000);
+    return eventDate.toDateString() === isToday;
+  });
+
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.checked) {
+      setIsChecked(true);
     }
-  }, [duration]);
+    return;
+  }
 
-  return showAlert ? (
+  function handleCloseClick() {
+    setShowAlert(false);
+  }
+
+  return (
     <>
-      <div className={`alert ${type}`}>
-        <p>{message}</p>
-      </div>
-      <AlertMessage>有活動！！！！！</AlertMessage>
+      {showAlert && (
+        <Wrapper>
+          {events.map((event, index) => {
+            return hasEvent[index] ? (
+              <AlertMessage key={index}>
+                今日 {event.bar} 有特別活動！
+                <br />
+                邀請您來共襄盛舉～
+              </AlertMessage>
+            ) : null;
+          })}
+          <CheckboxWrapper>
+            <CheckboxInput
+              type="checkbox"
+              checked={ischecked}
+              onChange={handleOnChange}
+            />
+            <CheckboxLabel>今日不再顯示</CheckboxLabel>
+          </CheckboxWrapper>
+          <StyledEnterButton>
+            <EnterButton to={"/member"}>Enter</EnterButton>
+          </StyledEnterButton>
+          <CloseButton onClick={handleCloseClick}>Close</CloseButton>
+        </Wrapper>
+      )}
     </>
-  ) : null;
+  );
 };
 
 export default Alert;

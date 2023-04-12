@@ -5,7 +5,6 @@ import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
-import {issuedAtTime} from "@firebase/util";
 
 const CalendarWrapper = styled.div`
   width: 350px;
