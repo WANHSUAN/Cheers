@@ -4,7 +4,8 @@ import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {db} from "../../App";
 import {getDoc, doc} from "firebase/firestore";
-import party from "./EventImg/party.jpg";
+import party from "./img/party.jpg";
+// const partyImg = "./img/party.jpg";
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -33,7 +34,7 @@ const StyledBarEnterButton = styled.button`
 interface IEvent {
   bar: string;
   content: string;
-  time: Timestamp;
+  // time: {};
   id: string;
 }
 

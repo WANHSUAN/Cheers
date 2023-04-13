@@ -73,8 +73,8 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
       {showAlert &&
         events.map((event, index) => {
           return hasEvent[index] ? (
-            <Wrapper>
-              <AlertMessage key={index}>
+            <Wrapper key={index}>
+              <AlertMessage>
                 今日 {event.bar} 有特別活動！
                 <br />
                 邀請您來共襄盛舉～
