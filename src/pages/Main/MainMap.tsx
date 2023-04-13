@@ -116,7 +116,8 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
   const [latLngArr, setLatLngArr] = useState<LatLng[]>([]);
   const [bars, setBars] = useState<IBar[]>([]);
   const [isLoading, setIsLoading] = useState(true); // 新增 isLoading 狀態
-  const [filteredBars, setFilteredBars] = useState();
+  const [filteredBars, setFilteredBars] = useState(bars);
+  const [buttonType, setButtonType] = useState("");
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -129,7 +130,7 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
       setBars(barsData);
 
       let filteredBars;
-      switch ("night") {
+      switch (buttonType) {
         case "afternoon":
           filteredBars = barsData.filter((bar) =>
             bar.type.includes("afternoon")
@@ -138,40 +139,39 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
         case "night":
           filteredBars = barsData.filter((bar) => bar.type.includes("night"));
           break;
+        case "alone":
+          filteredBars = barsData.filter((bar) => bar.type.includes("alone"));
+          break;
+        case "together":
+          filteredBars = barsData.filter((bar) =>
+            bar.type.includes("together")
+          );
+          break;
+        case "classic":
+          filteredBars = barsData.filter((bar) => bar.type.includes("classic"));
+          break;
+        case "special":
+          filteredBars = barsData.filter((bar) => bar.type.includes("special"));
+          break;
         case "simple":
           filteredBars = barsData.filter((bar) => bar.type.includes("simple"));
           break;
-        // 可以繼續增加其他按鈕類型的篩選邏輯
+        case "vision":
+          filteredBars = barsData.filter((bar) => bar.type.includes("vision"));
+          break;
+        case "couple":
+          filteredBars = barsData.filter((bar) => bar.type.includes("couple"));
+          break;
+        case "friend":
+          filteredBars = barsData.filter((bar) => bar.type.includes("friend"));
+          break;
         default:
           filteredBars = barsData;
           break;
       }
       setFilteredBars(filteredBars);
-
       console.log(filteredBars);
-      // const buttonType = "afternoon";
-      // let filteredBars;
 
-      // switch (buttonType) {
-      //   case "afternoon":
-      //     filteredBars = barsData.filter((bar) =>
-      //       bar.type.includes("afternoon")
-      //     );
-      //     break;
-      //   case "night":
-      //     filteredBars = barsData.filter((bar) => bar.type.includes("night"));
-      //     break;
-      //   default:
-      //     filteredBars = barsData;
-      //     break;
-      // }
-
-      // console.log(filteredBars);
-
-      // const filteredBars = barsData.filter((bar) =>
-      //   bar.type.includes("afternoon")
-      // );
-      // console.log(filteredBars);
       const address = filteredBars.map((bar) => bar.address);
       const latLngPromises = address.map((address) => fetchData(address));
       const latLngArr = await Promise.all(latLngPromises);
@@ -180,9 +180,7 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
     };
 
     fetchAllData();
-  }, []);
-
-  //
+  }, [buttonType]);
 
   if (isLoading) {
     // 若仍在資料加載中，回傳 null
@@ -194,7 +192,7 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
 
   return (
     <>
-      <Address latLng={latLngArr} bars={bars} />
+      <Address latLng={latLngArr} bars={bars} setButtonType={setButtonType} />
     </>
   );
 };
@@ -212,6 +210,7 @@ interface IAddressProps {
   latLng: LatLng[];
   barTypes: IBarTypes[];
   bars: [];
+  setButtonType: (param1: string) => void; // 修正參數名後面的括號和回傳值類型
 }
 
 function Address(props: IAddressProps) {
@@ -275,17 +274,39 @@ function Address(props: IAddressProps) {
         <Map id="map" />
       </GoogleMap>
       <ButtonSection>
-        <CategoryButton>All Bars</CategoryButton>
-        <CategoryButton>Afternoon</CategoryButton>
-        <CategoryButton>night</CategoryButton>
-        <CategoryButton>alone</CategoryButton>
-        <CategoryButton>together</CategoryButton>
-        <CategoryButton>classic</CategoryButton>
-        <CategoryButton>special</CategoryButton>
-        <CategoryButton>simple</CategoryButton>
-        <CategoryButton>vision</CategoryButton>
-        <CategoryButton>couple</CategoryButton>
-        <CategoryButton>friend</CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("")}>
+          All Bars
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("afternoon")}>
+          Afternoon
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("night")}>
+          night
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("alone")}>
+          alone
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("together")}>
+          together
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("classic")}>
+          classic
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("special")}>
+          special
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("simple")}>
+          simple
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("vision")}>
+          vision
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("couple")}>
+          couple
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("friend")}>
+          friend
+        </CategoryButton>
       </ButtonSection>
     </Wrapper>
   );
