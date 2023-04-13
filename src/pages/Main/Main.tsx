@@ -4,9 +4,10 @@ import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
-import MainMap from "./MainMap";
+// import MainMap from "./MainMap";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import Alert from "../../components/Alert";
+import Search from "../Search/Search";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -61,6 +62,7 @@ interface IMainEvent {
   bar: string;
   content: string;
   time: Timestamp;
+  id: string;
 }
 
 export interface IMainProps {}
@@ -101,6 +103,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   return (
     <Wrapper>
       <Alert events={events} />
+      <Search />
       <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
       {showMenu && <SideMenu />}
       <AllBarTitle>All Bar</AllBarTitle>
@@ -116,7 +119,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           );
         })}
       </AllBar>
-      <MainMap />
+      {/* <MainMap /> */}
       <CalendarTitle>Calendar</CalendarTitle>
       <Calendar />
     </Wrapper>
