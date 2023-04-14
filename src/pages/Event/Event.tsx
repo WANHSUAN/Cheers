@@ -4,8 +4,6 @@ import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {db} from "../../App";
 import {getDoc, doc} from "firebase/firestore";
-import party from "./img/party.jpg";
-// const partyImg = "./img/party.jpg";
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -36,6 +34,7 @@ interface IEvent {
   content: string;
   // time: {};
   id: string;
+  img: string;
 }
 
 export interface IEventProps {}
@@ -74,7 +73,7 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
 
   return (
     <Wrapper>
-      <PageImg src={party} />
+      <PageImg src={event.img} />
       <EventTitle>{event.bar}</EventTitle>
       {/* <EventTime>{event.time}</EventTime> */}
       <EventContent>{event.content}</EventContent>

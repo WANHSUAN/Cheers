@@ -7,7 +7,6 @@ import Calendar from "../Calendar/Calendar";
 // import MainMap from "./MainMap";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import Alert from "../../components/Alert";
-import Search from "../Search/Search";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -103,7 +102,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   return (
     <Wrapper>
       <Alert events={events} />
-      <Search />
       <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
       {showMenu && <SideMenu />}
       <AllBarTitle>All Bar</AllBarTitle>

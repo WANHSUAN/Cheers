@@ -1,11 +1,14 @@
-import React, {useState} from "react";
 import styled from "styled-components";
+import {SearchBox, Hits} from "react-instantsearch-hooks-web";
 
-const SearchBoxContainer = styled.div`
-  display: flex;
-  width: 300px;
+const Wrapper = styled.div`
+  width: 1000px;
+  height: 600px;
+  background-color: #a1bbed;
+  text-align: center;
 `;
 
+const SearchTitle = styled.h2``;
 const SearchInput = styled.input`
   flex: 1;
   padding: 8px;
@@ -25,24 +28,39 @@ const SearchButton = styled.button`
   cursor: pointer;
 `;
 
-const Search = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+function Hit({hit}) {
+  return JSON.stringify(hit);
+}
 
-  const handleInputChange = (e) => {
-    console.log(e);
-    setSearchTerm(e.target.value);
+const MySearchComponent = () => {
+  const handleSearch = (searchTerm) => {
+    // 在此處理搜尋邏輯，例如呼叫 Algolia 搜尋 API
+    console.log("搜尋關鍵字:", searchTerm);
   };
 
   return (
-    <SearchBoxContainer>
-      <SearchInput
-        type="text"
-        placeholder="請輸入關鍵字..."
-        value={searchTerm}
-        onChange={handleInputChange}
+    <div>
+      <h1>Search</h1>
+      <SearchBox
+        placeholder="請輸入"
+        searchAsYouType={true}
+        onSubmit={(e) => {
+          e.preventDefault();
+          console.log(e.target);
+          // const searchTerm = e.target.elements.searchTerm.value;
+          // handleSearch(searchTerm);
+        }}
       />
-      <SearchButton>搜尋</SearchButton>
-    </SearchBoxContainer>
+      <Hits hitComponent={({hit}) => hit.objectID} />
+    </div>
+  );
+};
+
+const Search = () => {
+  return (
+    <Wrapper>
+      <MySearchComponent />
+    </Wrapper>
   );
 };
 
