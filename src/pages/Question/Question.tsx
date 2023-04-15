@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import {getAuth, signOut} from "firebase/auth";
-import {db} from "../App";
+import {db} from "../../App";
 import {collection, getDocs, addDoc} from "firebase/firestore";
 
 const LogOutButton = styled.button`
