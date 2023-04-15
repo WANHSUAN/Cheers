@@ -15,6 +15,7 @@ const searchClient = algoliasearch(
 );
 
 const Wrapper = styled.div`
+  width: 600px;
   text-align: center;
   margin: 0 auto;
 `;
@@ -34,10 +35,11 @@ const SearchBarSection = styled(Link)`
   text-decoration: none;
 `;
 
-const StyledSearchSection = styled.div`
+const StyledSearchBarSection = styled.div`
   background-color: #ddd3f9;
   padding: 5px;
   margin: 5px;
+  border-radius: 5px;
 `;
 
 const BarName = styled.p`
@@ -56,10 +58,15 @@ const BarIntroduction = styled.p`
   color: #b06464;
 `;
 
-const SearchEventSection = styled.div`
-  background-color: #ddd3f9;
+const StyledSearchEventSection = styled.div`
+  background-color: #fad4b5;
   padding: 5px;
   margin: 5px;
+  border-radius: 5px;
+`;
+
+const SearchEventSection = styled(Link)`
+  text-decoration: none;
 `;
 
 const EventBar = styled.p`
@@ -84,7 +91,7 @@ const MySearchComponent = () => {
     };
   }) => {
     return (
-      <StyledSearchSection>
+      <StyledSearchBarSection>
         <SearchBarSection to={`/bars/${hit.objectID}`}>
           <BarName>
             <Highlight
@@ -111,7 +118,7 @@ const MySearchComponent = () => {
             />
           </BarIntroduction>
         </SearchBarSection>
-      </StyledSearchSection>
+      </StyledSearchBarSection>
     );
   };
 
@@ -121,8 +128,8 @@ const MySearchComponent = () => {
     hit: {objectID: string; bar: string; content: string; __position: number};
   }) => {
     return (
-      <>
-        <SearchEventSection>
+      <StyledSearchEventSection>
+        <SearchEventSection to={`/events/${hit.objectID}`}>
           <EventBar>
             <Highlight attribute="bar" hit={hit} nonHighlightedTagName="span" />
           </EventBar>
@@ -134,7 +141,7 @@ const MySearchComponent = () => {
             />
           </EventContent>
         </SearchEventSection>
-      </>
+      </StyledSearchEventSection>
     );
   };
 
