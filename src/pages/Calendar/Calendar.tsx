@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 
@@ -115,13 +115,16 @@ const EventBar = styled.h2``;
 
 const EventContent = styled.p``;
 
-const EventButton = styled.button`
+const StyledEventButton = styled.button`
   border: 1px solid #839102;
   border-radius: 5px;
   padding: 10px;
   background-color: #759402;
   color: #fff;
   cursor: pointer;
+`;
+const EventButton = styled(Link)`
+  text-decoration: none;
 `;
 
 interface IEvent {
@@ -130,6 +133,7 @@ interface IEvent {
     seconds: number;
   };
   bar: string;
+  id: string;
 }
 
 export interface ICalendarProps {}
@@ -298,10 +302,6 @@ function CalendarDays({
     );
   }
 
-  function HandleToBarPage() {
-    navigate("/event");
-  }
-
   return (
     <>
       <CalendarDaysSection>{days}</CalendarDaysSection>
@@ -313,9 +313,11 @@ function CalendarDays({
             <EventSection key={index}>
               <EventBar>{event.bar}</EventBar>
               <EventContent>{event.content}</EventContent>
-              <EventButton onClick={HandleToBarPage}>
-                Go to the Bar Event!
-              </EventButton>
+              <StyledEventButton>
+                <EventButton to={`/events/${event.id}`}>
+                  Go to the Bar Event!
+                </EventButton>
+              </StyledEventButton>
             </EventSection>
           );
         }
