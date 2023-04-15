@@ -170,7 +170,6 @@ import React from "react";
 //           break;
 //       }
 //       setFilteredBars(filteredBars);
-//       console.log(filteredBars);
 
 //       const address = filteredBars.map((bar) => bar.address);
 //       const latLngPromises = address.map((address) => fetchData(address));
@@ -181,6 +180,8 @@ import React from "react";
 
 //     fetchAllData();
 //   }, [buttonType]);
+
+//   // console.log(bars);
 
 //   if (isLoading) {
 //     // 若仍在資料加載中，回傳 null
@@ -203,6 +204,7 @@ import React from "react";
 //     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
 //   );
 //   const data = await response.json();
+//   console.log(data);
 //   const {lat, lng} = data.results[0].geometry.location;
 //   return {lat, lng};
 // }

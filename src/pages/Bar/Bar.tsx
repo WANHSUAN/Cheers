@@ -12,11 +12,16 @@ import {
 } from "firebase/firestore";
 import MemberScore from "./MemberScore";
 // import BarMap from "./BarMap";
+import SideMenu from "../../components/SideMenu/SideMenu";
 
 const Wrapper = styled.div`
   text-align: center;
   width: 800px;
   margin: 0 auto;
+`;
+const MenuButton = styled.button`
+  width: 50px;
+  height: 30px;
 `;
 
 const BarInfoSection = styled.div`
@@ -302,6 +307,7 @@ export interface IMainProps {}
 
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bar, setBar] = useState<IBar>();
+  const [showMenu, setShowMenu] = useState(false);
   const {id} = useParams();
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
@@ -334,9 +340,15 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   // bar.score = scoreArray;
   // console.log(bar.score);
 
+  function handleMenuClick() {
+    setShowMenu(!showMenu);
+  }
+
   return (
     <>
       <Wrapper>
+        <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
+        {showMenu && <SideMenu />}
         <BarInfoSection>
           <BarImg src={bar.img[0]} />
           <BarTitle>{bar.name}</BarTitle>

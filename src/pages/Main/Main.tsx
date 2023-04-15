@@ -6,7 +6,8 @@ import {collection, getDocs, Timestamp} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
 // import MainMap from "./MainMap";
 import SideMenu from "../../components/SideMenu/SideMenu";
-import Alert from "../../components/Alert";
+import Alert from "../../components/Alert/Alert";
+import Hashtag from "./Hashtag";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -104,6 +105,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       <Alert events={events} />
       <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
       {showMenu && <SideMenu />}
+      <Hashtag />
       <AllBarTitle>All Bar</AllBarTitle>
       <MemberLink to={"/member"}>Go to Member Page</MemberLink>
 

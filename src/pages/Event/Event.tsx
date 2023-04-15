@@ -4,9 +4,15 @@ import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {db} from "../../App";
 import {getDoc, doc} from "firebase/firestore";
+import SideMenu from "../../components/SideMenu/SideMenu";
 
 const Wrapper = styled.div`
   padding: 10px;
+`;
+
+const MenuButton = styled.button`
+  width: 50px;
+  height: 30px;
 `;
 
 const PageImg = styled.img`
@@ -41,22 +47,12 @@ export interface IEventProps {}
 
 const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   const [event, setEvent] = useState<IEvent>();
-  // const eventsRef = collection(db, "events");
+  const [showMenu, setShowMenu] = useState(false);
+
   const {id} = useParams();
   const eventCollectionRef = id ? doc(db, "events", id) : undefined;
-  // console.log(eventCollectionRef);
 
   useEffect(() => {
-    // const getEvents = async () => {
-    //   const data = await getDocs(eventsRef);
-    //   setEvents(
-    //     data.docs.map((doc) => ({
-    //       ...(doc.data() as IEvent),
-    //       id: doc.id,
-    //     }))
-    //   );
-    // };
-    // getEvents();
     async function getEvent() {
       if (eventCollectionRef) {
         const barSnapshot = await getDoc(eventCollectionRef);
@@ -71,8 +67,14 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
     return <p>Loading...</p>;
   }
 
+  function handleMenuClick() {
+    setShowMenu(!showMenu);
+  }
+
   return (
     <Wrapper>
+      <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
+      {showMenu && <SideMenu />}
       <PageImg src={event.img} />
       <EventTitle>{event.bar}</EventTitle>
       {/* <EventTime>{event.time}</EventTime> */}

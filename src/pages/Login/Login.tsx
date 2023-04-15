@@ -35,7 +35,12 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const signInWithGoogle = async () => {
     setAuthing(true);
 
-    signInWithPopup(auth, new GoogleAuthProvider())
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      prompt: "select_account",
+    });
+
+    signInWithPopup(auth, provider)
       .then((res) => {
         console.log(res.user.uid);
         navigate("/");

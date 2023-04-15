@@ -31,9 +31,6 @@ function SideMenu() {
           <StyledLink to={"/member"}>會員專區</StyledLink>
         </MenuItem>
         <MenuItem>
-          <StyledLink to={"/event"}>今日活動</StyledLink>
-        </MenuItem>
-        <MenuItem>
           <StyledLink to={"/category"}>酒吧分類</StyledLink>
         </MenuItem>
         <MenuItem>

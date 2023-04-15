@@ -3,9 +3,15 @@ import styled from "styled-components";
 import {db} from "../../App";
 import {Link} from "react-router-dom";
 import {collection, getDocs} from "firebase/firestore";
+import SideMenu from "../../components/SideMenu/SideMenu";
 
 const Wrapper = styled.div`
   width: 1000px;
+`;
+
+const MenuButton = styled.button`
+  width: 50px;
+  height: 30px;
 `;
 
 const CategoryTitle = styled.h2``;
@@ -42,6 +48,8 @@ export interface ICategoryProps {}
 const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
   const [hashtags, setHashtags] = useState<IHashtag[]>([]);
   const hashtagsCollectionRef = collection(db, "hashtags");
+  const [showMenu, setShowMenu] = useState(false);
+
   useEffect(() => {
     const getHashtags = async () => {
       const data = await getDocs(hashtagsCollectionRef);
@@ -57,8 +65,14 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
     return <p>Loading...</p>;
   }
 
+  function handleMenuClick() {
+    setShowMenu(!showMenu);
+  }
+
   return (
     <Wrapper>
+      <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
+      {showMenu && <SideMenu />}
       {hashtags.map((hashtag, index) => (
         <>
           <CategoryTitle key={index} style={{color: hashtag.colorCode}}>
