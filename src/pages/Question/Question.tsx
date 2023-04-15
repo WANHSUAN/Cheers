@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import {getAuth, signOut} from "firebase/auth";
 import {db} from "../../App";
-import {collection, getDocs, addDoc} from "firebase/firestore";
+import {collection, getDocs, addDoc, doc, updateDoc} from "firebase/firestore";
 
 const LogOutButton = styled.button`
   width: 150px;
@@ -54,6 +54,13 @@ interface IOption {
   group: string;
 }
 
+interface IUser {
+  createdAt: string;
+  displayName: string;
+  email: string;
+  id: string;
+}
+
 const options = [
   {text: "Afternoon", hashtag: "afternoon", group: "time"},
   {text: "Night", hashtag: "night", group: "time"},
@@ -81,7 +88,9 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const auth = getAuth();
   const navigate = useNavigate();
   const [bars, setBars] = useState<IBar[]>([]);
+  const [users, setUsers] = useState<IUser[] | undefined>();
   const barsCollectionRef = collection(db, "bars");
+  const usersCollectionRef = collection(db, "users");
 
   useEffect(() => {
     const getBars = async () => {
@@ -89,8 +98,17 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
     };
 
+    const getUsers = async () => {
+      const data = await getDocs(usersCollectionRef);
+      setUsers(
+        data.docs.map((doc) => ({...(doc.data() as IUser), id: doc.id}))
+      );
+    };
+
     getBars();
+    getUsers();
   }, []);
+
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,8 +162,15 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       return {name: bar.name, img: bar.img, id: bar.id};
     });
 
+    if (users === undefined) {
+      return <p>Loading...</p>;
+    }
+
+    let userId = users[0]?.id;
+
     if (matchingBars.length > 0) {
-      const docRef = await addDoc(collection(db, "recommendations"), {
+      const userRef = doc(db, "users", userId);
+      await updateDoc(userRef, {
         matchingBars: matchingBars,
       });
 

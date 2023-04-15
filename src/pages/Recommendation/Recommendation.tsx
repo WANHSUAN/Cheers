@@ -54,7 +54,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
   props: IRecommendationProps
 ) => {
   const [recommendations, setRecommendations] = useState<IRecommendation[]>([]);
-  const recommendationsRef = collection(db, "recommendations");
+  const recommendationsRef = collection(db, "users");
 
   useEffect(() => {
     const getRecommendations = async () => {
