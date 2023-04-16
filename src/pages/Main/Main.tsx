@@ -15,6 +15,15 @@ const Wrapper = styled.div`
   margin: 0 auto;
 `;
 
+const SearchButton = styled(Link)`
+  text-decoration: none;
+`;
+
+const StyledSearchButton = styled.button`
+  width: 60px;
+  height: 30px;
+`;
+
 const MenuButton = styled.button`
   width: 50px;
   height: 30px;
@@ -105,6 +114,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       <Alert events={events} />
       <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
       {showMenu && <SideMenu />}
+      <StyledSearchButton>
+        <SearchButton to={"/search"}>Search</SearchButton>
+      </StyledSearchButton>
       <Hashtag />
       <AllBarTitle>All Bar</AllBarTitle>
       <MemberLink to={"/member"}>Go to Member Page</MemberLink>
