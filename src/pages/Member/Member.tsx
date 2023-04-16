@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {db} from "../../App";
 import {collection, getDocs, doc, deleteDoc} from "firebase/firestore";
+import macro from "styled-components/macro";
 
 const Wrapper = styled.div`
   width: 800px;
@@ -16,15 +17,15 @@ const MemberTitle = styled.h1`
 
 const LikeTitle = styled.h2``;
 
-const LikeSection = styled.ul`
+const LikeSection = styled.div`
   margin-bottom: 30px;
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
-  padding: 0;
 `;
 
 const LikeCard = styled.div`
-  width: 200px;
+  width: 190px;
   height: 200px;
   border-radius: 10px;
 `;
@@ -44,6 +45,24 @@ const LikeDeleteButton = styled.button`
   height: 20px;
 `;
 
+const RecommendationTitle = styled.h2``;
+
+const RecommendationSection = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+`;
+
+const RecommendatioCard = styled.div`
+  width: 190px;
+  height: 200px;
+  border-radius: 10px;
+`;
+
+const RecommendatioName = styled.p`
+  color: #fff;
+`;
+
 const CollectionTitle = styled.h2``;
 
 const CollectionSection = styled.ul`
@@ -54,7 +73,7 @@ const CollectionSection = styled.ul`
 `;
 
 const CollectionCard = styled.div`
-  width: 200px;
+  width: 190px;
   height: 200px;
   border-radius: 10px;
 `;
@@ -88,6 +107,14 @@ interface IUser {
   displayName: string;
   email: string;
   id: string;
+  matchingBars: [
+    {
+      name: string;
+      img: string;
+    }
+  ];
+  name: string;
+  img: [];
 }
 
 interface ICollections {
@@ -172,7 +199,21 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
 
   return (
     <Wrapper>
-      <MemberTitle>Hi!{user?.displayName}~</MemberTitle>
+      <MemberTitle>Hi!{users[0]?.displayName}~</MemberTitle>
+      <RecommendationTitle>推薦給您的酒吧</RecommendationTitle>
+      <RecommendationSection>
+        {users[0].matchingBars.map((matchingBar, index) => (
+          <RecommendatioCard
+            key={index}
+            style={{
+              backgroundImage: `url(${matchingBar.img[1]})`,
+              backgroundSize: "cover",
+            }}
+          >
+            <RecommendatioName>{matchingBar.name}</RecommendatioName>
+          </RecommendatioCard>
+        ))}
+      </RecommendationSection>
       {likes === null ? (
         <p>Loading...</p>
       ) : (
