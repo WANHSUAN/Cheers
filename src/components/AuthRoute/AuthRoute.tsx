@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {getAuth, onAuthStateChanged} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
-import {db} from "../App";
+import {db} from "../../App";
 import {doc, getDoc, setDoc} from "firebase/firestore";
 
 export interface IAuthRouteProps {

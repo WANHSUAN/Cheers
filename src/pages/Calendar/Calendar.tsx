@@ -2,7 +2,7 @@
 import React from "react";
 import styled from "styled-components/macro";
 import {useState, useEffect} from "react";
-import {useNavigate, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 
@@ -239,7 +239,6 @@ function CalendarDays({
   events: IEvent[];
 }) {
   const [seconds, setSeconds] = useState(0);
-  const navigate = useNavigate();
 
   if (events.length === 0) {
     return <p>Loading...</p>;
