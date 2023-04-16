@@ -1,5 +1,7 @@
+import {useState} from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
+
 import algoliasearch from "algoliasearch/lite";
 import {
   SearchBox,
@@ -7,6 +9,8 @@ import {
   Index,
   Highlight,
   InstantSearch,
+  Snippet,
+  CurrentRefinements,
 } from "react-instantsearch-hooks-web";
 
 const searchClient = algoliasearch(
@@ -15,7 +19,7 @@ const searchClient = algoliasearch(
 );
 
 const Wrapper = styled.div`
-  width: 600px;
+  width: 400px;
   text-align: center;
   margin: 0 auto;
 `;
@@ -31,13 +35,17 @@ const InstantSearchContainer = styled.div`
   }
 `;
 
+const BarTitle = styled.h2``;
+
+const EventTitle = styled.h2``;
+
 const SearchBarSection = styled(Link)`
   text-decoration: none;
 `;
 
 const StyledSearchBarSection = styled.div`
   background-color: #ddd3f9;
-  padding: 5px;
+  padding: 10px;
   margin: 5px;
   border-radius: 5px;
 `;
@@ -78,6 +86,8 @@ const EventContent = styled.p`
 `;
 
 const MySearchComponent = () => {
+  const [showBars, setShowBars] = useState(false);
+  const [showEvents, setShowEvents] = useState(false);
   const BarsTemplate = ({
     hit,
   }: {
@@ -105,16 +115,18 @@ const MySearchComponent = () => {
               attribute="address"
               hit={hit}
               nonHighlightedTagName="span"
+              highlightedTagName="mark"
             />
           </BarAddress>
           <BarTel>
             <Highlight attribute="tel" hit={hit} nonHighlightedTagName="span" />
           </BarTel>
           <BarIntroduction>
-            <Highlight
+            <Snippet
               attribute="introduction"
               hit={hit}
               nonHighlightedTagName="span"
+              highlightedTagName="mark" // 指定 highlight 顯示的標籤
             />
           </BarIntroduction>
         </SearchBarSection>
@@ -134,7 +146,7 @@ const MySearchComponent = () => {
             <Highlight attribute="bar" hit={hit} nonHighlightedTagName="span" />
           </EventBar>
           <EventContent>
-            <Highlight
+            <Snippet
               attribute="content"
               hit={hit}
               nonHighlightedTagName="span"
@@ -150,18 +162,30 @@ const MySearchComponent = () => {
       <SearchTitle>Search</SearchTitle>
       <InstantSearchContainer>
         <InstantSearch searchClient={searchClient} indexName="bars">
+          <CurrentRefinements />
           <SearchBox
             placeholder="請輸入"
             searchAsYouType={true}
             onSubmit={(e) => {
               e.preventDefault();
+              setShowBars(!showBars);
+              setShowEvents(!showEvents);
             }}
           />
-          <p>Bars</p>
-          <Hits hitComponent={BarsTemplate} />
+
+          {showBars ? (
+            <>
+              <BarTitle>All Bars</BarTitle>
+              <Hits hitComponent={BarsTemplate} />
+            </>
+          ) : null}
           <Index indexName="events">
-            <p>Events</p>
-            <Hits hitComponent={EventsTemplate} />
+            {showEvents ? (
+              <>
+                <EventTitle>All Events</EventTitle>
+                <Hits hitComponent={EventsTemplate} />
+              </>
+            ) : null}
           </Index>
         </InstantSearch>
       </InstantSearchContainer>
