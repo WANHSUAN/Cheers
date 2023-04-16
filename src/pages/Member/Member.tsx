@@ -83,6 +83,13 @@ interface ILikes {
   id: string;
 }
 
+interface IUser {
+  createdAt: string;
+  displayName: string;
+  email: string;
+  id: string;
+}
+
 interface ICollections {
   name: string;
   link: string;
@@ -97,19 +104,30 @@ export interface IMemberProps {}
 const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
   const [likes, setLikes] = useState<ILikes[] | null>(null);
   const [collections, setCollections] = useState<ICollections[] | null>(null);
+  const [users, setUsers] = useState<IUser[] | undefined>();
 
   const likesCollectionRef = collection(db, "likes");
   const collectionsCollectionRef = collection(db, "collections");
+  const usersCollectionRef = collection(db, "users");
+
   useEffect(() => {
     const getDatas = async () => {
       const like = await getDocs(likesCollectionRef);
       const collection = await getDocs(collectionsCollectionRef);
+      const user = await getDocs(usersCollectionRef);
+
       setLikes(
         like.docs.map((doc) => ({...(doc.data() as ILikes), id: doc.id}))
       );
       setCollections(
         collection.docs.map((doc) => ({
           ...(doc.data() as ICollections),
+          id: doc.id,
+        }))
+      );
+      setUsers(
+        user.docs.map((doc) => ({
+          ...(doc.data() as IUser),
           id: doc.id,
         }))
       );
@@ -145,9 +163,16 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
     }
   };
 
+  if (users === undefined) {
+    return <p>Loading...</p>;
+  }
+
+  let userId = users[0]?.id;
+  const user = users.find((user) => user.id === userId);
+
   return (
     <Wrapper>
-      <MemberTitle>Hi!Sharon~</MemberTitle>
+      <MemberTitle>Hi!{user?.displayName}~</MemberTitle>
       {likes === null ? (
         <p>Loading...</p>
       ) : (

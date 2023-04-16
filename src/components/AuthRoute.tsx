@@ -41,7 +41,6 @@ const AuthRoute: React.FunctionComponent<IAuthRouteProps> = (props) => {
   }, [auth]);
 
   if (loading) return <p>loading...</p>;
-
   return <>{children}</>;
 };
 
