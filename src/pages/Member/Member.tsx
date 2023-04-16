@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import styled from "styled-components";
 import {db} from "../../App";
 import {collection, getDocs, doc, deleteDoc} from "firebase/firestore";
-import macro from "styled-components/macro";
+import {Link} from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 800px;
@@ -24,10 +24,11 @@ const LikeSection = styled.div`
   gap: 5px;
 `;
 
-const LikeCard = styled.div`
+const LikeCard = styled(Link)`
   width: 190px;
   height: 200px;
   border-radius: 10px;
+  text-decoration: none;
 `;
 
 // const LikeScoreSection = styled.div`
@@ -45,6 +46,10 @@ const LikeDeleteButton = styled.button`
   height: 20px;
 `;
 
+const LikeBarName = styled.p`
+  color: #fff;
+`;
+
 const RecommendationTitle = styled.h2``;
 
 const RecommendationSection = styled.div`
@@ -53,13 +58,15 @@ const RecommendationSection = styled.div`
   gap: 5px;
 `;
 
-const RecommendatioCard = styled.div`
+const RecommendationCard = styled(Link)`
   width: 190px;
   height: 200px;
   border-radius: 10px;
+  text-decoration: none;
 `;
 
 const RecommendatioName = styled.p`
+  text-decoration: none;
   color: #fff;
 `;
 
@@ -72,10 +79,11 @@ const CollectionSection = styled.ul`
   padding: 0;
 `;
 
-const CollectionCard = styled.div`
+const CollectionCard = styled(Link)`
   width: 190px;
   height: 200px;
   border-radius: 10px;
+  text-decoration: none;
 `;
 
 // const CollectionScoreSection = styled.div`
@@ -93,6 +101,10 @@ const CollectionDeleteButton = styled.button`
   height: 20px;
 `;
 
+const CollectionBarName = styled.p`
+  color: #fff;
+`;
+
 interface ILikes {
   name: string;
   link: string;
@@ -100,6 +112,7 @@ interface ILikes {
   score: number;
   address: string;
   id: string;
+  barId: string;
 }
 
 interface IUser {
@@ -111,6 +124,7 @@ interface IUser {
     {
       name: string;
       img: string;
+      id: string;
     }
   ];
   name: string;
@@ -124,6 +138,7 @@ interface ICollections {
   score: number;
   address: string;
   id: string;
+  barId: string;
 }
 
 export interface IMemberProps {}
@@ -196,6 +211,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
 
   let userId = users[0]?.id;
   const user = users.find((user) => user.id === userId);
+  console.log(users[0].matchingBars[0].id);
 
   return (
     <Wrapper>
@@ -203,7 +219,8 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
       <RecommendationTitle>推薦給您的酒吧</RecommendationTitle>
       <RecommendationSection>
         {users[0].matchingBars.map((matchingBar, index) => (
-          <RecommendatioCard
+          <RecommendationCard
+            to={`/bars/${matchingBar.id}`}
             key={index}
             style={{
               backgroundImage: `url(${matchingBar.img[1]})`,
@@ -211,7 +228,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
             }}
           >
             <RecommendatioName>{matchingBar.name}</RecommendatioName>
-          </RecommendatioCard>
+          </RecommendationCard>
         ))}
       </RecommendationSection>
       {likes === null ? (
@@ -222,6 +239,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
           <LikeSection>
             {likes.map((like, index) => (
               <LikeCard
+                to={`/bars/${like.barId}`}
                 key={like.id}
                 style={{
                   backgroundImage: `url(${like.img})`,
@@ -233,6 +251,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
                     <LikeScore key={i.toString()}>{"\u2605"}</LikeScore>
                   ))}
                 </LikeScoreSection> */}
+                <LikeBarName>{like.name}</LikeBarName>
                 <LikeDeleteButton
                   onClick={() => handleDeleteLikeClick(like.id)}
                 >
@@ -251,6 +270,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
           <CollectionSection>
             {collections.map((collection, index) => (
               <CollectionCard
+                to={`/bars/${collection.barId}`}
                 key={collection.id}
                 style={{
                   backgroundImage: `url(${collection.img})`,
@@ -266,6 +286,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
                     )
                   )}
                 </CollectionScoreSection> */}
+                <CollectionBarName>{collection.name}</CollectionBarName>
                 <CollectionDeleteButton
                   onClick={() => handleDeleteCollectionClick(collection.id)}
                 >

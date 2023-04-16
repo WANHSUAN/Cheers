@@ -11,7 +11,7 @@ import {
   doc,
 } from "firebase/firestore";
 import MemberScore from "./MemberScore";
-// import BarMap from "./BarMap";
+import BarMap from "./BarMap";
 import SideMenu from "../../components/SideMenu/SideMenu";
 
 const Wrapper = styled.div`
@@ -172,6 +172,7 @@ interface IBar {
   member_comment: ICommentArray;
   menu: IMenuArray;
   score: string;
+  barId: string;
 }
 
 interface IOpeningTime {
@@ -231,6 +232,7 @@ function CollectionButton(name: any) {
           address: name.address,
           link: name.link,
           img: name.img,
+          barId: name.barId,
           // score: name.score,
         });
       } else {
@@ -266,6 +268,7 @@ function CollectionButton(name: any) {
           address: name.address,
           link: name.link,
           img: name.img,
+          barId: name.barId,
           // score: name.score,
         });
       } else {
@@ -357,6 +360,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             address={bar.address}
             link={bar.link}
             img={bar.img[1]}
+            barId={bar.barId}
             // score={bar.score}
           />
           <BarScore>
@@ -426,7 +430,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           <MemberScore />
         </MemberScoreSection>
         <BarMapTitle>店家位置</BarMapTitle>
-        {/* <BarMap /> */}
+        <BarMap />
       </Wrapper>
     </>
   );
