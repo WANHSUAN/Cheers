@@ -171,7 +171,7 @@ function Address(props: IAddressProps) {
       new window.google.maps.Marker({
         position: location,
         map,
-        icon: icons,
+        // icon: icons,
       });
     });
 
