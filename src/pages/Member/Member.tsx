@@ -3,11 +3,19 @@ import styled from "styled-components";
 import {db} from "../../App";
 import {collection, getDocs, doc, deleteDoc} from "firebase/firestore";
 import {Link} from "react-router-dom";
+import SideMenu from "../../components/SideMenu/SideMenu";
 
 const Wrapper = styled.div`
   width: 800px;
   margin: 0 auto;
   background-color: beige;
+`;
+const MenuButton = styled.button`
+  width: 50px;
+  height: 30px;
+  position: absolute;
+  top: 70px;
+  right: 100px;
 `;
 
 const MemberTitle = styled.h1`
@@ -147,6 +155,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
   const [likes, setLikes] = useState<ILikes[] | null>(null);
   const [collections, setCollections] = useState<ICollections[] | null>(null);
   const [users, setUsers] = useState<IUser[] | undefined>();
+  const [showMenu, setShowMenu] = useState(false);
 
   const likesCollectionRef = collection(db, "likes");
   const collectionsCollectionRef = collection(db, "collections");
@@ -205,6 +214,10 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
     }
   };
 
+  function handleMenuClick() {
+    setShowMenu(!showMenu);
+  }
+
   if (users === undefined) {
     return <p>Loading...</p>;
   }
@@ -215,6 +228,8 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
 
   return (
     <Wrapper>
+      <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
+      {showMenu && <SideMenu />}
       <MemberTitle>Hi!{users[0]?.displayName}~</MemberTitle>
       <RecommendationTitle>推薦給您的酒吧</RecommendationTitle>
       <RecommendationSection>

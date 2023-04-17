@@ -1,6 +1,7 @@
 import {useState} from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
+import SideMenu from "../../components/SideMenu/SideMenu";
 
 import algoliasearch from "algoliasearch/lite";
 import {
@@ -22,6 +23,11 @@ const Wrapper = styled.div`
   width: 400px;
   text-align: center;
   margin: 0 auto;
+`;
+
+const MenuButton = styled.button`
+  width: 50px;
+  height: 30px;
 `;
 
 const SearchTitle = styled.p``;
@@ -88,6 +94,8 @@ const EventContent = styled.p`
 const MySearchComponent = () => {
   const [showBars, setShowBars] = useState(false);
   const [showEvents, setShowEvents] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
   const BarsTemplate = ({
     hit,
   }: {
@@ -157,8 +165,14 @@ const MySearchComponent = () => {
     );
   };
 
+  function handleMenuClick() {
+    setShowMenu(!showMenu);
+  }
+
   return (
     <>
+      <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
+      {showMenu && <SideMenu />}
       <SearchTitle>Search</SearchTitle>
       <InstantSearchContainer>
         <InstantSearch searchClient={searchClient} indexName="bars">
