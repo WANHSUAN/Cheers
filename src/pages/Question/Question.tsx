@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components";
-import {getAuth, signOut} from "firebase/auth";
+import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {db} from "../../App";
 import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
+import {AuthContext} from "../../Context/AuthContext";
 
 const LogOutButton = styled.button`
   width: 150px;
@@ -166,10 +167,10 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       return <p>Loading...</p>;
     }
 
-    let userId = users[0]?.id;
+    // let userId = users[0]?.id;
 
     if (matchingBars.length > 0) {
-      const userRef = doc(db, "users", userId);
+      const userRef = doc(db, "users", userUID);
       await updateDoc(userRef, {
         matchingBars: matchingBars,
       });
@@ -180,11 +181,18 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     }
   };
 
+  const {isLogin, user, logOut, signIn, userUID} = useContext(AuthContext);
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    prompt: "select_account",
+  });
+
   return (
     <>
-      <LogOutButton onClick={() => signOut(auth)}>
+      <LogOutButton onClick={() => logOut(auth)}>
         Sign out of Firebase
       </LogOutButton>
+      {/* <button onClick={() => signIn(auth, provider)}>LogIn</button> */}
       <Wrapper>
         <QuestionSection>
           {Object.entries(groups).map(([key, label]) => (

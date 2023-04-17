@@ -1,13 +1,13 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Question from "./pages/Question/Question";
-import LoginPage from "./pages/Login/Login";
+import Login from "./pages/Login/Login";
 import Main from "./pages/Main/Main";
 import Bar from "./pages/Bar/Bar";
 import {initializeApp} from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
 import {config} from "./config/config";
-import AuthRoute from "./components/AuthRoute/AuthRoute";
+import {AuthContextProvider} from "./Context/AuthContext";
 import RecommendationPage from "./pages/Recommendation/Recommendation";
 import Event from "./pages/Event/Event";
 import Member from "./pages/Member/Member";
@@ -22,10 +22,10 @@ export interface IAppProps {}
 const App: React.FC<IAppProps> = (props) => {
   return (
     <BrowserRouter>
-      <AuthRoute>
+      <AuthContextProvider>
         <Routes>
-          <Route path="/" element={<Question />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/question" element={<Question />} />
           <Route path="/recommendation" element={<RecommendationPage />} />
           <Route path="/main" element={<Main />} />
           <Route path="/bars/:id" element={<Bar />} />
@@ -34,7 +34,7 @@ const App: React.FC<IAppProps> = (props) => {
           <Route path="/category" element={<Category />} />
           <Route path="/search" element={<Search />} />
         </Routes>
-      </AuthRoute>
+      </AuthContextProvider>
     </BrowserRouter>
   );
 };

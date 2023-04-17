@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import styled from "styled-components";
 import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
+import {AuthContext} from "../../Context/AuthContext";
 
 const Wrapper = styled.div`
   width: 500px;
@@ -50,13 +51,19 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
         setAuthing(false);
       });
   };
+  const {signIn} = useContext(AuthContext);
+  const provider = new GoogleAuthProvider();
 
   return (
     <Wrapper>
       <LoginTitle>Join Us!</LoginTitle>
-      <LoginButton onClick={() => signInWithGoogle()} disabled={authing}>
+      <LoginButton onClick={() => signIn(auth, provider)}>
         Sign In with Google
       </LoginButton>
+
+      {/* <LoginButton onClick={() => signInWithGoogle()} disabled={authing}> */}
+      {/* Sign In with Google
+      </LoginButton> */}
     </Wrapper>
   );
 };

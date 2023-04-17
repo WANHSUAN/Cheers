@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import styled from "styled-components";
 import {db} from "../../App";
-import {collection, getDocs, doc, deleteDoc} from "firebase/firestore";
+import {collection, getDocs, getDoc, doc, deleteDoc} from "firebase/firestore";
 import {Link} from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import {AuthContext} from "../../Context/AuthContext";
 
 const Wrapper = styled.div`
   width: 800px;
@@ -151,7 +152,7 @@ interface ICollections {
 
 export interface IMemberProps {}
 
-const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
+const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const [likes, setLikes] = useState<ILikes[] | null>(null);
   const [collections, setCollections] = useState<ICollections[] | null>(null);
   const [users, setUsers] = useState<IUser[] | undefined>();
@@ -160,12 +161,21 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
   const likesCollectionRef = collection(db, "likes");
   const collectionsCollectionRef = collection(db, "collections");
   const usersCollectionRef = collection(db, "users");
+  const {isLogin, user, logOut, signIn, userUID} = useContext(AuthContext);
 
   useEffect(() => {
     const getDatas = async () => {
       const like = await getDocs(likesCollectionRef);
       const collection = await getDocs(collectionsCollectionRef);
       const user = await getDocs(usersCollectionRef);
+      console.log(user);
+
+      // if (user.exists()) {
+      //   console.log("Document data:", user.data());
+      // } else {
+      //   // docSnap.data() will be undefined in this case
+      //   console.log("No such document!");
+      // }
 
       setLikes(
         like.docs.map((doc) => ({...(doc.data() as ILikes), id: doc.id}))
@@ -222,15 +232,11 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps) => {
     return <p>Loading...</p>;
   }
 
-  let userId = users[0]?.id;
-  const user = users.find((user) => user.id === userId);
-  console.log(users[0].matchingBars[0].id);
-
   return (
     <Wrapper>
       <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
       {showMenu && <SideMenu />}
-      <MemberTitle>Hi!{users[0]?.displayName}~</MemberTitle>
+      <MemberTitle>Hi!{user.name}~</MemberTitle>
       <RecommendationTitle>推薦給您的酒吧</RecommendationTitle>
       <RecommendationSection>
         {users[0].matchingBars.map((matchingBar, index) => (
