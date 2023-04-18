@@ -200,7 +200,7 @@ interface IMenu {
 
 function CollectionButton(name: any) {
   const {id} = useParams();
-  const {isLogin, user, logOut, signIn, userUID} = useContext(AuthContext);
+  const {userUID} = useContext(AuthContext);
 
   const likeStorageKey = `isLike_${id}`;
   const collectionStorageKey = `isCollection_${id}`;

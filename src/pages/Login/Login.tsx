@@ -1,7 +1,6 @@
-import React, {useState, useContext} from "react";
+import React, {useContext} from "react";
 import styled from "styled-components";
-import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
-import {useNavigate} from "react-router-dom";
+import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {AuthContext} from "../../Context/AuthContext";
 
 const Wrapper = styled.div`
@@ -30,27 +29,6 @@ export interface ILoginPageProps {}
 
 const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const auth = getAuth();
-  const navigate = useNavigate();
-  const [authing, setAuthing] = useState(false);
-
-  const signInWithGoogle = async () => {
-    setAuthing(true);
-
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({
-      prompt: "select_account",
-    });
-
-    signInWithPopup(auth, provider)
-      .then((res) => {
-        console.log(res.user.uid);
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log(err);
-        setAuthing(false);
-      });
-  };
   const {signIn} = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
 
@@ -60,10 +38,6 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
       <LoginButton onClick={() => signIn(auth, provider)}>
         Sign In with Google
       </LoginButton>
-
-      {/* <LoginButton onClick={() => signInWithGoogle()} disabled={authing}> */}
-      {/* Sign In with Google
-      </LoginButton> */}
     </Wrapper>
   );
 };

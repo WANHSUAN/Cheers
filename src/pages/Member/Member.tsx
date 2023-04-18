@@ -1,7 +1,16 @@
 import React, {useState, useEffect, useContext} from "react";
 import styled from "styled-components";
 import {db} from "../../App";
-import {collection, getDocs, getDoc, doc, deleteDoc} from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  deleteDoc,
+  query,
+  where,
+  collectionGroup,
+} from "firebase/firestore";
 import {Link} from "react-router-dom";
 import SideMenu from "../../components/SideMenu/SideMenu";
 import {AuthContext} from "../../Context/AuthContext";
@@ -158,10 +167,11 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const [users, setUsers] = useState<IUser[] | undefined>();
   const [showMenu, setShowMenu] = useState(false);
 
-  const likesCollectionRef = collection(db, "likes");
-  const collectionsCollectionRef = collection(db, "collections");
+  const {user, userUID} = useContext(AuthContext);
+
   const usersCollectionRef = collection(db, "users");
-  const {isLogin, user, logOut, signIn, userUID} = useContext(AuthContext);
+  const likesCollectionRef = collectionGroup(db, "likes");
+  const collectionsCollectionRef = collectionGroup(db, "collections");
 
   useEffect(() => {
     const getDatas = async () => {
@@ -189,15 +199,38 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     getDatas();
   }, []);
 
+  if (users === undefined) {
+    return <p>Loading...</p>;
+  }
+
   const handleDeleteLikeClick = async (likeDocId: string) => {
-    const likeRef = doc(db, "likes", likeDocId);
     let confirmDelete = window.confirm("確定要刪除嗎？");
 
     if (confirmDelete === true) {
-      await deleteDoc(likeRef);
-      setLikes(
-        (likes) => likes?.filter((like) => like.id !== likeDocId) ?? null
-      );
+      const likesRef = collection(db, "users", userUID, "likes");
+      const q = query(likesRef, where("barId", "==", likeDocId));
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        likeDocId = doc.id;
+      });
+
+      if (likeDocId) {
+        const likeRef = doc(db, "users", userUID, "likes", likeDocId);
+        const docSnap = await getDoc(likeRef);
+        if (docSnap.exists()) {
+          const targetBarId = docSnap.data().barId;
+          await deleteDoc(likeRef);
+          if (likes) {
+            likes.forEach((like) => {
+              if (like.barId === targetBarId) {
+                const localStorageKey = `isLike_${like.barId}`;
+                localStorage.removeItem(localStorageKey);
+              }
+            });
+          }
+        }
+      }
     }
   };
 
@@ -206,22 +239,29 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     let confirmDelete = window.confirm("確定要刪除嗎？");
 
     if (confirmDelete === true) {
-      await deleteDoc(collectionRef);
-      setCollections(
-        (collections) =>
-          collections?.filter(
-            (collection) => collection.id !== collectionDocId
-          ) ?? null
-      );
+      const collectionsRef = collection(db, "users", userUID, "collections");
+      const q = query(collectionsRef, where("barId", "==", collectionDocId));
+
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        collectionDocId = doc.id;
+      });
+
+      if (collectionDocId) {
+        const collectionRef = doc(
+          db,
+          "users",
+          userUID,
+          "collections",
+          collectionDocId
+        );
+        await deleteDoc(collectionRef);
+      }
     }
   };
 
   function handleMenuClick() {
     setShowMenu(!showMenu);
-  }
-
-  if (users === undefined) {
-    return <p>Loading...</p>;
   }
 
   return (
