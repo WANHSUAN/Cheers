@@ -49,11 +49,15 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
     <Wrapper>
       {hashtags.map((hashtag, index) => {
         return (
-          <StyledHashtagType key={index}>
-            <HashtagType to={"/category"} style={{color: hashtag.colorCode}}>
-              #{hashtag.type}
-            </HashtagType>
-          </StyledHashtagType>
+          // <StyledHashtagType key={index}>
+          <HashtagType
+            key={index}
+            to={`/category/#${hashtag.type}`}
+            style={{color: hashtag.colorCode}}
+          >
+            #{hashtag.type}
+          </HashtagType>
+          // </StyledHashtagType>
         );
       })}
     </Wrapper>

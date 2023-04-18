@@ -14,7 +14,9 @@ const MenuButton = styled.button`
   height: 30px;
 `;
 
-const CategoryTitle = styled.h2``;
+const CategoryTitle = styled.div`
+  font-size: 30px;
+`;
 
 const CategoryItem = styled.div`
   display: flex;
@@ -74,8 +76,8 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
       <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
       {showMenu && <SideMenu />}
       {hashtags.map((hashtag, index) => (
-        <>
-          <CategoryTitle key={index} style={{color: hashtag.colorCode}}>
+        <div key={index}>
+          <CategoryTitle style={{color: hashtag.colorCode}}>
             #{hashtag.type}
           </CategoryTitle>
           {hashtag.bars.map((type, index) => (
@@ -89,7 +91,7 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
               </StyledCategoryButton>
             </CategoryItem>
           ))}
-        </>
+        </div>
       ))}
     </Wrapper>
   );

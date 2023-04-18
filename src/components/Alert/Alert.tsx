@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 
@@ -47,11 +47,19 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
   const [showAlert, setShowAlert] = useState(true);
   const [ischecked, setIsChecked] = useState(false);
 
+  useEffect(() => {
+    const hideAlertToday = localStorage.getItem("hideAlertToday");
+    if (hideAlertToday === "true") {
+      setShowAlert(false);
+    }
+  }, []);
+
   if (events.length === 0) {
     return null;
   }
 
   const isToday = new Date().toDateString();
+
   const hasEvent = events.map((event) => {
     const eventDate = new Date(event.time.seconds * 1000);
     return eventDate.toDateString() === isToday;
@@ -60,6 +68,7 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.checked) {
       setIsChecked(true);
+      localStorage.setItem("hideAlertToday", "true");
     }
     return;
   }
