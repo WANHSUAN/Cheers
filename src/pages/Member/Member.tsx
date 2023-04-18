@@ -235,7 +235,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   };
 
   const handleDeleteCollectionClick = async (collectionDocId: string) => {
-    const collectionRef = doc(db, "collections", collectionDocId);
     let confirmDelete = window.confirm("確定要刪除嗎？");
 
     if (confirmDelete === true) {
@@ -255,7 +254,19 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
           "collections",
           collectionDocId
         );
-        await deleteDoc(collectionRef);
+        const docSnap = await getDoc(collectionRef);
+        if (docSnap.exists()) {
+          const targetBarId = docSnap.data().barId;
+          await deleteDoc(collectionRef);
+          if (collections) {
+            collections.forEach((collection) => {
+              if (collection.barId === targetBarId) {
+                const localStorageKey = `isCollection_${collection.barId}`;
+                localStorage.removeItem(localStorageKey);
+              }
+            });
+          }
+        }
       }
     }
   };
