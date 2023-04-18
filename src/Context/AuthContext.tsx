@@ -44,14 +44,16 @@ const initialUserData: User = {
   email: "",
   userUID: "",
 };
-export const AuthContextProvider: React.FC = ({children}: any) => {
+export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
+  children,
+}) => {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState<User>(initialUserData);
   const [loading, setLoading] = useState<boolean>(true);
   const [userUID, setUserUID] = useState<string>("");
   const navigate = useNavigate();
 
-  async function getUsers(userUID: any) {
+  async function getUsers(userUID: string) {
     const docRef = doc(db, "users", userUID);
     const docSnap = await getDoc(docRef);
     return docSnap.data();
