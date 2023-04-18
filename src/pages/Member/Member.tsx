@@ -168,14 +168,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
       const like = await getDocs(likesCollectionRef);
       const collection = await getDocs(collectionsCollectionRef);
       const user = await getDocs(usersCollectionRef);
-      console.log(user);
-
-      // if (user.exists()) {
-      //   console.log("Document data:", user.data());
-      // } else {
-      //   // docSnap.data() will be undefined in this case
-      //   console.log("No such document!");
-      // }
 
       setLikes(
         like.docs.map((doc) => ({...(doc.data() as ILikes), id: doc.id}))

@@ -306,7 +306,6 @@ function CalendarDays({
       <CalendarDaysSection>{days}</CalendarDaysSection>
       {events.map((event, index) => {
         const daySeconds = event.time.seconds;
-
         if (seconds < daySeconds && daySeconds <= seconds + 86400) {
           return (
             <EventSection key={index}>

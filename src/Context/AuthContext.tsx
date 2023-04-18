@@ -64,10 +64,9 @@ export const AuthContextProvider: React.FC = ({children}: any) => {
         // User is signed in, see docs for a list of available properties
         const getUser = await getUsers(user.uid);
         setUserUID(user.uid);
-        console.log("getUser", getUser);
         if (getUser) {
           setIsLogin(true);
-          console.log("有");
+          // console.log("有");
 
           const data: User = {
             name: getUser.name || "",
@@ -77,7 +76,7 @@ export const AuthContextProvider: React.FC = ({children}: any) => {
           setUser(data);
           setUserUID(user.uid);
         } else {
-          console.log("沒有");
+          // console.log("沒有");
           setIsLogin(true);
           const data: User = {
             name: user.displayName || "",

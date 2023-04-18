@@ -167,8 +167,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       return <p>Loading...</p>;
     }
 
-    // let userId = users[0]?.id;
-
     if (matchingBars.length > 0) {
       const userRef = doc(db, "users", userUID);
       await updateDoc(userRef, {

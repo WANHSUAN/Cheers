@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {db} from "../../App";
@@ -9,10 +9,13 @@ import {
   deleteDoc,
   addDoc,
   doc,
+  where,
+  query,
 } from "firebase/firestore";
 import MemberScore from "./MemberScore";
 import BarMap from "./BarMap";
 import SideMenu from "../../components/SideMenu/SideMenu";
+import {AuthContext} from "../../Context/AuthContext";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -197,6 +200,8 @@ interface IMenu {
 
 function CollectionButton(name: any) {
   const {id} = useParams();
+  const {isLogin, user, logOut, signIn, userUID} = useContext(AuthContext);
+
   const likeStorageKey = `isLike_${id}`;
   const collectionStorageKey = `isCollection_${id}`;
 
@@ -227,7 +232,8 @@ function CollectionButton(name: any) {
     try {
       if (newIsLike) {
         alert("已收藏！");
-        await addDoc(collection(db, "likes"), {
+        const userRef = doc(db, "users", userUID);
+        await addDoc(collection(userRef, "likes"), {
           name: name.name,
           address: name.address,
           link: name.link,
@@ -237,17 +243,17 @@ function CollectionButton(name: any) {
         });
       } else {
         alert("我沒興趣了，取消收藏！");
-
-        const likesRef = collection(db, "likes");
-        const likesSnapshot = await getDocs(likesRef);
+        const likesRef = collection(db, "users", userUID, "likes");
+        const q = query(likesRef, where("barId", "==", name.barId));
 
         let likeDocId;
-        likesSnapshot.forEach((doc) => {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
           likeDocId = doc.id;
         });
 
         if (likeDocId) {
-          const likeRef = doc(db, "likes", likeDocId);
+          const likeRef = doc(db, "users", userUID, "likes", likeDocId);
           await deleteDoc(likeRef);
         }
       }
@@ -258,12 +264,14 @@ function CollectionButton(name: any) {
 
   const handleCollectionButtonClick = async () => {
     const newIsCollection = !isCollection;
+
     localStorage.setItem(collectionStorageKey, JSON.stringify(newIsCollection));
     setIsCollection(newIsCollection);
     try {
       if (newIsCollection) {
         alert("已去過！");
-        await addDoc(collection(db, "collections"), {
+        const userRef = doc(db, "users", userUID);
+        await addDoc(collection(userRef, "collections"), {
           name: name.name,
           address: name.address,
           link: name.link,
@@ -274,16 +282,23 @@ function CollectionButton(name: any) {
       } else {
         alert("其實沒去過，我要取消！！");
 
-        const collectionsRef = collection(db, "collections");
-        const collectionsSnapshot = await getDocs(collectionsRef);
+        const collectionsRef = collection(db, "users", userUID, "collections");
+        const q = query(collectionsRef, where("barId", "==", name.barId));
 
         let collectionDocId;
-        collectionsSnapshot.forEach((doc) => {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
           collectionDocId = doc.id;
         });
 
         if (collectionDocId) {
-          const collectionsRef = doc(db, "collections", collectionDocId);
+          const collectionsRef = doc(
+            db,
+            "users",
+            userUID,
+            "collections",
+            collectionDocId
+          );
           await deleteDoc(collectionsRef);
         }
       }
