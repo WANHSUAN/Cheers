@@ -1,7 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {db} from "../../App";
 import {doc, updateDoc, arrayUnion} from "firebase/firestore";
 import {useParams} from "react-router-dom";
+import {AuthContext} from "../../Context/AuthContext";
 
 interface StarProps {
   marked: boolean;
@@ -31,7 +32,6 @@ function StarRating(props: StarRatingProps) {
     typeof props.rating === "number" ? props.rating : 0
   );
   const [selection, setSelection] = useState(0);
-
   const [isHoverDisabled, setIsHoverDisabled] = useState(false);
 
   const hoverOver = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -45,7 +45,7 @@ function StarRating(props: StarRatingProps) {
     <div
       onMouseOut={() => hoverOver()}
       onClick={(e) => {
-        setIsHoverDisabled(true); // 禁用hover
+        setIsHoverDisabled(true); // 禁用 hover
 
         setRating(
           (prevRating) =>
@@ -77,6 +77,7 @@ function MemberScore() {
   const {id} = useParams();
   const [currentDocId, setCurrentDocId] = useState(id);
   const [key, setKey] = useState(0);
+  const {user, userUID} = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,11 +85,12 @@ function MemberScore() {
     const commentRef = doc(db, `bars/${currentDocId}`); // 使用 currentDocId 獲取檔案引用
     await updateDoc(commentRef, {
       member_comment: arrayUnion({
+        userName: user.name,
         comment: inputValue,
         score: ratings,
       }),
     });
-    setMessages([...messages, inputValue]);
+    setMessages([...messages, `${user.name}: ${inputValue}`]);
     setInputValue("");
     setRatings(0);
     setKey(key + 1); // 每次 handleSubmit 後將 key 狀態加 1

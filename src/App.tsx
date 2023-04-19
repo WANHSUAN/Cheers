@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
 import Question from "./pages/Question/Question";
 import Login from "./pages/Login/Login";
 import Main from "./pages/Main/Main";
@@ -33,6 +33,7 @@ const App: React.FC<IAppProps> = (props) => {
           <Route path="/member" element={<Member />} />
           <Route path="/category" element={<Category />} />
           <Route path="/search" element={<Search />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthContextProvider>
     </BrowserRouter>

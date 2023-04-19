@@ -109,6 +109,8 @@ const CommentItem = styled.div`
   border: 1px solid #000;
 `;
 
+const UserName = styled.p``;
+
 const Score = styled.div`
   display: flex;
   justify-content: center;
@@ -184,6 +186,7 @@ interface IOpeningTime {
 }
 
 interface IComment {
+  userName: string;
   comment: string;
   score: string;
 }
@@ -411,6 +414,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           <CommentArea>
             {bar.member_comment.map((item, index) => (
               <CommentItem key={index}>
+                <UserName>{item.userName}</UserName>
                 <Score>
                   {[...Array(item.score)].map((_, i) => (
                     <CommentScore key={i}>{"\u2605"}</CommentScore>
