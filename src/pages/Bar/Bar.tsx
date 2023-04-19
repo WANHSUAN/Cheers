@@ -176,7 +176,7 @@ interface IBar {
   type: string;
   member_comment: ICommentArray;
   menu: IMenuArray;
-  score: string;
+  score: number;
   barId: string;
 }
 
@@ -188,7 +188,7 @@ interface IOpeningTime {
 interface IComment {
   userName: string;
   comment: string;
-  score: string;
+  score: number;
 }
 
 interface ICommentArray extends Array<IComment> {}
@@ -351,15 +351,12 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     ...Array(
       Math.round(
         bar.member_comment
-          .map((item, index) => parseInt(item.score))
+          .map((item, index) => item.score)
           .reduce((total, score) => total + score, 0) /
           bar.member_comment.length
       )
     ),
   ];
-
-  // bar.score = scoreArray;
-  // console.log(bar.score);
 
   function handleMenuClick() {
     setShowMenu(!showMenu);
@@ -370,6 +367,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       <Wrapper>
         <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
         {showMenu && <SideMenu />}
+        {scoreArray}
         <BarInfoSection>
           <BarImg src={bar.img[0]} />
           <BarTitle>{bar.name}</BarTitle>
@@ -379,7 +377,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             link={bar.link}
             img={bar.img[1]}
             barId={bar.barId}
-            // score={bar.score}
+            score={scoreArray}
           />
           <BarScore>
             <Score>

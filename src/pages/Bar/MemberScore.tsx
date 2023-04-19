@@ -77,7 +77,7 @@ function MemberScore() {
   const {id} = useParams();
   const [currentDocId, setCurrentDocId] = useState(id);
   const [key, setKey] = useState(0);
-  const {user, userUID} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

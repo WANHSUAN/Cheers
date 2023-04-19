@@ -310,17 +310,19 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
                   backgroundSize: "cover",
                 }}
               >
-                {/* <LikeScoreSection>
+                <>
+                  {/* <LikeScoreSection>
                   {[...Array(parseInt(like.score.toString()))].map((_, i) => (
                     <LikeScore key={i.toString()}>{"\u2605"}</LikeScore>
                   ))}
                 </LikeScoreSection> */}
-                <LikeBarName>{like.name}</LikeBarName>
-                <LikeDeleteButton
-                  onClick={() => handleDeleteLikeClick(like.id)}
-                >
-                  Delete
-                </LikeDeleteButton>
+                  <LikeBarName>{like.name}</LikeBarName>
+                  <LikeDeleteButton
+                    onClick={() => handleDeleteLikeClick(like.id)}
+                  >
+                    Delete
+                  </LikeDeleteButton>
+                </>
               </LikeCard>
             ))}
           </LikeSection>
