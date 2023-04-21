@@ -1,43 +1,150 @@
-import styled from "styled-components";
+import React, {useState} from "react";
+import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
+import side from "./side.png";
 
 const Wrapper = styled.div`
-  width: 200px;
-  height: 1000px;
-  background-color: #60add3;
   position: absolute;
   top: 0;
   left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url(${side}) no-repeat center center fixed;
+  background-size: cover;
+`;
+
+const Nav = styled.div`
+  width: 100vw;
+  height: 95px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  z-index: 2;
+`;
+
+const MenuName = styled.p`
+  color: #fff;
+  margin: 0;
+  font-size: 20px;
+`;
+
+const MenuSection = styled.div`
+  display: flex;
+  gap: 20px;
+`;
+
+const NavImg = styled.button`
+  width: 20px;
+  height: 20px;
+`;
+
+const Title = styled(Link)`
+  font-size: 35px;
+  color: #fff;
+  text-decoration: none;
+`;
+
+const SearchSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Search = styled.button`
+  width: 100px;
+  height: 30px;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.1);
+`;
+
+const SearchInput = styled.input`
+  width: 200px;
+  height: 50px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  position: absolute;
+  top: 100px;
+  right: 35px;
+`;
+
+const SearchButton = styled.button`
+  width: 50px;
+  height: 50px;
+  border: none;
+  position: absolute;
+  top: 100px;
+  right: 35px;
 `;
 
 const Menu = styled.ul`
-  padding: 0;
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+  text-align: center;
+  margin: 7% auto;
+  gap: 40px;
 `;
 
 const MenuItem = styled.li`
-  padding: 20px;
-  text-decoration: none;
+  width: 400px;
+  list-style: none;
+  font-size: 70px;
+  margin: 20px 0;
+  padding: 0 30px;
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
+  color: #fff;
 `;
 
 function SideMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+  function OpenSearch() {
+    setIsOpen(!isOpen);
+  }
   return (
-    <Wrapper>
-      <Menu>
-        <MenuItem>
-          <StyledLink to={"/member"}>會員專區</StyledLink>
-        </MenuItem>
-        <MenuItem>
-          <StyledLink to={"/category"}>酒吧分類</StyledLink>
-        </MenuItem>
-        <MenuItem>
-          <StyledLink to={"/main"}>酒吧總覽</StyledLink>
-        </MenuItem>
-      </Menu>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Nav>
+          <MenuSection>
+            <NavImg />
+            <MenuName>MENU</MenuName>
+          </MenuSection>
+          <Title to={"./main"}>CHEERS</Title>
+          <SearchSection>
+            <Search onClick={OpenSearch}>SEARCH</Search>
+            {isOpen && (
+              <>
+                <SearchInput />
+                <SearchButton></SearchButton>
+              </>
+            )}
+          </SearchSection>
+        </Nav>
+        <Menu>
+          <MenuItem>
+            <StyledLink to={"/member"}>Member</StyledLink>
+          </MenuItem>
+          <MenuItem>
+            <StyledLink to={"/main"}>All Bars</StyledLink>
+          </MenuItem>
+          <MenuItem>
+            <StyledLink to={"/category"}>Category</StyledLink>
+          </MenuItem>
+          <MenuItem>
+            <StyledLink to={"/main"}>Log Out</StyledLink>
+          </MenuItem>
+        </Menu>
+      </Wrapper>
+    </>
   );
 }
 

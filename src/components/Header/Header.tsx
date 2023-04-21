@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-// import {Link} from "react-router-dom";
+import {Link} from "react-router-dom";
+import SideMenu from "../SideMenu/SideMenu";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -20,7 +21,7 @@ const Nav = styled.div`
 const Menu = styled.p`
   color: #fff;
   margin: 0;
-  font-size: 25px;
+  font-size: 20px;
 `;
 
 const MenuSection = styled.div`
@@ -29,13 +30,14 @@ const MenuSection = styled.div`
 `;
 
 const NavImg = styled.button`
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
 `;
 
-const Title = styled.h1`
-  font-size: 40px;
+const Title = styled(Link)`
+  font-size: 35px;
   color: #fff;
+  text-decoration: none;
 `;
 
 const SearchSection = styled.div`
@@ -59,7 +61,7 @@ const SearchInput = styled.input`
   height: 50px;
   border: 2px solid #fff;
   border-radius: 5px;
-  background-color: #000;
+  background-color: rgba(255, 255, 255, 0);
   position: absolute;
   top: 100px;
   right: 35px;
@@ -76,6 +78,12 @@ const SearchButton = styled.button`
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isToggle, setIsToggle] = useState(false);
+
+  function handleSideMenu() {
+    setIsToggle(!isToggle);
+  }
+
   function OpenSearch() {
     setIsOpen(!isOpen);
   }
@@ -84,10 +92,11 @@ const Header = () => {
     <Wrapper>
       <Nav>
         <MenuSection>
-          <NavImg />
+          <NavImg onClick={handleSideMenu} />
+          {isToggle && <SideMenu />}
           <Menu>MENU</Menu>
         </MenuSection>
-        <Title>CHEERS</Title>
+        <Title to={"./main"}>CHEERS</Title>
         <SearchSection>
           <Search onClick={OpenSearch}>SEARCH</Search>
           {isOpen && (

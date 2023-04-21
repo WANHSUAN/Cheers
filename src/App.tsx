@@ -10,12 +10,15 @@ import "../src/css/globalStyle.css";
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
 
   body {
-    font-family: 'Forum', cursive;
+    font-family: 'Forum', 'Noto Sans TC', sans-serif;
     background-color: #000;
   }
+
 
 `;
 

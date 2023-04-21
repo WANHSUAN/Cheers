@@ -277,8 +277,8 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
 
   return (
     <Wrapper>
-      <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
-      {showMenu && <SideMenu />}
+      {/* <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
+      {showMenu && <SideMenu />} */}
       <MemberTitle>Hi!{user.name}~</MemberTitle>
       <RecommendationTitle>推薦給您的酒吧</RecommendationTitle>
       <RecommendationSection>
