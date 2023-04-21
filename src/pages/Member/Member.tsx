@@ -12,7 +12,7 @@ import {
   collectionGroup,
 } from "firebase/firestore";
 import {Link} from "react-router-dom";
-import SideMenu from "../../components/SideMenu/SideMenu";
+// import SideMenu from "../../components/SideMenu/SideMenu";
 import {AuthContext} from "../../Context/AuthContext";
 
 const Wrapper = styled.div`

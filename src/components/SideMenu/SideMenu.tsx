@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
 import side from "./side.png";
+import {TfiClose} from "react-icons/tfi";
+import {FiSearch} from "react-icons/fi";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -11,6 +13,7 @@ const Wrapper = styled.div`
   height: 100vh;
   background: url(${side}) no-repeat center center fixed;
   background-size: cover;
+  z-index: 1;
 `;
 
 const Nav = styled.div`
@@ -35,9 +38,12 @@ const MenuSection = styled.div`
   gap: 20px;
 `;
 
-const NavImg = styled.button`
+const NavButton = styled.button`
   width: 20px;
-  height: 20px;
+  height: 28px;
+  border: none;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
 `;
 
 const Title = styled(Link)`
@@ -59,26 +65,33 @@ const Search = styled.button`
   border: none;
   font-size: 20px;
   position: relative;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0);
 `;
 
 const SearchInput = styled.input`
-  width: 200px;
-  height: 50px;
-  border: 2px solid #fff;
+  width: 250px;
+  height: 40px;
+  border: 1px solid #fff;
   border-radius: 5px;
   position: absolute;
   top: 100px;
   right: 35px;
+  background-color: rgba(255, 255, 255, 0);
 `;
 
 const SearchButton = styled.button`
   width: 50px;
-  height: 50px;
-  border: none;
+  height: 40px;
+  border: 1px solid #fff;
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
   position: absolute;
   top: 100px;
   right: 35px;
+  font-size: 25px;
+  padding: 5px;
 `;
 
 const Menu = styled.ul`
@@ -110,12 +123,15 @@ function SideMenu() {
   function OpenSearch() {
     setIsOpen(!isOpen);
   }
+
   return (
     <>
       <Wrapper>
         <Nav>
           <MenuSection>
-            <NavImg />
+            <NavButton>
+              <TfiClose />
+            </NavButton>
             <MenuName>MENU</MenuName>
           </MenuSection>
           <Title to={"./main"}>CHEERS</Title>
@@ -124,7 +140,9 @@ function SideMenu() {
             {isOpen && (
               <>
                 <SearchInput />
-                <SearchButton></SearchButton>
+                <SearchButton>
+                  <FiSearch />
+                </SearchButton>
               </>
             )}
           </SearchSection>

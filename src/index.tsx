@@ -12,6 +12,7 @@ import Event from "./pages/Event/Event";
 import Member from "./pages/Member/Member";
 import Category from "./pages/Category/Category";
 import Search from "./pages/Search/Search";
+import HomePage from "./pages/Home/Home";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -23,6 +24,7 @@ root.render(
         {/* <Route index element={<Login />} /> */}
         <Route path="/question" element={<Question />} />
         <Route path="/recommendation" element={<RecommendationPage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/main" element={<Main />} />
         <Route path="/bars/:id" element={<Bar />} />
         <Route path="/events/:id" element={<Event />} />
