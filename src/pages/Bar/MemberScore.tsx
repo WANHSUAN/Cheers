@@ -1,8 +1,62 @@
 import React, {useState, useContext} from "react";
+import styled from "styled-components/macro";
 import {db} from "../../App";
 import {doc, updateDoc, arrayUnion} from "firebase/firestore";
 import {useParams} from "react-router-dom";
 import {AuthContext} from "../../Context/AuthContext";
+import {TiStarFullOutline, TiStarOutline} from "react-icons/ti";
+
+const ScoreForm = styled.form`
+  position: relative;
+`;
+
+const LabelSectionInput = styled.label``;
+
+const MemberImg = styled.img`
+  position: absolute;
+  top: -17%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background-color: #000;
+`;
+
+const SubmitSection = styled.div`
+  width: 600px;
+  margin: 15px auto;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const LabelSection = styled.label``;
+
+const StarSection = styled.div`
+  font-size: 25px;
+`;
+
+const InputTextArea = styled.textarea`
+  width: 600px;
+  height: 250px;
+  border: 2px solid #fff;
+  background-color: #000;
+  border-radius: 10px;
+  padding: 60px 20px;
+  font-size: 30px;
+  color: #ffffffc1;
+`;
+
+const SubmitButton = styled.button`
+  width: 130px;
+  height: 30px;
+  font-size: 20px;
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 5px;
+`;
 
 interface StarProps {
   marked: boolean;
@@ -13,7 +67,7 @@ function Star({marked, starId}: StarProps) {
   return (
     <span
       star-id={starId}
-      style={{color: "#ff9933", cursor: "pointer"}}
+      style={{color: "#D19B18", cursor: "pointer"}}
       role="button"
     >
       {/* 空星，實星 */}
@@ -97,29 +151,30 @@ function MemberScore() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          您的留言
-          <br />
-          <textarea
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-          ></textarea>
-        </label>
+    <ScoreForm onSubmit={handleSubmit}>
+      <LabelSectionInput>
+        <MemberImg />
+        <InputTextArea
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Leave a message..."
+        ></InputTextArea>
+      </LabelSectionInput>
+      <br />
+      <SubmitSection>
+        <LabelSection>
+          <StarSection>
+            <StarRating
+              key={key} // 將 key 綁定到 ratings 狀態
+              rating={ratings}
+              onRatingChange={(rating) => setRatings(rating)}
+            />
+          </StarSection>
+        </LabelSection>
         <br />
-        <label>
-          您的評分
-          <StarRating
-            key={key} // 將 key 綁定到 ratings 狀態
-            rating={ratings}
-            onRatingChange={(rating) => setRatings(rating)}
-          />
-        </label>
-        <br />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+        <SubmitButton type="submit">SUBMIT</SubmitButton>
+      </SubmitSection>
+    </ScoreForm>
   );
 }
 

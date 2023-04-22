@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import {useParams} from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {db} from "../../App";
 import {
   collection,
@@ -14,155 +14,323 @@ import {
 } from "firebase/firestore";
 import MemberScore from "./MemberScore";
 import BarMap from "./BarMap";
-import SideMenu from "../../components/SideMenu/SideMenu";
 import {AuthContext} from "../../Context/AuthContext";
+import {BsBookmarkFill, BsBookmark} from "react-icons/bs";
+import {BsSuitHeartFill, BsSuitHeart} from "react-icons/bs";
+import {TiStarFullOutline} from "react-icons/ti";
+import {FiExternalLink} from "react-icons/fi";
+import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
 
 const Wrapper = styled.div`
   text-align: center;
-  width: 800px;
+  width: 1000px;
   margin: 0 auto;
-`;
-const MenuButton = styled.button`
-  width: 50px;
-  height: 30px;
+  letter-spacing: 3px;
 `;
 
 const BarInfoSection = styled.div`
-  background-color: beige;
+  padding-top: 120px;
+  display: flex;
+  letter-spacing: 3px;
+`;
+
+const Score = styled.div`
+  display: flex;
+`;
+
+const CommentScore = styled.li`
+  list-style: none;
+  padding: 3px;
 `;
 
 const BarTitle = styled.h1`
-  font-size: 30px;
-  padding-top: 10px;
+  font-size: 50px;
+  color: #d19b18;
+  padding-bottom: 10px;
 `;
 
 const Like = styled.span`
   font-size: 25px;
   cursor: pointer;
-  margin: 10px;
+  margin: 15px;
+  color: #d19b18;
 `;
 
 const Collection = styled.span`
   font-size: 25px;
   cursor: pointer;
+  color: #d19b18;
 `;
 
 const BarImg = styled.img`
-  width: 350px;
-  height: 300px;
-  border-radius: 50%;
-  padding: 10px;
+  width: 50%;
+  border-radius: 0 280px 280px 0;
+  border: 1px solid #fff;
+  border-left: 0;
 `;
 
-const BarScore = styled.span``;
+const BarInfo = styled.div`
+  padding-left: 100px;
+`;
 
-const BarAddress = styled.p``;
+const BarScore = styled.span`
+  color: #d19b18;
+`;
+
+const BarItemSection = styled.div`
+  color: #fff;
+`;
+
+const BarItemTitle = styled.p`
+  text-decoration: underline;
+  font-size: 20px;
+  padding-top: 20px;
+`;
+
+const BarItem = styled.p`
+  font-size: 23px;
+  padding-top: 15px;
+`;
 
 const BarLink = styled.a`
   width: 10px;
   height: 10px;
+  font-size: 30px;
   text-decoration: none;
-  color: #230498;
+  color: #fff;
 `;
 
-const BarOpeningTime = styled.div``;
+const BarContent = styled.div`
+  height: 500px;
+  margin: 130px 0;
+`;
 
-const BarOpeningDate = styled.p``;
+const BarIntro = styled.h2`
+  color: #d19b18;
+  font-size: 40px;
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  margin: 60px 10px;
+  letter-spacing: 5px;
 
-const BarOpeninghours = styled.p``;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 40%;
+    height: 1px;
+    background-color: #d19b18;
+  }
 
-const BarTel = styled.p``;
+  &::before {
+    top: 20px;
+    right: -100px;
+  }
 
-const BarContent = styled.div``;
-
-const BarIntro = styled.h2``;
+  &::after {
+    top: 20px;
+    left: -100px;
+  }
+`;
 
 const BarHashTagSection = styled.div`
-  height: 50px;
+  height: 30px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  background-color: beige;
+  justify-content: center;
 `;
 
 const BarHashtagLink = styled.a`
   text-decoration: none;
-  color: #398102;
+  color: #d19b18;
 `;
 
 const BarHashTag = styled.p`
-  margin-right: 5px;
+  margin-left: 10px;
 `;
 
-const BarIntroText = styled.p``;
+const BarIntroTextSection = styled.div`
+  border: 1px solid #d19b18;
+  padding: 50px;
+  border-radius: 0 50px 0 50px;
+  text-align: left;
+`;
 
-const CommentSection = styled.div``;
+const BarText = styled.p`
+  width: 90%;
+  color: #fff;
+  line-height: 30px;
+  margin: 0 auto;
 
-const CommentTitle = styled.h2``;
+  /* white-space: pre-wrap;
 
-const CommentArea = styled.ul`
-  border: 1px solid #000;
-  padding-left: 0;
+  &:after {
+    content: "";
+    display: block;
+    margin-top: 0.5em; // 设置上边距为 0.5em，可根据需要自行调整
+  } */
+`;
+
+const CommentSection = styled.div`
+  margin: 200px 0;
+  height: 500px;
+`;
+
+const CommentTitle = styled.h2`
+  color: #fff;
+  font-size: 30px;
+`;
+
+const CommentContent = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const LeftArrow = styled.button`
+  font-size: 30px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  height: 473px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const RightArrow = styled.button`
+  font-size: 30px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  height: 473px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const CommentItem = styled.div`
   border: 1px solid #000;
-`;
-
-const UserName = styled.p``;
-
-const Score = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const CommentScore = styled.li`
-  list-style: none;
-  text-align: center;
-  padding: 10px;
+  color: #fff;
 `;
 
 const Comment = styled.li`
   list-style: none;
+  font-size: 20px;
+  margin: 30px;
 `;
 
-const BarRec = styled.div``;
+const MemberScores = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 10px;
+  color: #d19b18;
+  margin: 10px;
+`;
 
-const BarRecTitle = styled.h2``;
+const UserName = styled.p`
+  font-size: 15px;
+  margin-bottom: 30px;
+`;
+
+const Page = styled.p`
+  font-size: 10px;
+`;
+
+const BarRec = styled.div`
+  background-color: #d19b18;
+  border-radius: 300px 0 0 0;
+  padding: 30px;
+  letter-spacing: 3px;
+`;
+
+const BarRecContentSection = styled.div`
+  width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+`;
+
+const BarRecTitle = styled.h2`
+  color: #fff;
+  font-size: 40px;
+  margin-bottom: 350px;
+`;
+
+const BarTitleContent = styled.div``;
 
 const BarRecImg = styled.img`
   width: 400px;
   height: 400px;
   padding-bottom: 10px;
+  border-radius: 50%;
+  margin-top: -40%;
 `;
 
-const BarRecName = styled.h2``;
+const BarRecName = styled.div`
+  height: 400px;
+  color: #fff;
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+`;
 
-const BarRecConceptTitle = styled.h2``;
+const BarRecContent = styled.div`
+  width: 45%;
+`;
 
-const BarRecConcept = styled.p``;
+const BarRecContentItem = styled.div``;
 
-const BarRecGarnishTitle = styled.h2``;
+const BarRecContentTitle = styled.h2`
+  color: #fff;
+  padding: 30px 0;
+  font-size: 30px;
+`;
 
-const BarRecGarnish = styled.ul``;
+const BarRecContentText = styled.p`
+  color: #fff;
+  line-height: 30px;
+  font-size: 18px;
+`;
 
 const BarRecGarnishItem = styled.li`
   list-style: none;
 `;
 
-const BarRecIngredientsTitle = styled.h2``;
-
-const BarRecIngredients = styled.ul``;
-
 const BarRecIngredientsItem = styled.li`
   list-style: none;
 `;
 
-const MemberScoreSection = styled.div``;
+const MemberScoreSection = styled.div`
+  width: 1000px;
+  height: 500px;
+  margin: 0 auto;
+  text-align: center;
+  letter-spacing: 3px;
+`;
 
-const MemberScoreTitle = styled.h2``;
+const MemberScoreTitle = styled.h2`
+  color: #fff;
+  font-size: 30px;
+  margin: 100px 0;
+`;
 
-const BarMapTitle = styled.h2``;
+const BarSection = styled.div`
+  width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+`;
+
+const BarMapTitle = styled.h2`
+  color: #fff;
+  margin: 110px 0 50px 0;
+  font-size: 30px;
+`;
 
 interface IBar {
   id: string;
@@ -312,12 +480,12 @@ function CollectionButton(name: any) {
 
   return (
     <>
-      <Like onClick={handleHeartButtonClick}>
-        {isLike ? "\u2665" : "\u2661"}
-      </Like>
       <Collection onClick={handleCollectionButtonClick}>
-        {isCollection ? "\u263B" : "\u263A"}
+        {isCollection ? <BsBookmarkFill /> : <BsBookmark />}
       </Collection>
+      <Like onClick={handleHeartButtonClick}>
+        {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
+      </Like>
     </>
   );
 }
@@ -328,7 +496,6 @@ export interface IMainProps {}
 
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bar, setBar] = useState<IBar>();
-  const [showMenu, setShowMenu] = useState(false);
   const {id} = useParams();
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
@@ -358,18 +525,20 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     ),
   ];
 
-  function handleMenuClick() {
-    setShowMenu(!showMenu);
-  }
-
   return (
     <>
-      <Wrapper>
-        <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
-        {showMenu && <SideMenu />}
-        {scoreArray}
-        <BarInfoSection>
-          <BarImg src={bar.img[0]} />
+      <BarInfoSection>
+        <BarImg src={bar.img[0]} />
+        <BarInfo>
+          <BarScore>
+            <Score>
+              {scoreArray.map((_, i) => (
+                <CommentScore key={i}>
+                  <TiStarFullOutline />
+                </CommentScore>
+              ))}
+            </Score>
+          </BarScore>
           <BarTitle>{bar.name}</BarTitle>
           <CollectionButton
             name={bar.name}
@@ -379,24 +548,27 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             barId={bar.barId}
             score={scoreArray}
           />
-          <BarScore>
-            <Score>
-              {scoreArray.map((_, i) => (
-                <CommentScore key={i}>{"\u2605"}</CommentScore>
-              ))}
-            </Score>
-          </BarScore>
-          <BarAddress>地址：{bar.address}</BarAddress>
-          <BarLink href={bar.link}>Go to the Website!</BarLink>
-          <BarOpeningTime>
-            營業時間：
-            <BarOpeningDate>{bar.opening_time.opening_date}</BarOpeningDate>
-            <BarOpeninghours>{bar.opening_time.opening_hours}</BarOpeninghours>
-          </BarOpeningTime>
-          <BarTel>聯絡電話：{bar.tel}</BarTel>
-        </BarInfoSection>
+          <BarItemSection>
+            <BarItemTitle>ADDRESS</BarItemTitle>
+            <BarItem>{bar.address}</BarItem>
+            <BarItemTitle>OPENING TIME</BarItemTitle>
+            <BarItem>
+              {bar.opening_time.opening_date} {bar.opening_time.opening_hours}
+            </BarItem>
+            <BarItemTitle>TEL</BarItemTitle>
+            <BarItem>{bar.tel}</BarItem>
+            <BarItemTitle>WEBSITE</BarItemTitle>
+            <BarItem>
+              <BarLink href={bar.link}>
+                <FiExternalLink />
+              </BarLink>
+            </BarItem>
+          </BarItemSection>
+        </BarInfo>
+      </BarInfoSection>
+      <Wrapper>
         <BarContent>
-          <BarIntro>店家介紹</BarIntro>
+          <BarIntro>ABOUT US</BarIntro>
           <BarHashTagSection>
             {Array.isArray(bar.type) &&
               bar.type.map((bar: string, index) => (
@@ -405,50 +577,71 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                 </BarHashtagLink>
               ))}
           </BarHashTagSection>
-          <BarIntroText>{bar.introduction}</BarIntroText>
+          <BarIntroTextSection>
+            <BarText>{bar.introduction}</BarText>
+          </BarIntroTextSection>
         </BarContent>
         <CommentSection>
-          <CommentTitle>會員評分和留言</CommentTitle>
-          <CommentArea>
+          <CommentTitle>WHAT THEY'RE SAYING</CommentTitle>
+          <CommentContent>
+            <LeftArrow>
+              <MdArrowBackIosNew />
+            </LeftArrow>
             {bar.member_comment.map((item, index) => (
               <CommentItem key={index}>
-                <UserName>{item.userName}</UserName>
-                <Score>
-                  {[...Array(item.score)].map((_, i) => (
-                    <CommentScore key={i}>{"\u2605"}</CommentScore>
-                  ))}
-                </Score>
                 <Comment>{item.comment}</Comment>
+                <MemberScores>
+                  {[...Array(item.score)].map((_, i) => (
+                    <CommentScore key={i}>
+                      <TiStarFullOutline />
+                    </CommentScore>
+                  ))}
+                </MemberScores>
+                <UserName>{item.userName}</UserName>
+                <Page>1 / 1</Page>
               </CommentItem>
             ))}
-          </CommentArea>
+            <RightArrow>
+              <MdArrowForwardIos />
+            </RightArrow>
+          </CommentContent>
         </CommentSection>
-        <BarRec>
-          <BarRecTitle>店家主推飲品</BarRecTitle>
-          <BarRecImg src={bar.menu[0].img} />
-          <BarRecName>{bar.menu[0].name}</BarRecName>
-          <BarRecConceptTitle>Concept</BarRecConceptTitle>
-          <BarRecConcept>{bar.menu[0].concept}</BarRecConcept>
-          <BarRecGarnishTitle>Garnish</BarRecGarnishTitle>
-          <BarRecGarnish>
-            {bar.menu[0].garnish.map((gar: string) => (
-              <BarRecGarnishItem key={gar}>{gar}</BarRecGarnishItem>
-            ))}
-          </BarRecGarnish>
-          <BarRecIngredientsTitle>Ingredients</BarRecIngredientsTitle>
-          <BarRecIngredients>
-            {bar.menu[0].ingredients.map((gar: string) => (
-              <BarRecIngredientsItem key={gar}>{gar}</BarRecIngredientsItem>
-            ))}
-          </BarRecIngredients>
-        </BarRec>
-        <MemberScoreSection>
-          <MemberScoreTitle>您的評分 & 留言</MemberScoreTitle>
-          <MemberScore />
-        </MemberScoreSection>
-        <BarMapTitle>店家位置</BarMapTitle>
-        <BarMap />
+        <BarRecTitle>SPECIAL MENU</BarRecTitle>
       </Wrapper>
+      <BarRec>
+        <BarRecContentSection>
+          <BarTitleContent>
+            <BarRecImg src={bar.menu[0].img} />
+            <BarRecName>{bar.menu[0].name}</BarRecName>
+          </BarTitleContent>
+          <BarRecContent>
+            <BarRecContentItem>
+              <BarRecContentTitle>Concept</BarRecContentTitle>
+              <BarRecContentText>{bar.menu[0].concept}</BarRecContentText>
+              <BarRecContentTitle>Garnish</BarRecContentTitle>
+              <BarRecContentText>
+                {bar.menu[0].garnish.map((gar: string) => (
+                  <BarRecGarnishItem key={gar}>{gar}</BarRecGarnishItem>
+                ))}
+              </BarRecContentText>
+              <BarRecContentTitle>Ingredients</BarRecContentTitle>
+              <BarRecContentText>
+                {bar.menu[0].ingredients.map((gar: string) => (
+                  <BarRecIngredientsItem key={gar}>{gar}</BarRecIngredientsItem>
+                ))}
+              </BarRecContentText>
+            </BarRecContentItem>
+          </BarRecContent>
+        </BarRecContentSection>
+      </BarRec>
+      <MemberScoreSection>
+        <MemberScoreTitle>YOUR COMMENT</MemberScoreTitle>
+        <MemberScore />
+      </MemberScoreSection>
+      <BarSection>
+        <BarMapTitle>BAR'S LOCATION</BarMapTitle>
+        <BarMap />
+      </BarSection>
     </>
   );
 };

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const Nav = styled.div`
   width: 100vw;
-  height: 95px;
+  height: 80px;
   background-color: #000;
   display: flex;
   flex-wrap: wrap;
@@ -30,11 +30,12 @@ const Menu = styled.p`
 const MenuSection = styled.div`
   display: flex;
   gap: 20px;
+  padding-top: 5px;
 `;
 
 const NavButton = styled.button`
   width: 20px;
-  height: 28px;
+  height: 25px;
   border: none;
   color: #fff;
   background-color: #000;

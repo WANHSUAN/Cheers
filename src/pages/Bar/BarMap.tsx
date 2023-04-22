@@ -9,8 +9,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 50px 100px;
-  margin-bottom: 150px;
+  margin: 50px 100px 100px 280px;
 `;
 const GoogleMap = styled.div`
   display: flex;
@@ -18,9 +17,11 @@ const GoogleMap = styled.div`
 `;
 
 const Map = styled.div`
-  height: 550px;
-  width: 1280px;
-  border: 10px solid beige;
+  height: 400px;
+  width: 430px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #d9d9d980;
+  border: 2px solid #fff;
 `;
 
 declare const window: Window & {

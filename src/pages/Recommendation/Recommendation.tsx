@@ -7,6 +7,7 @@ import {collection, getDocs} from "firebase/firestore";
 const Wrapper = styled.div`
   width: 700px;
   margin: 0 auto;
+  padding-top: 80px;
 `;
 
 const RecSection = styled.div`
@@ -15,31 +16,26 @@ const RecSection = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   text-align: center;
+  margin-bottom: 50px;
 `;
 
 const RecItem = styled(Link)`
   text-decoration: none;
 `;
 
-const RecName = styled.h3``;
+const RecName = styled.h3`
+  color: #fff;
+  margin-bottom: 10px;
+`;
 
 const RecImg = styled.img`
-  width: 260px;
-  height: 250px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
+  border: 1px solid #fff;
 `;
 
 const ReLink = styled.div``;
-
-const HomePageLink = styled(Link)`
-  width: 150px;
-  height: 50px;
-  padding: 5px;
-  background-color: #60add3;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-`;
 
 interface IRecommendation {
   matchingBars: [];
@@ -77,23 +73,38 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
   return (
     <Wrapper>
       <RecSection>
-        {recommendations[0].matchingBars.map(
-          (recommendation: IRecommendation, index) => {
+        {recommendations[0].matchingBars
+          .slice(0, 8)
+          .map((recommendation: IRecommendation, index) => {
             return (
-              <RecItem to={`/bars/${recommendation.id}`} key={index}>
-                <RecName>{recommendation.name}</RecName>
-                <ReLink>
-                  <RecImg
-                    src={recommendation.img[1]}
-                    alt={recommendation.name}
-                  />
-                </ReLink>
-              </RecItem>
+              <>
+                <div
+                  style={{
+                    width: "120px",
+                    height: "180px",
+                    transform: `rotate(${
+                      index * 60
+                    }deg) translateX(200px) rotate(${-index * 60}deg)`,
+                  }}
+                  key={index}
+                ></div>
+                <RecItem
+                  to={`/bars/${recommendation.id}`}
+                  key={index}
+                  style={{display: index === 7 ? "none" : "block"}}
+                >
+                  <RecName>{recommendation.name}</RecName>
+                  <ReLink>
+                    <RecImg
+                      src={recommendation.img[1]}
+                      alt={recommendation.name}
+                    />
+                  </ReLink>
+                </RecItem>
+              </>
             );
-          }
-        )}
+          })}
       </RecSection>
-      <HomePageLink to={"/main"}>Go to HomePage</HomePageLink>
     </Wrapper>
   );
 };

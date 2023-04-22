@@ -20,7 +20,7 @@ import {RxDoubleArrowDown, RxDoubleArrowRight} from "react-icons/rx";
 const Wrapper = styled.div`
   width: 83.5%;
   margin: 0 auto;
-  padding-top: 95px;
+  padding-top: 80px;
 `;
 
 const ImageContainer = styled.div`
@@ -120,6 +120,7 @@ const Submit = styled.div`
   width: 100%;
   text-align: center;
   padding: 50px;
+  margin-bottom: 50px;
 `;
 
 const SubmitButton = styled.button`
