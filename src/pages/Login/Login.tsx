@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import styled from "styled-components";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {AuthContext} from "../../Context/AuthContext";
-import SideMenu from "../../components/SideMenu/SideMenu";
+// import SideMenu from "../../components/SideMenu/SideMenu";
 
 const Wrapper = styled.div`
   width: 500px;
@@ -35,11 +35,11 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
 
   return (
     <Wrapper>
-      <SideMenu />
-      {/* <LoginTitle>Join Us!</LoginTitle>
+      {/* <SideMenu /> */}
+      <LoginTitle>Join Us!</LoginTitle>
       <LoginButton onClick={() => signIn(auth, provider)}>
         Sign In with Google
-      </LoginButton> */}
+      </LoginButton>
     </Wrapper>
   );
 };

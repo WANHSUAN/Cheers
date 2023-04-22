@@ -1,46 +1,146 @@
 import React, {useState, useEffect, useContext} from "react";
 import {useNavigate} from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {db} from "../../App";
 import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
 import {AuthContext} from "../../Context/AuthContext";
+import main from "./main.png";
+import {RxDoubleArrowDown, RxDoubleArrowRight} from "react-icons/rx";
 
-const LogOutButton = styled.button`
-  width: 150px;
-  height: 30px;
-  border: 1px solid #87c3e1;
-  border-radius: 5px;
-  font-size: 15px;
+// const LogOutButton = styled.button`
+//   width: 150px;
+//   height: 30px;
+//   border: 1px solid #87c3e1;
+//   border-radius: 5px;
+//   font-size: 15px;
+//   cursor: pointer;
+// `;
+
+const Wrapper = styled.div`
+  width: 83.5%;
+  margin: 0 auto;
+  padding-top: 95px;
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+`;
+
+const Slogan = styled.p`
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  font-size: 130px;
+  color: #fff;
+  letter-spacing: 10px;
+  text-align: center;
+`;
+
+const MainImg = styled.img`
+  width: 100%;
+  height: 550px;
+  margin-top: 270px;
+  vertical-align: bottom;
+  object-fit: cover;
+`;
+
+const TestTitleSection = styled.div`
+  text-align: center;
+  margin-bottom: 50px;
+`;
+
+const TestTitle = styled.p`
+  font-size: 70px;
+  color: #fff;
+  padding: 50px;
+  margin: 270px 0 50px 0;
+  text-align: center;
+`;
+
+const DoubleArrow = styled.button`
+  height: 100px;
+  color: #d19b18;
+  font-size: 80px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  text-align: center;
   cursor: pointer;
 `;
 
-const Wrapper = styled.div`
-  width: 500px;
-  height: 800px;
-  margin: 50px auto;
+const TestSection = styled.div`
+  margin: 200px auto 50px;
+`;
+
+const OuterDiv = styled.div`
+  width: 70%;
+  height: 400px;
+  border: 2px solid white;
   padding: 10px;
-  text-align: center;
-  border: 1px solid #000;
-  border-radius: 5px;
+  margin: 0 auto;
 `;
 
-const QuestionSection = styled.div``;
-
-const QuestionTitle = styled.legend`
-  font-size: 25px;
-`;
-
-const QuestionFieldset = styled.fieldset``;
-
-const QuestionLabel = styled.label`
+const InnerDiv = styled.div`
+  width: 100%;
+  height: 430px;
+  border: 2px solid white;
+  padding: 10px;
+  margin-top: -25px;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+`;
+
+const SelectItem = styled.div`
+  width: 280px;
+  text-align: center;
+`;
+
+const SelectTime = styled.p`
+  font-size: 25px;
+  color: #d19b18;
+  margin-top: 30px;
+`;
+
+const Checkbox = styled.input`
+  margin: 10px;
+`;
+
+const SelectContent = styled.div`
+  width: 150px;
+  height: 30px;
+  color: #fff;
+  margin: 0 auto;
+  font-size: 20px;
+`;
+
+const Submit = styled.div`
+  width: 100%;
+  text-align: center;
+  padding: 50px;
+`;
+
+const SubmitButton = styled.button`
+  width: 300px;
+  color: #fff;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  font-size: 40px;
+`;
+
+const StyledDoubleArrow = styled.button`
+  height: 50px;
+  color: #fff;
+  font-size: 50px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  text-align: center;
+  cursor: pointer;
   justify-content: center;
 `;
-
-const Checkbox = styled.input``;
-
-const SubmitButton = styled.button``;
 
 interface IBar {
   id: string;
@@ -179,7 +279,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     }
   };
 
-  const {isLogin, user, logOut, signIn, userUID} = useContext(AuthContext);
+  const {userUID} = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
     prompt: "select_account",
@@ -187,38 +287,64 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
 
   return (
     <>
-      <LogOutButton onClick={() => logOut(auth)}>
+      {/* <LogOutButton onClick={() => logOut(auth)}>
         Sign out of Firebase
-      </LogOutButton>
+      </LogOutButton> */}
       {/* <button onClick={() => signIn(auth, provider)}>LogIn</button> */}
       <Wrapper>
-        <QuestionSection>
-          {Object.entries(groups).map(([key, label]) => (
-            <QuestionFieldset key={key}>
-              <QuestionTitle>{label}</QuestionTitle>
-              {options
-                .filter((option) => option.group === key)
-                .map((option) => (
-                  <div key={option.hashtag}>
-                    <QuestionLabel>
-                      <Checkbox
-                        type="checkbox"
-                        value={option.text}
-                        checked={selectedOptions.some(
-                          (o) => o.text === option.text
-                        )}
-                        onChange={handleOptionChange}
-                      />
-                      {option.hashtag}
-                    </QuestionLabel>
-                  </div>
-                ))}
-            </QuestionFieldset>
-          ))}
+        <ImageContainer>
+          <Slogan>
+            YOUR
+            <br />
+            HAPPINESS
+          </Slogan>
+          <MainImg src={main} />
+        </ImageContainer>
+
+        <TestTitleSection>
+          <TestTitle>Choose your Favorite Type!</TestTitle>
+          <DoubleArrow>
+            <RxDoubleArrowDown />
+          </DoubleArrow>
+        </TestTitleSection>
+
+        <TestSection>
+          <OuterDiv>
+            <InnerDiv>
+              {Object.entries(groups).map(([key, label]) => (
+                <SelectItem key={key}>
+                  <SelectTime>{label}</SelectTime>
+                  {options
+                    .filter((option) => option.group === key)
+                    .map((option) => (
+                      <SelectItem key={option.hashtag}>
+                        <SelectContent>
+                          <Checkbox
+                            type="checkbox"
+                            value={option.text}
+                            checked={selectedOptions.some(
+                              (o) => o.text === option.text
+                            )}
+                            onChange={handleOptionChange}
+                          />
+                          {option.hashtag}
+                        </SelectContent>
+                      </SelectItem>
+                    ))}
+                </SelectItem>
+              ))}
+            </InnerDiv>
+          </OuterDiv>
+        </TestSection>
+
+        <Submit>
           <SubmitButton onClick={handleButtonClick}>
-            Show Selected Bars
+            FIND YOUR TYPE
           </SubmitButton>
-        </QuestionSection>
+          <StyledDoubleArrow>
+            <RxDoubleArrowRight />
+          </StyledDoubleArrow>
+        </Submit>
       </Wrapper>
     </>
   );

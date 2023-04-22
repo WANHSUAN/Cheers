@@ -59,7 +59,7 @@ const Search = styled.button`
   background-color: #000;
   color: #fff;
   border: none;
-  font-size: 25px;
+  font-size: 20px;
   position: relative;
   cursor: pointer;
 `;
