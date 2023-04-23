@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Forum', 'Noto Sans TC', sans-serif;
     background-color: #000;
+    letter-spacing: 3px;
   }
 `;
 

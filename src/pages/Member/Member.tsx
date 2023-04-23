@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {db} from "../../App";
 import {
   collection,
@@ -12,41 +12,117 @@ import {
   collectionGroup,
 } from "firebase/firestore";
 import {Link} from "react-router-dom";
-// import SideMenu from "../../components/SideMenu/SideMenu";
 import {AuthContext} from "../../Context/AuthContext";
+import {RiDeleteBin5Line} from "react-icons/ri";
+
+const PageImg = styled.img`
+  width: 100vw;
+  height: 400px;
+  object-fit: cover;
+  padding-top: 60px;
+`;
 
 const Wrapper = styled.div`
-  width: 800px;
+  width: 1000px;
   margin: 0 auto;
-  background-color: beige;
-`;
-const MenuButton = styled.button`
-  width: 50px;
-  height: 30px;
-  position: absolute;
-  top: 70px;
-  right: 100px;
+  padding-top: 60px;
 `;
 
 const MemberTitle = styled.h1`
   margin: 0;
   padding: 50px 0;
+  color: #d19b18;
+  font-size: 45px;
 `;
 
-const LikeTitle = styled.h2``;
+const RecommendationTitle = styled.h2`
+  color: #fff;
+  font-size: 30px;
+  margin: 40px 0;
+`;
+
+const OuterDiv = styled.div`
+  width: 100%;
+  /* height: 400px; */
+  border: 2px solid white;
+  margin: 0 auto;
+  padding: 10px;
+`;
+
+const InnerDiv = styled.div`
+  width: 100%;
+  /* height: 430px; */
+  border: 2px solid white;
+  padding: 40px 0 10px 40px;
+  margin-top: -25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+`;
+
+const RecommendationSection = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+`;
+
+const RecommendationImg = styled(Link)`
+  width: 170px;
+  height: 170px;
+  border-radius: 10px;
+  text-decoration: none;
+  /* border: 1px solid #fff; */
+`;
+
+const RecommendationName = styled.p`
+  text-decoration: none;
+  color: #fff;
+  font-size: 15px;
+  padding: 5px;
+`;
+
+const LikeTitle = styled.h2`
+  color: #fff;
+  font-size: 30px;
+  margin: 100px 0;
+`;
 
 const LikeSection = styled.div`
   margin-bottom: 30px;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 10px;
 `;
 
-const LikeCard = styled(Link)`
-  width: 190px;
-  height: 200px;
+const LikeImg = styled(Link)`
+  width: 170px;
+  height: 170px;
   border-radius: 10px;
   text-decoration: none;
+  /* border: 1px solid #fff; */
+`;
+
+const LikeHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const LikeDeleteButton = styled.button`
+  width: 60px;
+  height: 20px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  color: #fff;
+  font-size: 20px;
+  padding-top: 5px;
+  cursor: pointer;
+`;
+
+const LikeBarName = styled.p`
+  text-decoration: none;
+  color: #fff;
+  font-size: 15px;
+  padding: 5px;
 `;
 
 // const LikeScoreSection = styled.div`
@@ -59,45 +135,20 @@ const LikeCard = styled(Link)`
 //   text-align: center;
 // `;
 
-const LikeDeleteButton = styled.button`
-  width: 60px;
-  height: 20px;
-`;
-
-const LikeBarName = styled.p`
+const CollectionTitle = styled.h2`
   color: #fff;
+  font-size: 30px;
+  margin: 100px 0;
 `;
-
-const RecommendationTitle = styled.h2``;
-
-const RecommendationSection = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-`;
-
-const RecommendationCard = styled(Link)`
-  width: 190px;
-  height: 200px;
-  border-radius: 10px;
-  text-decoration: none;
-`;
-
-const RecommendatioName = styled.p`
-  text-decoration: none;
-  color: #fff;
-`;
-
-const CollectionTitle = styled.h2``;
 
 const CollectionSection = styled.ul`
   margin-bottom: 30px;
   display: flex;
-  gap: 5px;
-  padding: 0;
+  flex-wrap: wrap;
+  gap: 10px;
 `;
 
-const CollectionCard = styled(Link)`
+const CollectionImg = styled(Link)`
   width: 190px;
   height: 200px;
   border-radius: 10px;
@@ -114,13 +165,27 @@ const CollectionCard = styled(Link)`
 //   text-align: center;
 // `;
 
+const CollectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const CollectionDeleteButton = styled.button`
   width: 60px;
   height: 20px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  color: #fff;
+  font-size: 20px;
+  padding-top: 5px;
+  cursor: pointer;
 `;
 
 const CollectionBarName = styled.p`
+  text-decoration: none;
   color: #fff;
+  font-size: 15px;
+  padding: 5px;
 `;
 
 interface ILikes {
@@ -165,7 +230,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const [likes, setLikes] = useState<ILikes[] | null>(null);
   const [collections, setCollections] = useState<ICollections[] | null>(null);
   const [users, setUsers] = useState<IUser[] | undefined>();
-  const [showMenu, setShowMenu] = useState(false);
 
   const {user, userUID} = useContext(AuthContext);
 
@@ -271,79 +335,100 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     }
   };
 
-  function handleMenuClick() {
-    setShowMenu(!showMenu);
-  }
-
   return (
-    <Wrapper>
-      {/* <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
-      {showMenu && <SideMenu />} */}
-      <MemberTitle>Hi!{user.name}~</MemberTitle>
-      <RecommendationTitle>推薦給您的酒吧</RecommendationTitle>
-      <RecommendationSection>
-        {users[0].matchingBars.map((matchingBar, index) => (
-          <RecommendationCard
-            to={`/bars/${matchingBar.id}`}
-            key={index}
-            style={{
-              backgroundImage: `url(${matchingBar.img[1]})`,
-              backgroundSize: "cover",
-            }}
-          >
-            <RecommendatioName>{matchingBar.name}</RecommendatioName>
-          </RecommendationCard>
-        ))}
-      </RecommendationSection>
-      {likes === null ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <LikeTitle>{"\u2661"}您收藏的酒吧</LikeTitle>
-          <LikeSection>
-            {likes.map((like, index) => (
-              <LikeCard
-                to={`/bars/${like.barId}`}
-                key={like.id}
-                style={{
-                  backgroundImage: `url(${like.img})`,
-                  backgroundSize: "cover",
-                }}
-              >
-                <>
-                  {/* <LikeScoreSection>
+    <>
+      <PageImg
+        src={
+          "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        }
+      />
+      <Wrapper>
+        <MemberTitle>Welcome, {user.name}!</MemberTitle>
+        <RecommendationTitle>
+          We <strong style={{color: "#D19B18"}}>RECOMMEND</strong> the bars for
+          you
+        </RecommendationTitle>
+        <OuterDiv>
+          <InnerDiv>
+            <RecommendationSection>
+              {users[0].matchingBars.map((matchingBar, index) => (
+                <RecommendationImg
+                  to={`/bars/${matchingBar.id}`}
+                  key={index}
+                  style={{
+                    backgroundImage: `url(${matchingBar.img[1]})`,
+                    backgroundSize: "cover",
+                  }}
+                >
+                  <RecommendationName>{matchingBar.name}</RecommendationName>
+                </RecommendationImg>
+              ))}
+            </RecommendationSection>
+          </InnerDiv>
+        </OuterDiv>
+
+        {likes === null ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <LikeTitle>
+              The Bars you <strong style={{color: "#D19B18"}}>LIKE</strong>
+            </LikeTitle>
+            <OuterDiv>
+              <InnerDiv>
+                <LikeSection>
+                  {likes.map((like, index) => (
+                    <LikeImg
+                      to={`/bars/${like.barId}`}
+                      key={like.id}
+                      style={{
+                        backgroundImage: `url(${like.img})`,
+                        backgroundSize: "cover",
+                      }}
+                    >
+                      <>
+                        {/* <LikeScoreSection>
                   {[...Array(parseInt(like.score.toString()))].map((_, i) => (
                     <LikeScore key={i.toString()}>{"\u2605"}</LikeScore>
                   ))}
                 </LikeScoreSection> */}
-                  <LikeBarName>{like.name}</LikeBarName>
-                  <LikeDeleteButton
-                    onClick={() => handleDeleteLikeClick(like.id)}
-                  >
-                    Delete
-                  </LikeDeleteButton>
-                </>
-              </LikeCard>
-            ))}
-          </LikeSection>
-        </>
-      )}
-      {collections === null ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <CollectionTitle>{"\u263A"}您已去過的酒吧</CollectionTitle>
-          <CollectionSection>
-            {collections.map((collection, index) => (
-              <CollectionCard
-                to={`/bars/${collection.barId}`}
-                key={collection.id}
-                style={{
-                  backgroundImage: `url(${collection.img})`,
-                  backgroundSize: "cover",
-                }}
-              >
-                {/* <CollectionScoreSection>
+                        <LikeHeader>
+                          <LikeBarName>{like.name}</LikeBarName>
+                          <LikeDeleteButton
+                            onClick={() => handleDeleteLikeClick(like.id)}
+                          >
+                            <RiDeleteBin5Line />
+                          </LikeDeleteButton>
+                        </LikeHeader>
+                      </>
+                    </LikeImg>
+                  ))}
+                </LikeSection>
+              </InnerDiv>
+            </OuterDiv>
+          </>
+        )}
+        {collections === null ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <CollectionTitle>
+              The Bars you want to
+              <strong style={{color: "#D19B18"}}>VISIT</strong> in the future
+            </CollectionTitle>
+            <OuterDiv>
+              <InnerDiv>
+                <CollectionSection>
+                  {collections.map((collection, index) => (
+                    <CollectionImg
+                      to={`/bars/${collection.barId}`}
+                      key={collection.id}
+                      style={{
+                        backgroundImage: `url(${collection.img})`,
+                        backgroundSize: "cover",
+                      }}
+                    >
+                      {/* <CollectionScoreSection>
                   {[...Array(parseInt(collection.score.toString()))].map(
                     (_, i) => (
                       <CollectionScore key={i.toString()}>
@@ -352,18 +437,25 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
                     )
                   )}
                 </CollectionScoreSection> */}
-                <CollectionBarName>{collection.name}</CollectionBarName>
-                <CollectionDeleteButton
-                  onClick={() => handleDeleteCollectionClick(collection.id)}
-                >
-                  Delete
-                </CollectionDeleteButton>
-              </CollectionCard>
-            ))}
-          </CollectionSection>
-        </>
-      )}
-    </Wrapper>
+                      <CollectionHeader>
+                        <CollectionBarName>{collection.name}</CollectionBarName>
+                        <CollectionDeleteButton
+                          onClick={() =>
+                            handleDeleteCollectionClick(collection.id)
+                          }
+                        >
+                          <RiDeleteBin5Line />
+                        </CollectionDeleteButton>
+                      </CollectionHeader>
+                    </CollectionImg>
+                  ))}
+                </CollectionSection>
+              </InnerDiv>
+            </OuterDiv>
+          </>
+        )}
+      </Wrapper>
+    </>
   );
 };
 

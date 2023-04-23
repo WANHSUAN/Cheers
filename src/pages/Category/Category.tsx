@@ -10,6 +10,7 @@ const PageImg = styled.img`
   object-fit: cover;
   padding-top: 60px;
 `;
+
 const Wrapper = styled.div`
   width: 1000px;
   margin: 0 auto;
