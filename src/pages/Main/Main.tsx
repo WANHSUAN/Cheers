@@ -17,14 +17,14 @@ const Wrapper = styled.div`
   padding-top: 60px;
 `;
 
-const SearchButton = styled(Link)`
-  text-decoration: none;
-`;
+// const SearchButton = styled(Link)`
+//   text-decoration: none;
+// `;
 
-const StyledSearchButton = styled.button`
-  width: 60px;
-  height: 30px;
-`;
+// const StyledSearchButton = styled.button`
+//   width: 60px;
+//   height: 30px;
+// `;
 
 const ImageContainer = styled.div`
   position: relative;
@@ -73,27 +73,65 @@ const DoubleArrow = styled.button`
   cursor: pointer;
 `;
 
-const AllBar = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const AllBarTitleSection = styled.div`
+  text-align: left;
 `;
 
-const AllBarTitle = styled.h2``;
+const AllBarSubTitle = styled.p`
+  color: #d19b18;
+  font-size: 20px;
+  margin-bottom: 20px;
+`;
+
+const AllBarTitle = styled.h2`
+  color: #fff;
+  font-size: 40px;
+  margin-bottom: 20px;
+`;
+
+const AllBarSection = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin: 100px 0;
+  justify-content: center;
+`;
 
 const BarSection = styled(Link)`
   text-decoration: none;
 `;
 
 const BarTitle = styled.h1`
+  width: 250px;
   font-size: 20px;
   padding-top: 10px;
+  color: #fff;
+  margin: 20px 0;
 `;
 
 const BarImg = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   padding: 10px;
+  border: 1px solid #fff;
+  margin-right: 10px;
+`;
+
+const MoreBarsButton = styled.button`
+  padding: 13px 40px;
+  border: 1px solid #fff;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-top: 80px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d19b18;
+    color: #000;
+  }
 `;
 
 const CalendarTitle = styled.h2``;
@@ -102,6 +140,7 @@ interface IMainBar {
   id: string;
   name: string;
   img: string;
+  description: string;
 }
 
 interface IMainEvent {
@@ -116,6 +155,7 @@ export interface IMainProps {}
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bars, setBars] = useState<IMainBar[]>([]);
   const [events, setEvents] = useState<IMainEvent[]>([]);
+  const [showMore, setShowMore] = useState(false);
   const barsCollectionRef = collection(db, "bars");
   const eventsCollectionRef = collection(db, "events");
 
@@ -141,12 +181,23 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     getEvents();
   }, []);
 
+  if (bars.length === 0) {
+    return <p>Loading...</p>;
+  }
+
+  const slicedData = bars.slice(0, 8);
+
+  // 當按鈕被點擊時，將 showMore 設為 true
+  const handleShowMore = () => {
+    setShowMore(true);
+  };
+
   return (
     <Wrapper>
       <Alert events={events} />
-      <StyledSearchButton>
+      {/* <StyledSearchButton>
         <SearchButton to={"/search"}>Search</SearchButton>
-      </StyledSearchButton>
+      </StyledSearchButton> */}
       <ImageContainer>
         <Slogan>
           YOUR
@@ -165,18 +216,34 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </DoubleArrow>
       </TitleSection>
       <Hashtag />
-      <AllBarTitle>All Bar</AllBarTitle>
-
-      <AllBar>
-        {bars.map((bar: IMainBar) => {
-          return (
-            <BarSection to={`/bars/${bar.id}`} key={bar.id}>
-              <BarTitle>{bar.name}</BarTitle>
-              <BarImg src={bar.img[2]} />
-            </BarSection>
-          );
-        })}
-      </AllBar>
+      <AllBarTitleSection>
+        <AllBarSubTitle>ALL BARS LIST</AllBarSubTitle>
+        <AllBarTitle>
+          The adventure <br />
+          starts now
+        </AllBarTitle>
+      </AllBarTitleSection>
+      <AllBarSection>
+        {slicedData.map((item) => (
+          <BarSection to={`/bars/${item.id}`} key={item.id}>
+            <BarTitle>{item.name}</BarTitle>
+            <BarImg src={item.img[2]} />
+          </BarSection>
+        ))}
+        {!showMore && (
+          <MoreBarsButton onClick={handleShowMore}>查看更多</MoreBarsButton>
+        )}
+        {showMore && (
+          <>
+            {bars.slice(8).map((bar) => (
+              <BarSection to={`/bars/${bar.id}`} key={bar.id}>
+                <BarTitle>{bar.name}</BarTitle>
+                <BarImg src={bar.img[2]} />
+              </BarSection>
+            ))}
+          </>
+        )}
+      </AllBarSection>
       <MainMap />
       <CalendarTitle>Calendar</CalendarTitle>
       <Calendar />
