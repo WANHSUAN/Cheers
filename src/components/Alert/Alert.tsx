@@ -27,7 +27,7 @@ const AlertCheck = styled.div`
 const ButtonSection = styled.div``;
 
 const CheckboxWrapper = styled.label`
-  width: 100px;
+  width: 120px;
   text-align: left;
 `;
 

@@ -342,8 +342,14 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
           "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
         }
       />
+      {/* {console.log(user.userImg)} */}
       <Wrapper>
         <MemberTitle>Welcome, {user.name}!</MemberTitle>
+        {/* <img
+          src={user.userImg}
+          alt=""
+          style={{width: "100px", height: "100px"}}
+        /> */}
         <RecommendationTitle>
           We <strong style={{color: "#D19B18"}}>RECOMMEND</strong> the bars for
           you

@@ -132,6 +132,7 @@ function MemberScore() {
   const [currentDocId, setCurrentDocId] = useState(id);
   const [key, setKey] = useState(0);
   const {user} = useContext(AuthContext);
+  console.log(user.userImg);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -153,7 +154,7 @@ function MemberScore() {
   return (
     <ScoreForm onSubmit={handleSubmit}>
       <LabelSectionInput>
-        <MemberImg />
+        <MemberImg src={user.userImg} />
         <InputTextArea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

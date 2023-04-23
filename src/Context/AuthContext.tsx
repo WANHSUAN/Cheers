@@ -15,6 +15,7 @@ import {DocumentData} from "firebase/firestore";
 export interface User {
   name: string;
   email: string;
+  userImg: string;
   userUID: string;
 }
 
@@ -32,6 +33,7 @@ export const AuthContext = createContext<AuthContextType>({
   user: {
     name: "",
     email: "",
+    userImg: "",
     userUID: "",
   },
   loading: false,
@@ -42,6 +44,7 @@ export const AuthContext = createContext<AuthContextType>({
 const initialUserData: User = {
   name: "",
   email: "",
+  userImg: "",
   userUID: "",
 };
 export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
@@ -68,21 +71,23 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         setUserUID(user.uid);
         if (getUser) {
           setIsLogin(true);
-          // console.log("有");
+          console.log("有此使用者");
 
           const data: User = {
             name: getUser.name || "",
             email: getUser.email || "",
+            userImg: getUser.photoURL || "",
             userUID: getUser.userUID || "",
           };
           setUser(data);
           setUserUID(user.uid);
         } else {
-          // console.log("沒有");
+          console.log("沒有此使用者");
           setIsLogin(true);
           const data: User = {
             name: user.displayName || "",
             email: user.email || "",
+            userImg: user.photoURL || "",
             userUID: user.uid || "",
           };
           setUser(data);
@@ -116,6 +121,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     const data: User = {
       name: user.displayName || "",
       email: user.email || "",
+      userImg: user.photoURL || "",
       userUID: user.uid || "",
     };
     await setUserDoc(data);

@@ -528,7 +528,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   return (
     <>
       <BarInfoSection>
-        <BarImg src={bar.img[0]} />
+        <BarImg src={bar.img[2]} />
         <BarInfo>
           <BarScore>
             <Score>

@@ -5,9 +5,14 @@ import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 
 const Wrapper = styled.div`
-  width: 700px;
+  width: 1000px;
+`;
+
+const HashTagSection = styled.div`
   display: flex;
-  margin: 20px auto;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin: 350px auto;
 `;
 
 const HashtagType = styled(Link)`
@@ -15,7 +20,9 @@ const HashtagType = styled(Link)`
 `;
 
 const StyledHashtagType = styled.p`
-  margin: 5px;
+  width: 180px;
+  font-size: 30px;
+  margin: 30px 0;
 `;
 
 interface IHashtag {
@@ -47,19 +54,21 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
 
   return (
     <Wrapper>
-      {hashtags.map((hashtag, index) => {
-        return (
-          // <StyledHashtagType key={index}>
-          <HashtagType
-            key={index}
-            to={`/category/#${hashtag.type}`}
-            style={{color: hashtag.colorCode}}
-          >
-            #{hashtag.type}
-          </HashtagType>
-          // </StyledHashtagType>
-        );
-      })}
+      <HashTagSection>
+        {hashtags.map((hashtag, index) => {
+          return (
+            <StyledHashtagType key={index}>
+              <HashtagType
+                key={index}
+                to={`/category/#${hashtag.type}`}
+                style={{color: hashtag.colorCode}}
+              >
+                #{hashtag.type}
+              </HashtagType>
+            </StyledHashtagType>
+          );
+        })}
+      </HashTagSection>
     </Wrapper>
   );
 };
