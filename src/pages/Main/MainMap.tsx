@@ -6,32 +6,45 @@ import {collection, getDocs} from "firebase/firestore";
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  margin: 50px 100px;
+  margin: 50px 200px 100px;
 `;
+
 const GoogleMap = styled.div`
   display: flex;
   width: 100%;
 `;
 
 const Map = styled.div`
-  height: 550px;
-  width: 1280px;
-  border: 10px solid beige;
-  margin-bottom: 10px;
+  height: 500px;
+  width: 1000px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px #d9d9d980;
+  border: 2px solid #fff;
 `;
 
 const ButtonSection = styled.div`
   gap: 5px;
+  margin-right: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
 const CategoryButton = styled.button`
-  width: 70px;
+  width: 100px;
   height: 30px;
-  background-color: #8daeed;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
   border: 1px solid #000;
   border-radius: 5px;
+  text-align: right;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:hover {
+    color: #d19b18;
+  }
 `;
 
 declare const window: Window & {
@@ -264,44 +277,44 @@ function Address(props: IAddressProps) {
 
   return (
     <Wrapper>
+      <ButtonSection>
+        <CategoryButton onClick={() => props.setButtonType("")}>
+          #All Bars
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("afternoon")}>
+          #Afternoon
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("night")}>
+          #night
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("alone")}>
+          #alone
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("together")}>
+          #together
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("classic")}>
+          #classic
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("special")}>
+          #special
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("simple")}>
+          #simple
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("vision")}>
+          #vision
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("couple")}>
+          #couple
+        </CategoryButton>
+        <CategoryButton onClick={() => props.setButtonType("friend")}>
+          #friend
+        </CategoryButton>
+      </ButtonSection>
       <GoogleMap>
         <Map id="map" />
       </GoogleMap>
-      <ButtonSection>
-        <CategoryButton onClick={() => props.setButtonType("")}>
-          All Bars
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("afternoon")}>
-          Afternoon
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("night")}>
-          night
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("alone")}>
-          alone
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("together")}>
-          together
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("classic")}>
-          classic
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("special")}>
-          special
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("simple")}>
-          simple
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("vision")}>
-          vision
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("couple")}>
-          couple
-        </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("friend")}>
-          friend
-        </CategoryButton>
-      </ButtonSection>
     </Wrapper>
   );
 }

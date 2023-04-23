@@ -146,6 +146,17 @@ const CalendarTitle = styled.h2`
   font-size: 40px;
 `;
 
+const MapSubTitle = styled.p`
+  font-size: 20px;
+  margin: 200px 0 10px 0;
+  color: #d19b18;
+`;
+
+const MapTitle = styled.p`
+  font-size: 40px;
+  color: #fff;
+`;
+
 interface IMainBar {
   id: string;
   name: string;
@@ -254,10 +265,12 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </>
         )}
       </AllBarSection>
-      <MainMap />
       <CalendarSubTitle>EVENTS</CalendarSubTitle>
-      <CalendarTitle>It's time to join the Event</CalendarTitle>
+      <CalendarTitle>It's time to join the Event!</CalendarTitle>
       <Calendar />
+      <MapSubTitle>POSITION</MapSubTitle>
+      <MapTitle>Where is the Bar?</MapTitle>
+      <MainMap />
     </Wrapper>
   );
 };
