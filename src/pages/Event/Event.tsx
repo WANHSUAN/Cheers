@@ -14,14 +14,14 @@ const Wrapper = styled.div`
 
 const PageImg = styled.img`
   width: 100vw;
-  height: 300px;
+  height: 400px;
   object-fit: cover;
 `;
 
 const EventTitle = styled.h2`
   color: #d19b18;
   font-size: 40px;
-  margin: 80px 80px 80px 0;
+  margin: 70px 80px 80px 0;
 `;
 
 const InnerDiv = styled.div`

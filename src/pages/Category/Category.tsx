@@ -3,40 +3,51 @@ import styled from "styled-components";
 import {db} from "../../App";
 import {Link} from "react-router-dom";
 import {collection, getDocs} from "firebase/firestore";
-import SideMenu from "../../components/SideMenu/SideMenu";
 
+const PageImg = styled.img`
+  width: 100vw;
+  height: 400px;
+  object-fit: cover;
+  padding-top: 60px;
+`;
 const Wrapper = styled.div`
   width: 1000px;
+  margin: 0 auto;
 `;
 
-const MenuButton = styled.button`
-  width: 50px;
-  height: 30px;
+const CategorySection = styled(Link)`
+  text-decoration: none;
 `;
 
 const CategoryTitle = styled.div`
-  font-size: 30px;
+  font-size: 40px;
+  margin: 60px 0;
+`;
+
+const CategoryCollection = styled.div`
+  display: flex;
+  width: 1000px;
+  overflow: auto;
 `;
 
 const CategoryItem = styled.div`
   display: flex;
+  flex-direction: column;
   margin: 10px;
   gap: 10px;
+  text-align: center;
 `;
 
-const CategoryName = styled.p``;
+const CategoryName = styled.p`
+  color: #fff;
+  font-size: 20px;
+`;
 
 const CategoryImg = styled.img`
-  width: 300px;
-`;
-
-const CategoryButton = styled(Link)`
-  text-decoration: none;
-`;
-
-const StyledCategoryButton = styled.button`
-  width: 100px;
-  height: 50px;
+  width: 320px;
+  height: 400px;
+  object-fit: cover;
+  padding: 5px;
 `;
 
 interface IHashtag {
@@ -50,7 +61,6 @@ export interface ICategoryProps {}
 const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
   const [hashtags, setHashtags] = useState<IHashtag[]>([]);
   const hashtagsCollectionRef = collection(db, "hashtags");
-  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     const getHashtags = async () => {
@@ -67,33 +77,33 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
     return <p>Loading...</p>;
   }
 
-  function handleMenuClick() {
-    setShowMenu(!showMenu);
-  }
-
   return (
-    <Wrapper>
-      <MenuButton onClick={handleMenuClick}>Menu</MenuButton>
-      {showMenu && <SideMenu />}
-      {hashtags.map((hashtag, index) => (
-        <div key={index}>
-          <CategoryTitle style={{color: hashtag.colorCode}}>
-            #{hashtag.type}
-          </CategoryTitle>
-          {hashtag.bars.map((type, index) => (
-            <CategoryItem key={index}>
-              <CategoryImg src={type.img} />
-              <CategoryName>{type.name}</CategoryName>
-              <StyledCategoryButton>
-                <CategoryButton to={`/bars/${type.id}`}>
-                  Go to Bar!
-                </CategoryButton>
-              </StyledCategoryButton>
-            </CategoryItem>
-          ))}
-        </div>
-      ))}
-    </Wrapper>
+    <>
+      <PageImg
+        src={
+          "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        }
+      />
+      <Wrapper>
+        {hashtags.map((hashtag, index) => (
+          <div key={index}>
+            <CategoryTitle style={{color: hashtag.colorCode}}>
+              #{hashtag.type}
+            </CategoryTitle>
+            <CategoryCollection>
+              {hashtag.bars.map((type, index) => (
+                <CategorySection key={index} to={`/bars/${type.id}`}>
+                  <CategoryItem>
+                    <CategoryImg src={type.img} />
+                    <CategoryName>{type.name}</CategoryName>
+                  </CategoryItem>
+                </CategorySection>
+              ))}
+            </CategoryCollection>
+          </div>
+        ))}
+      </Wrapper>
+    </>
   );
 };
 

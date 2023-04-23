@@ -22,6 +22,10 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Wrapper = styled.div`
+  min-height: calc(100vh - 80px);
+`;
+
 const app = initializeApp(config.firebaseConfig);
 export const db = getFirestore(app);
 
@@ -32,8 +36,10 @@ const App: React.FC<IAppProps> = (props) => {
     <>
       <GlobalStyle />
       <AuthContextProvider>
-        <Header />
-        <Outlet />
+        <Wrapper>
+          <Header />
+          <Outlet />
+        </Wrapper>
         <Footer />
       </AuthContextProvider>
     </>

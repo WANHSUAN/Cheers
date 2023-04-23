@@ -16,7 +16,7 @@ const RecSection = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   text-align: center;
-  margin-bottom: 50px;
+  margin: 50px 0;
 `;
 
 const RecItem = styled(Link)`
