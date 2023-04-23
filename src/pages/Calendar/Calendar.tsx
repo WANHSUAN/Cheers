@@ -5,70 +5,79 @@ import {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import {SlArrowLeft, SlArrowRight} from "react-icons/sl";
+import {RxEnter} from "react-icons/rx";
 
 const CalendarWrapper = styled.div`
-  width: 350px;
-  margin: 0 auto;
+  width: 1000px;
+  margin: 0 auto 250px;
+  position: relative;
 `;
 
 const CalendarSection = styled.div`
-  font-family: Arial, sans-serif;
-  width: 350px;
-  height: 380px;
-  border: 1px solid #ccc;
+  width: 490px;
+  height: 510px;
   border-radius: 8px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #4c4a49;
+  border: 1px solid #fff;
 `;
 
 const CalendarSectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px;
-  background-color: #eee;
+  padding: 20px;
+  background-color: #4c4a49;
   border-radius: 8px 8px 0 0;
+  color: #fff;
 `;
 
 const CalendarWeekdaysSection = styled.div`
   display: flex;
-  justify-content: space-between;
-  background-color: #eee;
+  justify-content: space-around;
+  color: #fff;
   padding: 8px;
-  border-bottom: 1px solid #ccc;
 `;
 
 const CalendarButton = styled.button`
   background-color: transparent;
   border: none;
-  color: #666;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 25px;
+  color: #fff;
+  margin: 0 20px;
 `;
 
 const CalendarMonth = styled.div`
-  font-size: 18px;
+  font-size: 30px;
   font-weight: bold;
 `;
 
+const Arrow = styled.div`
+  display: flex;
+`;
+
 const CalendarDay = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
+  font-size: 20px;
+  padding-left: 10%;
 
   &.calendar__day--today {
-    background-color: #903489;
+    background-color: #d19b18;
     color: #fff;
   }
   &.calendar__day--event {
-    background-color: #483492;
+    background-color: #ee8270;
     color: #fff;
   }
   &.calendar__day--selected {
-    background-color: #000;
+    background-color: #a291c5;
     color: #fff;
   }
 `;
@@ -76,21 +85,23 @@ const CalendarDay = styled.div`
 const CalendarDaysSection = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  padding: 8px;
-  background-color: #fff;
+  gap: 10px;
+  padding: 10px;
+  background-color: #4c4a49;
   border-radius: 0 0 8px 8px;
+  color: #fff;
 `;
 
 const CalendarDayEmpty = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: #f5f5f5;
-  cursor: default;
+  background-color: #f5f5f55c;
+  cursor: pointer;
+  margin-left: 8px;
 `;
 
 const CalendarDayHeader = styled.div`
@@ -103,28 +114,69 @@ const CalendarDayHeader = styled.div`
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
-  color: #666;
+  color: #fff;
+`;
+
+const OuterDiv = styled.div`
+  width: 90%;
+  height: 480px;
+  border: 2px solid white;
+  padding: 10px;
+  margin: 0 auto;
+  position: relative;
+`;
+
+const InnerDiv = styled.div`
+  width: 100%;
+  height: 510px;
+  border: 2px solid white;
+  padding: 10px;
+  margin-top: -25px;
 `;
 
 const EventSection = styled.div`
-  padding-top: 50px;
-  height: 200px;
+  width: 400px;
+  height: 500px;
+  position: absolute;
+  top: 2%;
+  left: 55%;
+  border-radius: 10px;
 `;
 
-const EventBar = styled.h2``;
+const EventTitle = styled.p`
+  color: #d19b18;
+  font-size: 30px;
+  margin: 40px 0;
+`;
 
-const EventContent = styled.p``;
+const EventName = styled.p`
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 40px;
+`;
+
+const EventContent = styled.p`
+  color: #fff;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: left;
+`;
 
 const StyledEventButton = styled.button`
-  border: 1px solid #839102;
+  border: none;
   border-radius: 5px;
   padding: 10px;
-  background-color: #759402;
-  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+  position: absolute;
+  bottom: 3%;
+  right: 5%;
+
   cursor: pointer;
 `;
 const EventButton = styled(Link)`
   text-decoration: none;
+  color: #d19b18;
+  font-size: 30px;
 `;
 
 interface IEvent {
@@ -210,9 +262,15 @@ function CalendarHeader({
 
   return (
     <CalendarSectionHeader>
-      <CalendarButton onClick={prevMonth}>&lt;</CalendarButton>
       <CalendarMonth>{monthYear}</CalendarMonth>
-      <CalendarButton onClick={nextMonth}>&gt;</CalendarButton>
+      <Arrow>
+        <CalendarButton onClick={prevMonth}>
+          <SlArrowLeft />
+        </CalendarButton>
+        <CalendarButton onClick={nextMonth}>
+          <SlArrowRight />
+        </CalendarButton>
+      </Arrow>
     </CalendarSectionHeader>
   );
 }
@@ -309,13 +367,18 @@ function CalendarDays({
         if (seconds < daySeconds && daySeconds <= seconds + 86400) {
           return (
             <EventSection key={index}>
-              <EventBar>{event.bar}</EventBar>
-              <EventContent>{event.content}</EventContent>
-              <StyledEventButton>
-                <EventButton to={`/events/${event.id}`}>
-                  Go to the Bar Event!
-                </EventButton>
-              </StyledEventButton>
+              <OuterDiv>
+                <InnerDiv>
+                  <EventTitle>Today's Event</EventTitle>
+                  <EventName>{event.bar}</EventName>
+                  <EventContent>{event.content}</EventContent>
+                  <StyledEventButton>
+                    <EventButton to={`/events/${event.id}`}>
+                      <RxEnter />
+                    </EventButton>
+                  </StyledEventButton>
+                </InnerDiv>
+              </OuterDiv>
             </EventSection>
           );
         }

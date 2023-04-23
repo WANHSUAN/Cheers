@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
 import SideMenu from "../SideMenu/SideMenu";
-import {RxHamburgerMenu} from "react-icons/rx";
 import {FiSearch} from "react-icons/fi";
+import {HiBars3CenterLeft} from "react-icons/hi2";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -109,7 +109,7 @@ const Header = () => {
       <Nav>
         <MenuSection>
           <NavButton onClick={handleSideMenu}>
-            <RxHamburgerMenu />
+            <HiBars3CenterLeft />
           </NavButton>
           {isToggle && <SideMenu />}
           <Menu>MENU</Menu>

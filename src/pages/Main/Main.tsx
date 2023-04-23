@@ -134,7 +134,17 @@ const MoreBarsButton = styled.button`
   }
 `;
 
-const CalendarTitle = styled.h2``;
+const CalendarSubTitle = styled.p`
+  color: #d19b18;
+  margin: 200px 0 10px 0;
+  font-size: 20px;
+`;
+
+const CalendarTitle = styled.h2`
+  color: #fff;
+  margin-bottom: 150px;
+  font-size: 40px;
+`;
 
 interface IMainBar {
   id: string;
@@ -231,7 +241,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </BarSection>
         ))}
         {!showMore && (
-          <MoreBarsButton onClick={handleShowMore}>查看更多</MoreBarsButton>
+          <MoreBarsButton onClick={handleShowMore}>More Bars</MoreBarsButton>
         )}
         {showMore && (
           <>
@@ -245,7 +255,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         )}
       </AllBarSection>
       <MainMap />
-      <CalendarTitle>Calendar</CalendarTitle>
+      <CalendarSubTitle>EVENTS</CalendarSubTitle>
+      <CalendarTitle>It's time to join the Event</CalendarTitle>
       <Calendar />
     </Wrapper>
   );
