@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   text-align: center;
   width: 1100px;
   margin: 0 auto;
+  padding-top: 80px;
 `;
 
 const SearchButton = styled(Link)`

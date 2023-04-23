@@ -1,38 +1,76 @@
 import React, {useEffect, useState} from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
 
-const AlertMessage = styled.p`
-  font-size: 15px;
+const Wrapper = styled.div`
+  width: 400px;
+  height: 130px;
+  border: 1px solid #fff;
+  background-color: #d19b18;
+  color: #fff;
+  border-radius: 10px;
+  text-align: left;
+  padding: 15px;
 `;
 
-const Wrapper = styled.div`
-  width: 300px;
-  height: 130px;
-  border: 1px solid #5d4317;
+const AlertMessage = styled.div`
+  font-size: 15px;
+  padding: 15px 0;
+  line-height: 20px;
 `;
+
+const AlertCheck = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ButtonSection = styled.div``;
 
 const CheckboxWrapper = styled.label`
   width: 100px;
-  height: 100px;
+  text-align: left;
 `;
 
-const CheckboxInput = styled.input``;
+const CheckboxInput = styled.input`
+  vertical-align: middle;
+`;
 
-const CheckboxLabel = styled.span``;
+const CheckboxLabel = styled.span`
+  font-size: 10px;
+  margin-left: 10px;
+`;
 
 const StyledEnterButton = styled.button`
-  width: 50px;
-  height: 30px;
+  width: 60px;
+  height: 20px;
+  border: none;
+  font-size: 10px;
+  border-radius: 3px;
+
+  &:hover {
+    background-color: #cd863a;
+  }
 `;
 
 const EnterButton = styled(Link)`
   text-decoration: none;
+  color: #000;
+  cursor: pointer;
 `;
 
 const CloseButton = styled.button`
-  width: 50px;
-  height: 30px;
+  width: 60px;
+  height: 20px;
+  font-size: 10px;
+  border: none;
+  border-radius: 3px;
+  margin-left: 5px;
+  color: #000;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #cd863a;
+  }
 `;
 
 interface IAlertEvent {
@@ -88,20 +126,24 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
                 <br />
                 邀請您來共襄盛舉～
               </AlertMessage>
-              <CheckboxWrapper>
-                <CheckboxInput
-                  type="checkbox"
-                  checked={ischecked}
-                  onChange={handleOnChange}
-                />
-                <CheckboxLabel>今日不再顯示</CheckboxLabel>
-              </CheckboxWrapper>
-              <StyledEnterButton>
-                <EnterButton to={`/events/${event.id}`} key={event.id}>
-                  Enter
-                </EnterButton>
-              </StyledEnterButton>
-              <CloseButton onClick={handleCloseClick}>Close</CloseButton>
+              <AlertCheck>
+                <CheckboxWrapper>
+                  <CheckboxInput
+                    type="checkbox"
+                    checked={ischecked}
+                    onChange={handleOnChange}
+                  />
+                  <CheckboxLabel>今日不再顯示</CheckboxLabel>
+                </CheckboxWrapper>
+                <ButtonSection>
+                  <StyledEnterButton>
+                    <EnterButton to={`/events/${event.id}`} key={event.id}>
+                      Enter
+                    </EnterButton>
+                  </StyledEnterButton>
+                  <CloseButton onClick={handleCloseClick}>Close</CloseButton>
+                </ButtonSection>
+              </AlertCheck>
             </Wrapper>
           ) : null;
         })}
