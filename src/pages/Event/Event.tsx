@@ -8,7 +8,7 @@ import {RxDoubleArrowRight} from "react-icons/rx";
 
 const Wrapper = styled.div`
   padding: 10px;
-  padding-top: 80px;
+  padding-top: 60px;
   letter-spacing: 3px;
 `;
 

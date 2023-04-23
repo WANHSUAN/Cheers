@@ -7,7 +7,7 @@ import {collection, getDocs} from "firebase/firestore";
 const Wrapper = styled.div`
   width: 700px;
   margin: 0 auto;
-  padding-top: 80px;
+  padding-top: 60px;
 `;
 
 const RecSection = styled.div`
@@ -26,6 +26,7 @@ const RecItem = styled(Link)`
 const RecName = styled.h3`
   color: #fff;
   margin-bottom: 10px;
+  width: 150px;
 `;
 
 const RecImg = styled.img`

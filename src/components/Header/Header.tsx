@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const Nav = styled.div`
   width: 100vw;
-  height: 80px;
+  height: 60px;
   background-color: #000;
   display: flex;
   flex-wrap: wrap;

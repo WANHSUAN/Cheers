@@ -20,7 +20,7 @@ import {RxDoubleArrowDown, RxDoubleArrowRight} from "react-icons/rx";
 const Wrapper = styled.div`
   width: 83.5%;
   margin: 0 auto;
-  padding-top: 80px;
+  padding-top: 60px;
 `;
 
 const ImageContainer = styled.div`
