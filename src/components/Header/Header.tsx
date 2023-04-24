@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import {useState} from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
-import SideMenu from "../SideMenu/SideMenu";
 import {FiSearch} from "react-icons/fi";
 import {HiBars3CenterLeft} from "react-icons/hi2";
+import {TfiClose} from "react-icons/tfi";
+import side from "./side.png";
 
 const Wrapper = styled.div`
   position: fixed;
@@ -92,13 +93,54 @@ const SearchButton = styled.button`
   cursor: pointer;
 `;
 
+const SideMenuWrapper = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url(${side}) no-repeat center center fixed;
+  background-size: cover;
+  z-index: 1;
+`;
+
+const SideMenuList = styled.ul`
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+  text-align: center;
+  margin: 10% auto;
+  gap: 40px;
+`;
+
+const MenuItem = styled.li`
+  width: 400px;
+  list-style: none;
+  font-size: 70px;
+  margin: 20px 0;
+  padding: 0 30px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 16px;
+  color: #fff;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #fff;
+`;
+
+type HandleSideMenuType = () => void;
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
 
-  function handleSideMenu() {
+  const handleSideMenu: HandleSideMenuType = () => {
     setIsToggle(!isToggle);
-  }
+  };
 
   function OpenSearch() {
     setIsOpen(!isOpen);
@@ -109,9 +151,9 @@ const Header = () => {
       <Nav>
         <MenuSection>
           <NavButton onClick={handleSideMenu}>
-            <HiBars3CenterLeft />
+            {isToggle ? <TfiClose /> : <HiBars3CenterLeft />}
           </NavButton>
-          {isToggle && <SideMenu />}
+          {isToggle && <SideMenu handleSideMenu={handleSideMenu} />}
           <Menu>MENU</Menu>
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
@@ -130,5 +172,36 @@ const Header = () => {
     </Wrapper>
   );
 };
+
+function SideMenu({handleSideMenu}: {handleSideMenu: HandleSideMenuType}) {
+  return (
+    <>
+      <SideMenuWrapper>
+        <SideMenuList>
+          <MenuItem>
+            <StyledLink onClick={handleSideMenu} to={"/member"}>
+              Member
+            </StyledLink>
+          </MenuItem>
+          <MenuItem>
+            <StyledLink onClick={handleSideMenu} to={"/main"}>
+              All Bars
+            </StyledLink>
+          </MenuItem>
+          <MenuItem>
+            <StyledLink onClick={handleSideMenu} to={"/category"}>
+              Category
+            </StyledLink>
+          </MenuItem>
+          <MenuItem>
+            <StyledLink onClick={handleSideMenu} to={"/main"}>
+              Log Out
+            </StyledLink>
+          </MenuItem>
+        </SideMenuList>
+      </SideMenuWrapper>
+    </>
+  );
+}
 
 export default Header;

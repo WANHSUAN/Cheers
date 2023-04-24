@@ -1,7 +1,7 @@
 import {useState} from "react";
 import styled from "styled-components";
 import {Link} from "react-router-dom";
-import SideMenu from "../../components/SideMenu/SideMenu";
+import SideMenu from "../../components/Header/side.png";
 
 import algoliasearch from "algoliasearch/lite";
 import {

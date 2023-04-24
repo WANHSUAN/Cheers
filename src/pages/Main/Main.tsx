@@ -5,7 +5,6 @@ import {db} from "../../App";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
 import MainMap from "./MainMap";
-// import Alert from "../../components/Alert/Alert";
 import Hashtag from "./Hashtag";
 import main from "../Question/main.png";
 import {RxDoubleArrowDown} from "react-icons/rx";

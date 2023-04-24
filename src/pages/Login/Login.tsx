@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import styled from "styled-components";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {AuthContext} from "../../Context/AuthContext";
-import side from "../../components/SideMenu/side.png";
+import side from "../../components/Header/side.png";
 
 const Wrapper = styled.div`
   padding-top: 60px;
