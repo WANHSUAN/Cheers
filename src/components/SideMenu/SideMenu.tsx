@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 
 const Nav = styled.div`
   width: 100vw;
-  height: 95px;
+  height: 60px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -101,7 +101,7 @@ const Menu = styled.ul`
   justify-content: space-around;
   padding: 20px;
   text-align: center;
-  margin: 7% auto;
+  margin: 10% auto;
   gap: 40px;
 `;
 
@@ -111,6 +111,10 @@ const MenuItem = styled.li`
   font-size: 70px;
   margin: 20px 0;
   padding: 0 30px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 16px;
+  color: #fff;
 `;
 
 const StyledLink = styled(Link)`

@@ -25,13 +25,11 @@ const Wrapper = styled.div`
   text-align: center;
   width: 1000px;
   margin: 0 auto;
-  letter-spacing: 3px;
 `;
 
 const BarInfoSection = styled.div`
   padding-top: 120px;
   display: flex;
-  letter-spacing: 3px;
 `;
 
 const Score = styled.div`
@@ -83,6 +81,8 @@ const BarItemSection = styled.div`
 
 const BarItemTitle = styled.p`
   text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 10px;
   font-size: 20px;
   padding-top: 20px;
 `;
@@ -249,15 +249,14 @@ const UserName = styled.p`
   margin-bottom: 30px;
 `;
 
-// const Page = styled.p`
-//   font-size: 10px;
-// `;
+const Page = styled.p`
+  font-size: 10px;
+`;
 
 const BarRec = styled.div`
   background-color: #d19b18;
   border-radius: 300px 0 0 0;
   padding: 30px;
-  letter-spacing: 3px;
 `;
 
 const BarRecContentSection = styled.div`
@@ -322,7 +321,6 @@ const MemberScoreSection = styled.div`
   height: 500px;
   margin: 0 auto;
   text-align: center;
-  letter-spacing: 3px;
 `;
 
 const MemberScoreTitle = styled.h2`
@@ -610,7 +608,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                     ))}
                   </MemberScores>
                   <UserName>{item.userName}</UserName>
-                  {/* <Page>1 / 1</Page> */}
+                  <Page>1 / 1</Page>
                 </CommentItem>
               ))}
             </CommentBox>
