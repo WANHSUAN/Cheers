@@ -158,96 +158,96 @@ const MapTitle = styled.p`
   color: #fff;
 `;
 
-// const AlertWrapper = styled.div`
-//   position: absolute;
-//   top: 6%;
-//   left: 33%;
-//   z-index: 3;
-// `;
+const AlertWrapper = styled.div`
+  position: absolute;
+  top: 6%;
+  left: 33%;
+  z-index: 3;
+`;
 
-// const Background = styled.div`
-//   width: 100vw;
-//   height: 100vh;
-//   background-color: #0000009d;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   z-index: 2;
-// `;
+const Background = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: #0000009d;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+`;
 
-// const AlertSection = styled.div`
-//   width: 400px;
-//   height: 130px;
-//   border: 1px solid #fff;
-//   background-color: #d19b18;
-//   color: #fff;
-//   border-radius: 10px;
-//   text-align: left;
-//   padding: 15px;
-//   position: absolute;
-//   top: 50%;
-//   left: 32%;
-// `;
+const AlertSection = styled.div`
+  width: 400px;
+  height: 130px;
+  border: 1px solid #fff;
+  background-color: #d19b18;
+  color: #fff;
+  border-radius: 10px;
+  text-align: left;
+  padding: 15px;
+  position: absolute;
+  top: 50%;
+  left: 32%;
+`;
 
-// const AlertMessage = styled.div`
-//   font-size: 15px;
-//   padding: 15px 0;
-//   line-height: 20px;
-// `;
+const AlertMessage = styled.div`
+  font-size: 15px;
+  padding: 15px 0;
+  line-height: 20px;
+`;
 
-// const AlertCheck = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-// `;
+const AlertCheck = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
-// const ButtonSection = styled.div``;
+const ButtonSection = styled.div``;
 
-// const CheckboxWrapper = styled.label`
-//   width: 120px;
-//   text-align: left;
-// `;
+const CheckboxWrapper = styled.label`
+  width: 120px;
+  text-align: left;
+`;
 
-// const CheckboxInput = styled.input`
-//   vertical-align: middle;
-// `;
+const CheckboxInput = styled.input`
+  vertical-align: middle;
+`;
 
-// const CheckboxLabel = styled.span`
-//   font-size: 10px;
-//   margin-left: 10px;
-// `;
+const CheckboxLabel = styled.span`
+  font-size: 10px;
+  margin-left: 10px;
+`;
 
-// const StyledEnterButton = styled.button`
-//   width: 60px;
-//   height: 20px;
-//   border: none;
-//   font-size: 10px;
-//   border-radius: 3px;
+const StyledEnterButton = styled.button`
+  width: 60px;
+  height: 20px;
+  border: none;
+  font-size: 10px;
+  border-radius: 3px;
 
-//   &:hover {
-//     background-color: #cd863a;
-//   }
-// `;
+  &:hover {
+    background-color: #cd863a;
+  }
+`;
 
-// const EnterButton = styled(Link)`
-//   text-decoration: none;
-//   color: #000;
-//   cursor: pointer;
-// `;
+const EnterButton = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+`;
 
-// const CloseButton = styled.button`
-//   width: 60px;
-//   height: 20px;
-//   font-size: 10px;
-//   border: none;
-//   border-radius: 3px;
-//   margin-left: 5px;
-//   color: #000;
-//   cursor: pointer;
+const CloseButton = styled.button`
+  width: 60px;
+  height: 20px;
+  font-size: 10px;
+  border: none;
+  border-radius: 3px;
+  margin-left: 5px;
+  color: #000;
+  cursor: pointer;
 
-//   &:hover {
-//     background-color: #cd863a;
-//   }
-// `;
+  &:hover {
+    background-color: #cd863a;
+  }
+`;
 
 interface IMainBar {
   id: string;
@@ -316,7 +316,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   return (
     <>
       <Wrapper>
-        {/* <Alert events={events} /> */}
+        <Alert events={events} />
         {/* <StyledSearchButton>
         <SearchButton to={"/search"}>Search</SearchButton>
       </StyledSearchButton> */}
@@ -377,77 +377,80 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   );
 };
 
-// const Alert = ({events}: {events: IAlertEvent[]}) => {
-//   const [showAlert, setShowAlert] = useState(true);
-//   const [ischecked, setIsChecked] = useState(false);
+const Alert = ({events}: {events: IAlertEvent[]}) => {
+  const [showAlert, setShowAlert] = useState(true);
+  const [ischecked, setIsChecked] = useState(false);
+  const [showBackground, setShowBackground] = useState(true); // 新增的狀態變數
 
-//   useEffect(() => {
-//     const hideAlertToday = localStorage.getItem("hideAlertToday");
-//     if (hideAlertToday === "true") {
-//       setShowAlert(false);
-//     }
-//   }, []);
+  useEffect(() => {
+    const hideAlertToday = localStorage.getItem("hideAlertToday");
+    if (hideAlertToday === "true") {
+      setShowAlert(false);
+      setShowBackground(false);
+    }
+  }, []);
 
-//   if (events.length === 0) {
-//     return null;
-//   }
+  if (events.length === 0) {
+    return null;
+  }
 
-//   const isToday = new Date().toDateString();
+  const isToday = new Date().toDateString();
 
-//   const hasEvent = events.map((event) => {
-//     const eventDate = new Date(event.time.seconds * 1000);
-//     return eventDate.toDateString() === isToday;
-//   });
+  const hasEvent = events.map((event) => {
+    const eventDate = new Date(event.time.seconds * 1000);
+    return eventDate.toDateString() === isToday;
+  });
 
-//   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-//     if (e.target.checked) {
-//       setIsChecked(true);
-//       localStorage.setItem("hideAlertToday", "true");
-//     }
-//     return;
-//   }
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (e.target.checked) {
+      setIsChecked(true);
+      localStorage.setItem("hideAlertToday", "true");
+    }
+    return;
+  }
 
-//   function handleCloseClick() {
-//     setShowAlert(false);
-//   }
+  function handleCloseClick() {
+    setShowAlert(false);
+    setShowBackground(false); // 更新狀態變數
+  }
 
-//   return (
-//     <>
-//       {/* <Background /> */}
-//       <AlertWrapper>
-//         {showAlert &&
-//           events.map((event, index) => {
-//             return hasEvent[index] ? (
-//               <AlertSection key={index}>
-//                 <AlertMessage>
-//                   今日 {event.bar} 有特別活動！
-//                   <br />
-//                   邀請您來共襄盛舉～
-//                 </AlertMessage>
-//                 <AlertCheck>
-//                   <CheckboxWrapper>
-//                     <CheckboxInput
-//                       type="checkbox"
-//                       checked={ischecked}
-//                       onChange={handleOnChange}
-//                     />
-//                     <CheckboxLabel>今日不再顯示</CheckboxLabel>
-//                   </CheckboxWrapper>
-//                   <ButtonSection>
-//                     <StyledEnterButton>
-//                       <EnterButton to={`/events/${event.id}`} key={event.id}>
-//                         Enter
-//                       </EnterButton>
-//                     </StyledEnterButton>
-//                     <CloseButton onClick={handleCloseClick}>Close</CloseButton>
-//                   </ButtonSection>
-//                 </AlertCheck>
-//               </AlertSection>
-//             ) : null;
-//           })}
-//       </AlertWrapper>
-//     </>
-//   );
-// };
+  return (
+    <>
+      {showBackground && <Background />}
+      <AlertWrapper>
+        {showAlert &&
+          events.map((event, index) => {
+            return hasEvent[index] ? (
+              <AlertSection key={index}>
+                <AlertMessage>
+                  今日 {event.bar} 有特別活動！
+                  <br />
+                  邀請您來共襄盛舉～
+                </AlertMessage>
+                <AlertCheck>
+                  <CheckboxWrapper>
+                    <CheckboxInput
+                      type="checkbox"
+                      checked={ischecked}
+                      onChange={handleOnChange}
+                    />
+                    <CheckboxLabel>今日不再顯示</CheckboxLabel>
+                  </CheckboxWrapper>
+                  <ButtonSection>
+                    <StyledEnterButton>
+                      <EnterButton to={`/events/${event.id}`} key={event.id}>
+                        Enter
+                      </EnterButton>
+                    </StyledEnterButton>
+                    <CloseButton onClick={handleCloseClick}>Close</CloseButton>
+                  </ButtonSection>
+                </AlertCheck>
+              </AlertSection>
+            ) : null;
+          })}
+      </AlertWrapper>
+    </>
+  );
+};
 
 export default MainPage;
