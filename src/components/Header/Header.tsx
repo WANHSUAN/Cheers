@@ -7,7 +7,7 @@ import {HiBars3CenterLeft} from "react-icons/hi2";
 
 const Wrapper = styled.div`
   position: fixed;
-  z-index: 2;
+  z-index: 4;
 `;
 
 const Nav = styled.div`

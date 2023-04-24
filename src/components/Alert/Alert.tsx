@@ -3,6 +3,16 @@ import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
 
 const Wrapper = styled.div`
+  /* width: 1100px;
+  height: 100vh; */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  position: relative;
+  z-index: 2;
+`;
+
+const AlertSection = styled.div`
   width: 400px;
   height: 130px;
   border: 1px solid #fff;
@@ -11,6 +21,9 @@ const Wrapper = styled.div`
   border-radius: 10px;
   text-align: left;
   padding: 15px;
+  position: absolute;
+  top: 50%;
+  left: 32%;
 `;
 
 const AlertMessage = styled.div`
@@ -116,11 +129,11 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
   }
 
   return (
-    <>
+    <Wrapper>
       {showAlert &&
         events.map((event, index) => {
           return hasEvent[index] ? (
-            <Wrapper key={index}>
+            <AlertSection key={index}>
               <AlertMessage>
                 今日 {event.bar} 有特別活動！
                 <br />
@@ -144,10 +157,10 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
                   <CloseButton onClick={handleCloseClick}>Close</CloseButton>
                 </ButtonSection>
               </AlertCheck>
-            </Wrapper>
+            </AlertSection>
           ) : null;
         })}
-    </>
+    </Wrapper>
   );
 };
 

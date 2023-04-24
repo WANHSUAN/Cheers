@@ -45,7 +45,7 @@ const OuterDiv = styled.div`
   width: 100%;
   /* height: 400px; */
   border: 2px solid white;
-  margin: 0 auto;
+  margin: 0 auto 50px;
   padding: 10px;
 `;
 

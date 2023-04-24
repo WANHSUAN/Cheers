@@ -188,33 +188,44 @@ const CommentContent = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  margin-top: 50px;
+  padding: 50px;
 `;
 
-const LeftArrow = styled.button`
-  font-size: 30px;
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  height: 473px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
+// const LeftArrow = styled.button`
+//   font-size: 30px;
+//   color: #fff;
+//   background-color: rgba(255, 255, 255, 0);
+//   border: none;
+//   height: 473px;
+//   padding: 0 10px;
+//   display: flex;
+//   align-items: center;
+//   cursor: pointer;
+// `;
 
-const RightArrow = styled.button`
-  font-size: 30px;
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  height: 473px;
-  padding: 0 10px;
+// const RightArrow = styled.button`
+//   font-size: 30px;
+//   color: #fff;
+//   background-color: rgba(255, 255, 255, 0);
+//   border: none;
+//   height: 473px;
+//   padding: 0 10px;
+//   display: flex;
+//   align-items: center;
+//   cursor: pointer;
+// `;
+
+const CommentBox = styled.div`
   display: flex;
-  align-items: center;
-  cursor: pointer;
+  overflow: auto;
+  width: 1000px;
 `;
 
 const CommentItem = styled.div`
+  width: 1000px;
   border: 1px solid #000;
   color: #fff;
 `;
@@ -238,9 +249,9 @@ const UserName = styled.p`
   margin-bottom: 30px;
 `;
 
-const Page = styled.p`
-  font-size: 10px;
-`;
+// const Page = styled.p`
+//   font-size: 10px;
+// `;
 
 const BarRec = styled.div`
   background-color: #d19b18;
@@ -584,26 +595,28 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         <CommentSection>
           <CommentTitle>WHAT THEY'RE SAYING</CommentTitle>
           <CommentContent>
-            <LeftArrow>
+            {/* <LeftArrow>
               <MdArrowBackIosNew />
-            </LeftArrow>
-            {bar.member_comment.map((item, index) => (
-              <CommentItem key={index}>
-                <Comment>{item.comment}</Comment>
-                <MemberScores>
-                  {[...Array(item.score)].map((_, i) => (
-                    <CommentScore key={i}>
-                      <TiStarFullOutline />
-                    </CommentScore>
-                  ))}
-                </MemberScores>
-                <UserName>{item.userName}</UserName>
-                <Page>1 / 1</Page>
-              </CommentItem>
-            ))}
-            <RightArrow>
+            </LeftArrow> */}
+            <CommentBox>
+              {bar.member_comment.map((item, index) => (
+                <CommentItem key={index}>
+                  <Comment>{item.comment}</Comment>
+                  <MemberScores>
+                    {[...Array(item.score)].map((_, i) => (
+                      <CommentScore key={i}>
+                        <TiStarFullOutline />
+                      </CommentScore>
+                    ))}
+                  </MemberScores>
+                  <UserName>{item.userName}</UserName>
+                  {/* <Page>1 / 1</Page> */}
+                </CommentItem>
+              ))}
+            </CommentBox>
+            {/* <RightArrow>
               <MdArrowForwardIos />
-            </RightArrow>
+            </RightArrow> */}
           </CommentContent>
         </CommentSection>
         <BarRecTitle>SPECIAL MENU</BarRecTitle>

@@ -56,6 +56,7 @@ const SubmitButton = styled.button`
   color: #fff;
   border: 1px solid #fff;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 interface StarProps {
@@ -154,7 +155,8 @@ function MemberScore() {
   return (
     <ScoreForm onSubmit={handleSubmit}>
       <LabelSectionInput>
-        <MemberImg src={user.userImg} />
+        <MemberImg />
+        {/* src={user.userImg}  */}
         <InputTextArea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
