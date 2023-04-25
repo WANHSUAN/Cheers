@@ -174,8 +174,10 @@ const BarText = styled.p`
 `;
 
 const CommentSection = styled.div`
-  margin: 200px 0;
+  width: 1000px;
   height: 500px;
+  margin: 300px auto 200px;
+  text-align: center;
 `;
 
 const CommentTitle = styled.h2`
@@ -595,33 +597,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <BarText>{formattedText}</BarText>
           </BarIntroTextSection>
         </BarContent>
-        <CommentSection>
-          <CommentTitle>WHAT THEY'RE SAYING</CommentTitle>
-          <CommentContent>
-            {/* <LeftArrow>
-              <MdArrowBackIosNew />
-            </LeftArrow> */}
-            <CommentBox>
-              {bar.member_comment.map((item, index) => (
-                <CommentItem key={index}>
-                  <Comment>{item.comment}</Comment>
-                  <MemberScores>
-                    {[...Array(item.score)].map((_, i) => (
-                      <CommentScore key={i}>
-                        <TiStarFullOutline />
-                      </CommentScore>
-                    ))}
-                  </MemberScores>
-                  <UserName>{item.userName}</UserName>
-                  <Page>1 / 1</Page>
-                </CommentItem>
-              ))}
-            </CommentBox>
-            {/* <RightArrow>
-              <MdArrowForwardIos />
-            </RightArrow> */}
-          </CommentContent>
-        </CommentSection>
         <BarRecTitle>SPECIAL MENU</BarRecTitle>
       </Wrapper>
       <BarRec>
@@ -650,6 +625,33 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </BarRecContent>
         </BarRecContentSection>
       </BarRec>
+      <CommentSection>
+        <CommentTitle>WHAT THEY'RE SAYING</CommentTitle>
+        <CommentContent>
+          {/* <LeftArrow>
+              <MdArrowBackIosNew />
+            </LeftArrow> */}
+          <CommentBox>
+            {bar.member_comment.map((item, index) => (
+              <CommentItem key={index}>
+                <Comment>{item.comment}</Comment>
+                <MemberScores>
+                  {[...Array(item.score)].map((_, i) => (
+                    <CommentScore key={i}>
+                      <TiStarFullOutline />
+                    </CommentScore>
+                  ))}
+                </MemberScores>
+                <UserName>{item.userName}</UserName>
+                <Page>1 / 1</Page>
+              </CommentItem>
+            ))}
+          </CommentBox>
+          {/* <RightArrow>
+              <MdArrowForwardIos />
+            </RightArrow> */}
+        </CommentContent>
+      </CommentSection>
       <MemberScoreSection>
         <MemberScoreTitle>YOUR COMMENT</MemberScoreTitle>
         <MemberScore />

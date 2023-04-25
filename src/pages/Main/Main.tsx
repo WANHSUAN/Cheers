@@ -348,8 +348,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             </>
           )}
         </AllBarSection>
-        <CalendarSubTitle>EVENTS</CalendarSubTitle>
-        <CalendarTitle>It's time to join the Event!</CalendarTitle>
+        <CalendarSubTitle>BAR EVENTS</CalendarSubTitle>
+        <CalendarTitle>It's time to join the Bar Event!</CalendarTitle>
         <Calendar />
         <MapSubTitle>POSITION</MapSubTitle>
         <MapTitle>Where is the Bar?</MapTitle>
