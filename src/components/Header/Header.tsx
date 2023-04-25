@@ -159,7 +159,7 @@ const InstantSearchContainer = styled.div`
 const SelectBarsButton = styled.button`
   width: 97px;
   height: 30px;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(3px);
@@ -178,7 +178,7 @@ const SelectBarsButton = styled.button`
 const SelectEventsButton = styled.button`
   width: 97px;
   height: 30px;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(3px);

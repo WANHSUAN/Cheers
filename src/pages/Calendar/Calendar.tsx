@@ -19,7 +19,7 @@ const CalendarSection = styled.div`
   height: 510px;
   border-radius: 8px;
   background-color: #4c4a49;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
 `;
 
 const CalendarSectionHeader = styled.div`
@@ -29,7 +29,7 @@ const CalendarSectionHeader = styled.div`
   padding: 20px;
   background-color: #4c4a49;
   border-radius: 8px 8px 0 0;
-  color: #fff;
+  color: #ffffff7c;
 `;
 
 const CalendarWeekdaysSection = styled.div`
@@ -44,7 +44,7 @@ const CalendarButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 25px;
-  color: #fff;
+  color: #ffffff7c;
   margin: 0 20px;
 `;
 

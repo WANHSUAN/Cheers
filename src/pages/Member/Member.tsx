@@ -238,6 +238,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const collectionsCollectionRef = collectionGroup(db, "collections");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getDatas = async () => {
       const like = await getDocs(likesCollectionRef);
       const collection = await getDocs(collectionsCollectionRef);
@@ -420,7 +421,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
           <>
             <CollectionTitle>
               The Bars you want to
-              <strong style={{color: "#D19B18"}}>VISIT</strong> in the future
+              <strong style={{color: "#D19B18"}}> VISIT</strong> in the future
             </CollectionTitle>
             <OuterDiv>
               <InnerDiv>

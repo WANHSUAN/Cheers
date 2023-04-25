@@ -13,7 +13,7 @@ const PageImg = styled.img`
 
 const Wrapper = styled.div`
   width: 1000px;
-  margin: 0 auto;
+  margin: 0 auto 80px;
 `;
 
 const CategorySection = styled(Link)`
@@ -64,6 +64,7 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
   const hashtagsCollectionRef = collection(db, "hashtags");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getHashtags = async () => {
       const data = await getDocs(hashtagsCollectionRef);
       setHashtags(

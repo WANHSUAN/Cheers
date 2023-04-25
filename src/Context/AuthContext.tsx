@@ -71,6 +71,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         setUserUID(user.uid);
         if (getUser) {
           setIsLogin(true);
+
           console.log("有此使用者");
 
           const data: User = {
@@ -84,6 +85,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         } else {
           console.log("沒有此使用者");
           setIsLogin(true);
+
           const data: User = {
             name: user.displayName || "",
             email: user.email || "",
@@ -104,12 +106,13 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("帳戶已存在");
-
+      navigate("/main");
       return;
     } else {
       console.log("帳戶不存在");
       const userRef = collection(db, "users");
       await setDoc(doc(userRef, data.userUID), data);
+      navigate("/question");
     }
   }
 
@@ -129,11 +132,6 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     setUser(data);
     setUserUID(data.userUID);
     setIsLogin(true);
-
-    if (!isLogin) {
-      navigate(`/question`, {replace: true});
-    }
-    navigate(`/main`, {replace: true});
   };
 
   const logOut = async (auth: Auth): Promise<void> => {

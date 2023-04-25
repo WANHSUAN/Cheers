@@ -17,15 +17,6 @@ const Wrapper = styled.div`
   position: relative;
 `;
 
-// const SearchButton = styled(Link)`
-//   text-decoration: none;
-// `;
-
-// const StyledSearchButton = styled.button`
-//   width: 60px;
-//   height: 30px;
-// `;
-
 const ImageContainer = styled.div`
   position: relative;
 `;
@@ -50,17 +41,12 @@ const MainImg = styled.img`
   object-fit: cover;
 `;
 
-const TitleSection = styled.div`
-  text-align: center;
-  margin-bottom: 50px;
-  margin: 350px 0;
-`;
-
 const Title = styled.p`
   font-size: 70px;
   color: #fff;
   padding: 50px;
   text-align: center;
+  margin: 380px 0;
 `;
 
 const DoubleArrow = styled.button`
@@ -71,6 +57,7 @@ const DoubleArrow = styled.button`
   border: none;
   text-align: center;
   cursor: pointer;
+  margin-top: 50px;
 `;
 
 const AllBarTitleSection = styled.div`
@@ -105,7 +92,7 @@ const BarTitle = styled.h1`
   width: 250px;
   font-size: 20px;
   padding-top: 10px;
-  color: #fff;
+  color: #ffffffb9;
   margin: 20px 0;
 `;
 
@@ -114,13 +101,13 @@ const BarImg = styled.img`
   height: 200px;
   border-radius: 50%;
   padding: 10px;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
   margin-right: 10px;
 `;
 
 const MoreBarsButton = styled.button`
   padding: 13px 40px;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
   background-color: #000;
   color: #fff;
   border-radius: 5px;
@@ -131,6 +118,7 @@ const MoreBarsButton = styled.button`
   &:hover {
     background-color: #d19b18;
     color: #000;
+    border: 1px solid #d19b18;
   }
 `;
 
@@ -316,9 +304,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     <>
       <Wrapper>
         <Alert events={events} />
-        {/* <StyledSearchButton>
-        <SearchButton to={"/search"}>Search</SearchButton>
-      </StyledSearchButton> */}
         <ImageContainer>
           <Slogan>
             YOUR
@@ -327,15 +312,13 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </Slogan>
           <MainImg src={main} />
         </ImageContainer>
-        <TitleSection>
-          <Title>
-            We've prepared various <br />
-            types of bars for You!
-          </Title>
-          <DoubleArrow>
-            <RxDoubleArrowDown />
-          </DoubleArrow>
-        </TitleSection>
+        <DoubleArrow>
+          <RxDoubleArrowDown />
+        </DoubleArrow>
+        <Title>
+          We've prepared various <br />
+          types of bars for You!
+        </Title>
         <Hashtag />
         <AllBarTitleSection>
           <AllBarSubTitle>ALL BARS LIST</AllBarSubTitle>
@@ -382,6 +365,7 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
   const [showBackground, setShowBackground] = useState(true); // 新增的狀態變數
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const hideAlertToday = localStorage.getItem("hideAlertToday");
     if (hideAlertToday === "true") {
       setShowAlert(false);

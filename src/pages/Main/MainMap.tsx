@@ -20,7 +20,7 @@ const Map = styled.div`
   width: 1000px;
   border-radius: 10px;
   box-shadow: 5px 5px 5px #d9d9d980;
-  border: 2px solid #fff;
+  border: 2px solid #ffffff7c;
 `;
 
 const ButtonSection = styled.div`

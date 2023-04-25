@@ -20,7 +20,7 @@ const MemberImg = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid #ffffff7c;
   background-color: #000;
 `;
 
@@ -40,7 +40,7 @@ const StarSection = styled.div`
 const InputTextArea = styled.textarea`
   width: 600px;
   height: 250px;
-  border: 2px solid #fff;
+  border: 2px solid #ffffff7c;
   background-color: #000;
   border-radius: 10px;
   padding: 60px 20px;
@@ -54,7 +54,7 @@ const SubmitButton = styled.button`
   font-size: 20px;
   background-color: #000;
   color: #fff;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
   border-radius: 5px;
   cursor: pointer;
 

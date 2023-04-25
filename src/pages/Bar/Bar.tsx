@@ -63,7 +63,7 @@ const Collection = styled.span`
 const BarImg = styled.img`
   width: 50%;
   border-radius: 0 280px 280px 0;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
   border-left: 0;
 `;
 
@@ -283,11 +283,12 @@ const BarRecImg = styled.img`
 `;
 
 const BarRecName = styled.div`
-  height: 400px;
+  height: 300px;
   color: #fff;
   font-size: 60px;
   display: flex;
   align-items: center;
+  margin-top: 50px;
 `;
 
 const BarRecContent = styled.div`
@@ -306,6 +307,7 @@ const BarRecContentText = styled.p`
   color: #fff;
   line-height: 30px;
   font-size: 18px;
+  margin-bottom: 30px;
 `;
 
 const BarRecGarnishItem = styled.li`
@@ -506,9 +508,12 @@ export interface IMainProps {}
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bar, setBar] = useState<IBar>();
   const {id} = useParams();
+  const [formattedText, setFormattedText] = useState("");
+
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function getBar() {
       if (barCollectionRef) {
         const barSnapshot = await getDoc(barCollectionRef);
@@ -587,7 +592,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               ))}
           </BarHashTagSection>
           <BarIntroTextSection>
-            <BarText>{bar.introduction}</BarText>
+            <BarText>{formattedText}</BarText>
           </BarIntroTextSection>
         </BarContent>
         <CommentSection>
