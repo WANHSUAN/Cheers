@@ -1,10 +1,26 @@
 import {useState} from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
+import "./styles.css";
 import {Link} from "react-router-dom";
-import {FiSearch} from "react-icons/fi";
+import algoliasearch from "algoliasearch/lite";
+import {
+  SearchBox,
+  Hits,
+  Index,
+  Highlight,
+  InstantSearch,
+  Snippet,
+  CurrentRefinements,
+} from "react-instantsearch-hooks-web";
+
 import {HiBars3CenterLeft} from "react-icons/hi2";
 import {TfiClose} from "react-icons/tfi";
 import side from "./side.png";
+
+const searchClient = algoliasearch(
+  "W1FJ2ENITZ",
+  "2e0351bed6525d14fcf871febd4909f2"
+);
 
 const Wrapper = styled.div`
   position: fixed;
@@ -51,11 +67,10 @@ const Title = styled(Link)`
 
 const SearchSection = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
 `;
 
-const Search = styled.button`
+const SearchItem = styled.button`
   width: 100px;
   height: 30px;
   background-color: #000;
@@ -63,33 +78,6 @@ const Search = styled.button`
   border: none;
   font-size: 20px;
   position: relative;
-  cursor: pointer;
-`;
-
-const SearchInput = styled.input`
-  width: 250px;
-  height: 40px;
-  border: 1px solid #fff;
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0);
-  position: absolute;
-  top: 100px;
-  right: 35px;
-`;
-
-const SearchButton = styled.button`
-  width: 50px;
-  height: 40px;
-  border: 1px solid #fff;
-  border-left: none;
-  border-radius: 0 5px 5px 0;
-  color: #fff;
-  background-color: #000;
-  position: absolute;
-  top: 100px;
-  right: 35px;
-  font-size: 25px;
-  padding: 5px;
   cursor: pointer;
 `;
 
@@ -132,6 +120,120 @@ const StyledLink = styled(Link)`
   color: #fff;
 `;
 
+const SearchWrapper = styled.div`
+  text-align: center;
+  margin: 0 auto;
+`;
+
+const InstantSearchContainer = styled.div`
+  width: 400px;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  ul,
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 0;
+    right: 11%;
+  }
+`;
+
+const SelectBarsButton = styled.button`
+  width: 97px;
+  height: 30px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  color: #fff;
+  position: absolute;
+  top: 80px;
+  right: 145px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d19b18;
+    border: #d19b18;
+  }
+`;
+
+const SelectEventsButton = styled.button`
+  width: 97px;
+  height: 30px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  color: #fff;
+  position: absolute;
+  top: 80px;
+  right: 45px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d19b18;
+    border: #d19b18;
+  }
+`;
+
+const SearchBarSection = styled(Link)`
+  text-decoration: none;
+`;
+
+const StyledSearchBarSection = styled.div`
+  padding: 5px;
+  text-align: left;
+  line-height: 30px;
+`;
+
+const BarName = styled.p`
+  color: #d19b18;
+  font-size: 35px;
+  padding: 10px;
+`;
+
+const BarAddress = styled.p`
+  color: #fff;
+  font-size: 15px;
+  padding: 10px;
+`;
+
+const BarTel = styled.p`
+  color: #c3c1c4;
+  font-size: 15px;
+  padding: 10px;
+`;
+
+const BarIntroduction = styled.p`
+  color: #be7808;
+  font-size: 15px;
+  padding: 5px;
+  text-align: left;
+`;
+
+const StyledSearchEventSection = styled.div``;
+
+const SearchEventSection = styled(Link)`
+  text-decoration: none;
+`;
+
+const EventBar = styled.p`
+  color: #d19b18;
+  font-size: 35px;
+  padding: 15px;
+  text-align: left;
+`;
+
+const EventContent = styled.p`
+  color: #be7808;
+  font-size: 15px;
+  padding: 20px;
+  text-align: left;
+`;
+
 type HandleSideMenuType = () => void;
 
 const Header = () => {
@@ -158,15 +260,8 @@ const Header = () => {
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
         <SearchSection>
-          <Search onClick={OpenSearch}>SEARCH</Search>
-          {isOpen && (
-            <>
-              <SearchInput />
-              <SearchButton>
-                <FiSearch />
-              </SearchButton>
-            </>
-          )}
+          <SearchItem onClick={OpenSearch}>SEARCH</SearchItem>
+          {isOpen && <Search />}
         </SearchSection>
       </Nav>
     </Wrapper>
@@ -203,5 +298,132 @@ function SideMenu({handleSideMenu}: {handleSideMenu: HandleSideMenuType}) {
     </>
   );
 }
+
+const MySearchComponent = () => {
+  const [showBars, setShowBars] = useState(false);
+  const [showEvents, setShowEvents] = useState(false);
+  const [searchBoxVisible, setSearchBoxVisible] = useState(true); // 新增一個狀態用來控制 SearchBox 的顯示
+
+  const BarsTemplate = ({
+    hit,
+  }: {
+    hit: {
+      objectID: string;
+      name: string;
+      address: string;
+      tel: string;
+      introduction: string;
+      __position: number;
+    };
+  }) => {
+    return (
+      <StyledSearchBarSection onClick={() => setSearchBoxVisible(false)}>
+        <SearchBarSection to={`/bars/${hit.objectID}`}>
+          <BarName>
+            <Highlight
+              attribute="name"
+              hit={hit}
+              nonHighlightedTagName="span"
+            />
+          </BarName>
+          <BarAddress>
+            <Highlight
+              attribute="address"
+              hit={hit}
+              nonHighlightedTagName="span"
+              highlightedTagName="mark"
+            />
+          </BarAddress>
+          <BarTel>
+            <Highlight attribute="tel" hit={hit} nonHighlightedTagName="span" />
+          </BarTel>
+          <BarIntroduction>
+            <Snippet
+              attribute="introduction"
+              hit={hit}
+              nonHighlightedTagName="span"
+              highlightedTagName="mark" // 指定 highlight 顯示的標籤
+            />
+          </BarIntroduction>
+        </SearchBarSection>
+      </StyledSearchBarSection>
+    );
+  };
+
+  const EventsTemplate = ({
+    hit,
+  }: {
+    hit: {objectID: string; bar: string; content: string; __position: number};
+  }) => {
+    return (
+      <StyledSearchEventSection onClick={() => setSearchBoxVisible(false)}>
+        <SearchEventSection to={`/events/${hit.objectID}`}>
+          <EventBar>
+            <Highlight attribute="bar" hit={hit} nonHighlightedTagName="span" />
+          </EventBar>
+          <EventContent>
+            <Snippet
+              attribute="content"
+              hit={hit}
+              nonHighlightedTagName="span"
+            />
+          </EventContent>
+        </SearchEventSection>
+      </StyledSearchEventSection>
+    );
+  };
+
+  const handleBarsClick = () => {
+    setShowBars(true);
+    setShowEvents(false);
+    setSearchBoxVisible(true); // 當切換到 Bars 時，顯示 SearchBox
+  };
+
+  const handleEventsClick = () => {
+    setShowBars(false);
+    setShowEvents(true);
+    setSearchBoxVisible(true); // 當切換到 Bars 時，顯示 SearchBox
+  };
+  return (
+    <>
+      <InstantSearchContainer>
+        <InstantSearch searchClient={searchClient} indexName="bars">
+          <CurrentRefinements />
+          {searchBoxVisible && (
+            <>
+              <SearchBox
+                placeholder="Search"
+                searchAsYouType={true}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setShowBars(!showBars);
+                  setShowEvents(!showEvents);
+                }}
+              />
+              <SelectBarsButton onClick={handleBarsClick}>
+                Bars
+              </SelectBarsButton>
+              <SelectEventsButton onClick={handleEventsClick}>
+                Events
+              </SelectEventsButton>
+              {showBars ? <Hits hitComponent={BarsTemplate} /> : null}
+              <Index indexName="events">
+                {showEvents ? <Hits hitComponent={EventsTemplate} /> : null}
+              </Index>
+            </>
+          )}
+        </InstantSearch>
+      </InstantSearchContainer>
+    </>
+  );
+};
+
+const Search = () => {
+  return (
+    <SearchWrapper>
+      <MySearchComponent />
+    </SearchWrapper>
+  );
+};
 
 export default Header;

@@ -1,0 +1,79 @@
+.ais-SearchBox {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.ais-SearchBox-input {
+  width: 200px;
+  height: 40px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  position: absolute;
+  top: 30px;
+  right: 45px;
+  color: #fff;
+  padding: 10px;
+}
+
+.ais-SearchBox-submit {
+  width: 50px;
+  height: 40px;
+  border: 1px solid #fff;
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  background-color: transparent;
+  position: absolute;
+  top: 30px;
+  right: 45px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.ais-SearchBox-submitIcon {
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+  fill: #fff;
+}
+
+.ais-SearchBox-reset {
+  width: 30px;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: 30px;
+  right: 90px;
+  width: 50px;
+  height: 40px;
+}
+
+.ais-SearchBox-resetIcon {
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+  fill: #fff;
+}
+
+.ais-Hits {
+  margin-top: 120px;
+}
+
+.ais-Hits-list {
+  height: 730px;
+  overflow: auto;
+}
+
+.ais-Hits-item {
+  border: 1px solid #ffffff5f;
+  border-radius: 3px;
+  margin-bottom: 1px;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+}
+
+.ais-Hits-item:hover {
+  background-color: #706e6bf3;
+}
