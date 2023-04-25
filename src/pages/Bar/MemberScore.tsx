@@ -57,6 +57,11 @@ const SubmitButton = styled.button`
   border: 1px solid #fff;
   border-radius: 5px;
   cursor: pointer;
+
+  &:hover {
+    background-color: #d18b19;
+    border: 1px solid #d18b19;
+  }
 `;
 
 interface StarProps {

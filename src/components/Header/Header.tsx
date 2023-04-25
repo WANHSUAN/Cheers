@@ -1,7 +1,8 @@
-import {useState} from "react";
+import {useState, useContext} from "react";
 import styled from "styled-components/macro";
 import "./styles.css";
 import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import {
   SearchBox,
@@ -12,6 +13,8 @@ import {
   Snippet,
   CurrentRefinements,
 } from "react-instantsearch-hooks-web";
+import {getAuth, GoogleAuthProvider} from "firebase/auth";
+import {AuthContext} from "../../Context/AuthContext";
 
 import {HiBars3CenterLeft} from "react-icons/hi2";
 import {TfiClose} from "react-icons/tfi";
@@ -120,6 +123,18 @@ const StyledLink = styled(Link)`
   color: #fff;
 `;
 
+const LogOutButton = styled.button`
+  background-color: transparent;
+  border: none;
+  width: 400px;
+  font-size: 70px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 16px;
+  color: #fff;
+  cursor: pointer;
+`;
+
 const SearchWrapper = styled.div`
   text-align: center;
   margin: 0 auto;
@@ -184,37 +199,39 @@ const SearchBarSection = styled(Link)`
 `;
 
 const StyledSearchBarSection = styled.div`
-  padding: 5px;
+  padding: 30px;
   text-align: left;
-  line-height: 30px;
+  line-height: 25px;
 `;
 
 const BarName = styled.p`
   color: #d19b18;
   font-size: 35px;
-  padding: 10px;
-`;
-
-const BarAddress = styled.p`
-  color: #fff;
-  font-size: 15px;
-  padding: 10px;
+  padding: 0 5px;
 `;
 
 const BarTel = styled.p`
   color: #c3c1c4;
   font-size: 15px;
-  padding: 10px;
+  padding: 5px;
+`;
+
+const BarAddress = styled.p`
+  color: #fff;
+  font-size: 13px;
+  padding: 0 5px;
 `;
 
 const BarIntroduction = styled.p`
   color: #be7808;
-  font-size: 15px;
-  padding: 5px;
+  font-size: 17px;
+  padding: 30px 5px 0 5px;
   text-align: left;
 `;
 
-const StyledSearchEventSection = styled.div``;
+const StyledSearchEventSection = styled.div`
+  padding: 30px;
+`;
 
 const SearchEventSection = styled(Link)`
   text-decoration: none;
@@ -223,14 +240,14 @@ const SearchEventSection = styled(Link)`
 const EventBar = styled.p`
   color: #d19b18;
   font-size: 35px;
-  padding: 15px;
+  padding: 0 5px;
   text-align: left;
 `;
 
 const EventContent = styled.p`
   color: #be7808;
-  font-size: 15px;
-  padding: 20px;
+  font-size: 18px;
+  padding: 20px 5px 0;
   text-align: left;
 `;
 
@@ -269,6 +286,19 @@ const Header = () => {
 };
 
 function SideMenu({handleSideMenu}: {handleSideMenu: HandleSideMenuType}) {
+  const auth = getAuth();
+  const {logOut} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    prompt: "select_account",
+  });
+
+  function handleLogOut() {
+    logOut(auth);
+    handleSideMenu();
+    navigate("/");
+  }
   return (
     <>
       <SideMenuWrapper>
@@ -288,11 +318,7 @@ function SideMenu({handleSideMenu}: {handleSideMenu: HandleSideMenuType}) {
               Category
             </StyledLink>
           </MenuItem>
-          <MenuItem>
-            <StyledLink onClick={handleSideMenu} to={"/main"}>
-              Log Out
-            </StyledLink>
-          </MenuItem>
+          <LogOutButton onClick={handleLogOut}>Log Out</LogOutButton>
         </SideMenuList>
       </SideMenuWrapper>
     </>
@@ -326,6 +352,9 @@ const MySearchComponent = () => {
               nonHighlightedTagName="span"
             />
           </BarName>
+          <BarTel>
+            <Highlight attribute="tel" hit={hit} nonHighlightedTagName="span" />
+          </BarTel>
           <BarAddress>
             <Highlight
               attribute="address"
@@ -334,9 +363,6 @@ const MySearchComponent = () => {
               highlightedTagName="mark"
             />
           </BarAddress>
-          <BarTel>
-            <Highlight attribute="tel" hit={hit} nonHighlightedTagName="span" />
-          </BarTel>
           <BarIntroduction>
             <Snippet
               attribute="introduction"

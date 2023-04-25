@@ -2,13 +2,13 @@ import React, {useContext} from "react";
 import styled from "styled-components";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {AuthContext} from "../../Context/AuthContext";
-import side from "../../components/Header/side.png";
+import relax from "./relax.png";
 
 const Wrapper = styled.div`
   padding-top: 60px;
   width: 100vw;
   height: 100vh;
-  background-image: url(${side});
+  background-image: url(${relax});
   background-size: cover;
   background-position: center;
 `;
@@ -16,12 +16,12 @@ const Wrapper = styled.div`
 const LoginCard = styled.div`
   width: 350px;
   height: 400px;
-  margin: 60px auto;
+  margin: 15% auto;
   padding: 10px;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
-  border: 1px solid #fff;
+  border: 1px solid #ffffff87;
   border-radius: 10px;
 `;
 

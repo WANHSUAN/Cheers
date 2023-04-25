@@ -104,6 +104,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       console.log("帳戶已存在");
+
       return;
     } else {
       console.log("帳戶不存在");
@@ -128,7 +129,11 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     setUser(data);
     setUserUID(data.userUID);
     setIsLogin(true);
-    navigate(`/question`, {replace: true});
+
+    if (!isLogin) {
+      navigate(`/question`, {replace: true});
+    }
+    navigate(`/main`, {replace: true});
   };
 
   const logOut = async (auth: Auth): Promise<void> => {

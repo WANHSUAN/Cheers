@@ -1,21 +1,11 @@
 import React, {useState, useEffect, useContext} from "react";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components/macro";
-import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {db} from "../../App";
 import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
 import {AuthContext} from "../../Context/AuthContext";
 import main from "./main.png";
 import {RxDoubleArrowDown, RxDoubleArrowRight} from "react-icons/rx";
-
-// const LogOutButton = styled.button`
-//   width: 150px;
-//   height: 30px;
-//   border: 1px solid #87c3e1;
-//   border-radius: 5px;
-//   font-size: 15px;
-//   cursor: pointer;
-// `;
 
 const Wrapper = styled.div`
   width: 83.5%;
@@ -72,48 +62,39 @@ const DoubleArrow = styled.button`
 
 const TestSection = styled.div`
   margin: 200px auto 50px;
-`;
-
-const OuterDiv = styled.div`
-  width: 70%;
-  height: 400px;
-  border: 2px solid white;
-  padding: 10px;
-  margin: 0 auto;
-`;
-
-const InnerDiv = styled.div`
-  width: 100%;
-  height: 430px;
-  border: 2px solid white;
-  padding: 10px;
-  margin-top: -25px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-around;
+`;
+
+const SelectItemSection = styled.div`
+  width: 230px;
+  height: 230px;
+  border: 1px solid #fff;
+  border-radius: 3%;
+  padding: 40px;
+  text-align: left;
 `;
 
 const SelectItem = styled.div`
   width: 280px;
-  text-align: center;
 `;
 
 const SelectTime = styled.p`
   font-size: 25px;
   color: #d19b18;
-  margin-top: 30px;
+  margin: 10px 0;
 `;
 
 const Checkbox = styled.input`
-  margin: 10px;
+  margin-right: 10px;
 `;
 
 const SelectContent = styled.div`
-  width: 150px;
-  height: 30px;
+  width: 130px;
+  height: 20px;
   color: #fff;
-  margin: 0 auto;
   font-size: 20px;
+  margin: 20px 0;
 `;
 
 const Submit = styled.div`
@@ -179,7 +160,7 @@ const options = [
 const groups = {
   time: "Time",
   situation: "Situation",
-  category: "Liquor Category",
+  category: "Category",
   visual: "Visual",
   relationship: "Relationship",
 };
@@ -187,7 +168,6 @@ const groups = {
 export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
-  const auth = getAuth();
   const navigate = useNavigate();
   const [bars, setBars] = useState<IBar[]>([]);
   const [users, setUsers] = useState<IUser[] | undefined>();
@@ -217,26 +197,19 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     const value = e.target.value;
     const option = options.find((option) => option.text === value)!;
 
-    if (option.group in groups) {
-      const existingOption = selectedOptions.find(
-        (o) => o.group === option.group
+    const existingOptionIndex = selectedOptions.findIndex(
+      (o) => o.text === option.text
+    );
+
+    if (existingOptionIndex > -1) {
+      // 從 selectedOptions 中刪除選項
+      setSelectedOptions((prev) =>
+        prev.filter((o, index) => index !== existingOptionIndex)
       );
-
-      if (existingOption) {
-        if (existingOption.text === option.text) {
-          return;
-        }
-
-        setSelectedOptions((prev) =>
-          prev.filter((o) => o.group !== option.group)
-        );
-      }
+    } else {
+      // 將選項加入 selectedOptions
+      setSelectedOptions((prev) => [...prev, option]);
     }
-
-    setSelectedOptions((prev) => [
-      ...prev.filter((o) => o.group !== option.group),
-      option,
-    ]);
 
     const selectedGroupOptions = selectedOptions.filter(
       (o) => o.group === option.group
@@ -281,17 +254,9 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   };
 
   const {userUID} = useContext(AuthContext);
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({
-    prompt: "select_account",
-  });
 
   return (
     <>
-      {/* <LogOutButton onClick={() => logOut(auth)}>
-        Sign out of Firebase
-      </LogOutButton> */}
-      {/* <button onClick={() => signIn(auth, provider)}>LogIn</button> */}
       <Wrapper>
         <ImageContainer>
           <Slogan>
@@ -301,7 +266,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
           </Slogan>
           <MainImg src={main} />
         </ImageContainer>
-
         <TestTitleSection>
           <TestTitle>Choose your Favorite Type!</TestTitle>
           <DoubleArrow>
@@ -310,34 +274,29 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
         </TestTitleSection>
 
         <TestSection>
-          <OuterDiv>
-            <InnerDiv>
-              {Object.entries(groups).map(([key, label]) => (
-                <SelectItem key={key}>
-                  <SelectTime>{label}</SelectTime>
-                  {options
-                    .filter((option) => option.group === key)
-                    .map((option) => (
-                      <SelectItem key={option.hashtag}>
-                        <SelectContent>
-                          <Checkbox
-                            type="checkbox"
-                            value={option.text}
-                            checked={selectedOptions.some(
-                              (o) => o.text === option.text
-                            )}
-                            onChange={handleOptionChange}
-                          />
-                          {option.hashtag}
-                        </SelectContent>
-                      </SelectItem>
-                    ))}
-                </SelectItem>
-              ))}
-            </InnerDiv>
-          </OuterDiv>
+          {Object.entries(groups).map(([key, label]) => (
+            <SelectItemSection key={key}>
+              <SelectTime>{label}</SelectTime>
+              {options
+                .filter((option) => option.group === key)
+                .map((option) => (
+                  <SelectItem key={option.hashtag}>
+                    <SelectContent>
+                      <Checkbox
+                        type="checkbox"
+                        value={option.text}
+                        checked={selectedOptions.some(
+                          (o) => o.text === option.text
+                        )}
+                        onChange={handleOptionChange}
+                      />
+                      {option.hashtag}
+                    </SelectContent>
+                  </SelectItem>
+                ))}
+            </SelectItemSection>
+          ))}
         </TestSection>
-
         <Submit>
           <SubmitButton onClick={handleButtonClick}>
             FIND YOUR TYPE
