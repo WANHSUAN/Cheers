@@ -1,0 +1,37 @@
+.link__svg {
+  width: 50%;
+  height: auto;
+  transform-box: fill-box;
+  fill: #d19b18;
+  stroke: #d19b18;
+  stroke-width: 0.05em;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.link__text {
+  animation: rotate normal infinite 15s linear;
+  transform-origin: 50% 50%;
+}
+
+/* .link:hover .link__text {
+  animation-play-state: paused;
+} */
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.link__image {
+  filter: brightness(0.9);
+}
+
+.link__image:hover {
+  border: 1px solid #fff;
+}
+
+.link:hover {
+  transform: scale(2);
+  transition: transform 0.5s ease;
+}

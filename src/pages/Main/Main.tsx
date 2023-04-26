@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import styled from "styled-components/macro";
+import styled, {keyframes} from "styled-components/macro";
 import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
@@ -7,7 +7,7 @@ import Calendar from "../Calendar/Calendar";
 import MainMap from "./MainMap";
 import Hashtag from "./Hashtag";
 import main from "../Question/main.png";
-import {RxDoubleArrowDown} from "react-icons/rx";
+import "./styles.css";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -21,6 +21,97 @@ const ImageContainer = styled.div`
   position: relative;
 `;
 
+const ArrowWrapper = styled.div`
+  cursor: pointer;
+  margin-top: 50px;
+  display: table;
+  width: 100%;
+  height: 100%;
+`;
+
+const WrapperInner = styled.div`
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+`;
+
+const elasticus = keyframes`
+  0% {
+    transform-origin: 0% 0%;
+    transform: scale(1, 0);
+  }
+  50% {
+    transform-origin: 0% 0%;
+    transform: scale(1, 1);
+  }
+  50.1% {
+    transform-origin: 0% 100%;
+    transform: scale(1, 1);
+  }
+  100% {
+    transform-origin: 0% 100%;
+    transform: scale(1, 0);
+  }
+`;
+
+const ScrollDown = styled.div`
+  display: block;
+  position: relative;
+  padding-top: 79px;
+  text-align: center;
+
+  &::before {
+    content: " ";
+    animation: ${elasticus} 1.2s cubic-bezier(1, 0, 0, 1) infinite;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    margin-left: -1px;
+    width: 2px;
+    height: 90px;
+    background: #d19b18;
+  }
+`;
+
+const ArrowDown = styled.span`
+  display: block;
+  margin: 0 auto;
+  width: 10px;
+  height: 80px;
+
+  &::after {
+    content: "";
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid #d19b18;
+    border-right: 2px solid #d19b18;
+    behavior: url(-ms-transform.htc);
+    transform: rotate(135deg);
+  }
+`;
+
+const ScrollTitle = styled.span`
+  display: block;
+  text-transform: uppercase;
+  color: #d19b18;
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const Slogan = styled.p`
   position: absolute;
   top: 25%;
@@ -31,6 +122,7 @@ const Slogan = styled.p`
   color: #fff;
   letter-spacing: 10px;
   text-align: center;
+  animation: ${fadeIn} 1.5s ease-in-out;
 `;
 
 const MainImg = styled.img`
@@ -41,23 +133,25 @@ const MainImg = styled.img`
   object-fit: cover;
 `;
 
+const fadeInPosition = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 const Title = styled.p`
   font-size: 70px;
   color: #fff;
   padding: 50px;
   text-align: center;
   margin: 380px 0;
-`;
 
-const DoubleArrow = styled.button`
-  height: 100px;
-  color: #d19b18;
-  font-size: 80px;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  text-align: center;
-  cursor: pointer;
-  margin-top: 50px;
+  animation: ${fadeInPosition} 1s ease-in-out;
 `;
 
 const AllBarTitleSection = styled.div`
@@ -79,7 +173,7 @@ const AllBarTitle = styled.h2`
 const AllBarSection = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 25px;
+  gap: 30px;
   margin: 100px 0;
   justify-content: center;
 `;
@@ -88,7 +182,7 @@ const BarSection = styled(Link)`
   text-decoration: none;
 `;
 
-const BarTitle = styled.h1`
+const BarTitle = styled.div`
   width: 250px;
   font-size: 20px;
   padding-top: 10px;
@@ -96,14 +190,14 @@ const BarTitle = styled.h1`
   margin: 20px 0;
 `;
 
-const BarImg = styled.img`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  padding: 10px;
-  border: 1px solid #ffffff7c;
-  margin-right: 10px;
-`;
+// const BarImg = styled.img`
+//   width: 200px;
+//   height: 200px;
+//   border-radius: 50%;
+//   padding: 10px;
+//   border: 1px solid #ffffff7c;
+//   margin-right: 10px;
+// `;
 
 const MoreBarsButton = styled.button`
   padding: 13px 40px;
@@ -119,6 +213,7 @@ const MoreBarsButton = styled.button`
     background-color: #d19b18;
     color: #000;
     border: 1px solid #d19b18;
+    transition: linear 0.2s;
   }
 `;
 
@@ -268,6 +363,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const eventsCollectionRef = collection(db, "events");
 
   useEffect(() => {
+    // window.scrollTo(0, 0);
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
       setBars(
@@ -312,9 +408,14 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </Slogan>
           <MainImg src={main} />
         </ImageContainer>
-        <DoubleArrow>
-          <RxDoubleArrowDown />
-        </DoubleArrow>
+        <ArrowWrapper>
+          <WrapperInner>
+            <ScrollDown>
+              <ArrowDown></ArrowDown>
+              <ScrollTitle>Scroll down</ScrollTitle>
+            </ScrollDown>
+          </WrapperInner>
+        </ArrowWrapper>
         <Title>
           We've prepared various <br />
           types of bars for You!
@@ -330,8 +431,44 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         <AllBarSection>
           {slicedData.map((item) => (
             <BarSection to={`/bars/${item.id}`} key={item.id}>
-              <BarTitle>{item.name}</BarTitle>
-              <BarImg src={item.img[2]} />
+              <BarTitle>
+                {/* <div className="link">
+                  <svg
+                    viewBox="0 0 200 200"
+                    width="100"
+                    height="100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="link__svg"
+                    aria-labelledby="link1-title link1-desc"
+                  >
+                    <defs>
+                      <clipPath id="circle-clip">
+                        <path d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
+                      </clipPath>
+                    </defs>
+                    <image
+                      className="link__image"
+                      xlinkHref={item.img[2]}
+                      clipPath="url(#circle-clip)"
+                      height="100%"
+                      width="100%"
+                      preserveAspectRatio="xMidYMid slice"
+                    />
+                    <path
+                      id="link-circle"
+                      className="link__path"
+                      d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0"
+                      stroke="none"
+                      fill="none"
+                    />
+                    <text className="link__text" textLength="460">
+                      <textPath href="#link-circle" stroke="none">
+                        {item.name} {item.name}
+                      </textPath>
+                    </text>
+                  </svg>
+                </div> */}
+              </BarTitle>
             </BarSection>
           ))}
           {!showMore && (
@@ -341,8 +478,44 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <>
               {bars.slice(8).map((bar) => (
                 <BarSection to={`/bars/${bar.id}`} key={bar.id}>
-                  <BarTitle>{bar.name}</BarTitle>
-                  <BarImg src={bar.img[2]} />
+                  <BarTitle>
+                    {/* <div className="link">
+                      <svg
+                        viewBox="0 0 200 200"
+                        width="100"
+                        height="100"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="link__svg"
+                        aria-labelledby="link1-title link1-desc"
+                      >
+                        <defs>
+                          <clipPath id="circle-clip">
+                            <path d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
+                          </clipPath>
+                        </defs>
+                        <image
+                          className="link__image"
+                          xlinkHref={bar.img[2]}
+                          clipPath="url(#circle-clip)"
+                          height="100%"
+                          width="100%"
+                          preserveAspectRatio="xMidYMid slice"
+                        />
+                        <path
+                          id="link-circle"
+                          className="link__path"
+                          d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0"
+                          stroke="none"
+                          fill="none"
+                        />
+                        <text className="link__text" textLength="480">
+                          <textPath href="#link-circle" stroke="none">
+                            {bar.name.toUpperCase()} {bar.name.toUpperCase()}
+                          </textPath>
+                        </text>
+                      </svg>
+                    </div> */}
+                  </BarTitle>
                 </BarSection>
               ))}
             </>
@@ -365,7 +538,6 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
   const [showBackground, setShowBackground] = useState(true); // 新增的狀態變數
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const hideAlertToday = localStorage.getItem("hideAlertToday");
     if (hideAlertToday === "true") {
       setShowAlert(false);

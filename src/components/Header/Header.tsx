@@ -261,6 +261,19 @@ const Header = () => {
     setIsToggle(!isToggle);
   };
 
+  const canvasStyle = {
+    display: "flex",
+    width: "100vw",
+    height: "100vh",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  const menuButtonStyle = {
+    marginLeft: "2rem",
+    cursor: "pointer",
+  };
+
   function OpenSearch() {
     setIsOpen(!isOpen);
   }
