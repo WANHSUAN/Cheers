@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
@@ -11,7 +11,6 @@ const Wrapper = styled.div`
 const HashTagSection = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   margin: 350px auto;
 `;
 
@@ -20,7 +19,7 @@ const HashtagType = styled(Link)`
 `;
 
 const StyledHashtagType = styled.p`
-  width: 180px;
+  width: 200px;
   font-size: 30px;
   margin: 30px 0;
 `;
@@ -59,6 +58,7 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
           return (
             <StyledHashtagType key={index}>
               <HashtagType
+                className="hashtag"
                 key={index}
                 to={`/category/#${hashtag.type}`}
                 style={{color: hashtag.colorCode}}

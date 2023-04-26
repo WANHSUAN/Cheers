@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
 import Calendar from "../Calendar/Calendar";
+// OPEN
 import MainMap from "./MainMap";
 import Hashtag from "./Hashtag";
 import main from "../Question/main.png";
@@ -199,23 +200,23 @@ const BarTitle = styled.div`
 //   margin-right: 10px;
 // `;
 
-const MoreBarsButton = styled.button`
-  padding: 13px 40px;
-  border: 1px solid #ffffff7c;
-  background-color: #000;
-  color: #fff;
-  border-radius: 5px;
-  font-size: 15px;
-  margin-top: 80px;
-  cursor: pointer;
+// const MoreBarsButton = styled.button`
+//   padding: 13px 40px;
+//   border: 1px solid #ffffff7c;
+//   background-color: #000;
+//   color: #fff;
+//   border-radius: 5px;
+//   font-size: 15px;
+//   margin-top: 80px;
+//   cursor: pointer;
 
-  &:hover {
-    background-color: #d19b18;
-    color: #000;
-    border: 1px solid #d19b18;
-    transition: linear 0.2s;
-  }
-`;
+//   &:hover {
+//     background-color: #d19b18;
+//     color: #000;
+//     border: 1px solid #d19b18;
+//     transition: linear 0.2s;
+//   }
+// `;
 
 const CalendarSubTitle = styled.p`
   color: #d19b18;
@@ -363,7 +364,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const eventsCollectionRef = collection(db, "events");
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
       setBars(
@@ -432,7 +433,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           {slicedData.map((item) => (
             <BarSection to={`/bars/${item.id}`} key={item.id}>
               <BarTitle>
-                {/* <div className="link">
+                {/* OPEN */}
+                <div className="link">
                   <svg
                     viewBox="0 0 200 200"
                     width="100"
@@ -467,19 +469,22 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                       </textPath>
                     </text>
                   </svg>
-                </div> */}
+                </div>
               </BarTitle>
             </BarSection>
           ))}
           {!showMore && (
-            <MoreBarsButton onClick={handleShowMore}>More Bars</MoreBarsButton>
+            <a href="#0" className="more" onClick={handleShowMore}>
+              More
+            </a>
           )}
           {showMore && (
             <>
               {bars.slice(8).map((bar) => (
                 <BarSection to={`/bars/${bar.id}`} key={bar.id}>
                   <BarTitle>
-                    {/* <div className="link">
+                    {/* OPEN */}
+                    <div className="link">
                       <svg
                         viewBox="0 0 200 200"
                         width="100"
@@ -514,7 +519,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                           </textPath>
                         </text>
                       </svg>
-                    </div> */}
+                    </div>
                   </BarTitle>
                 </BarSection>
               ))}
@@ -526,6 +531,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         <Calendar />
         <MapSubTitle>POSITION</MapSubTitle>
         <MapTitle>Where is the Bar?</MapTitle>
+        {/* OPEN */}
         <MainMap />
       </Wrapper>
     </>

@@ -658,6 +658,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       </MemberScoreSection>
       <BarSection>
         <BarMapTitle>BAR'S LOCATION</BarMapTitle>
+        {/* OPEN */}
         <BarMap />
       </BarSection>
     </>

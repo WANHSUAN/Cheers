@@ -1,4 +1,3 @@
-/* eslint-disable array-callback-return */
 import React from "react";
 import styled from "styled-components/macro";
 import {useState, useEffect} from "react";
@@ -7,6 +6,7 @@ import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import {SlArrowLeft, SlArrowRight} from "react-icons/sl";
 import {RxEnter} from "react-icons/rx";
+import "../Calendar/Calendar.css";
 
 const CalendarWrapper = styled.div`
   width: 1000px;
@@ -120,7 +120,7 @@ const CalendarDayHeader = styled.div`
 const OuterDiv = styled.div`
   width: 90%;
   height: 480px;
-  border: 2px solid white;
+  border: 1px solid #ffffff7c;
   padding: 10px;
   margin: 0 auto;
   position: relative;
@@ -129,7 +129,7 @@ const OuterDiv = styled.div`
 const InnerDiv = styled.div`
   width: 100%;
   height: 510px;
-  border: 2px solid white;
+  border: 1px solid #ffffff7c;
   padding: 10px;
   margin-top: -25px;
 `;
@@ -168,9 +168,8 @@ const StyledEventButton = styled.button`
   padding: 10px;
   background-color: rgba(255, 255, 255, 0);
   position: absolute;
-  bottom: 3%;
-  right: 5%;
-
+  bottom: 5%;
+  right: 50%;
   cursor: pointer;
 `;
 const EventButton = styled(Link)`
@@ -374,7 +373,21 @@ function CalendarDays({
                   <EventContent>{event.content}</EventContent>
                   <StyledEventButton>
                     <EventButton to={`/events/${event.id}`}>
-                      <RxEnter />
+                      {/* <main className="content" data-form-type="card"> */}
+                      <div className="btn">
+                        <span className="btn__circle"></span>
+                        <span className="btn__white-circle">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            id="icon-arrow-right"
+                            viewBox="0 0 21 12"
+                          >
+                            <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
+                          </svg>
+                        </span>
+                        <span className="btn__text">Go to the Bar Event!</span>
+                      </div>
+                      {/* </main> */}
                     </EventButton>
                   </StyledEventButton>
                 </InnerDiv>
