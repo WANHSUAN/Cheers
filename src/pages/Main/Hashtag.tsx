@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components/macro";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import {HashLink} from "react-router-hash-link";
 
 const Wrapper = styled.div`
   width: 1000px;
@@ -14,7 +15,7 @@ const HashTagSection = styled.div`
   margin: 350px auto;
 `;
 
-const HashtagType = styled(Link)`
+const HashtagType = styled(HashLink)`
   text-decoration: none;
 `;
 
@@ -60,7 +61,8 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
               <HashtagType
                 className="hashtag"
                 key={index}
-                to={`/category/#${hashtag.type}`}
+                smooth
+                to={`/category#${hashtag.type}`}
                 style={{color: hashtag.colorCode}}
               >
                 #{hashtag.type}

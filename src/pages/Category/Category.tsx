@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {db} from "../../App";
 import {Link} from "react-router-dom";
 import {collection, getDocs} from "firebase/firestore";
+import {HashLink} from "react-router-hash-link";
 
 const PageImg = styled.img`
   width: 100vw;
@@ -52,7 +53,7 @@ const CategoryImg = styled.img`
 `;
 
 interface IHashtag {
-  type: [];
+  type: string;
   colorCode: string;
   bars: Array<{img: string; name: string; id: string}>;
 }
@@ -88,7 +89,7 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
       />
       <Wrapper>
         {hashtags.map((hashtag, index) => (
-          <div key={index}>
+          <div key={index} id={hashtag.type} style={{scrollMarginTop: "30vh"}}>
             <CategoryTitle style={{color: hashtag.colorCode}}>
               #{hashtag.type}
             </CategoryTitle>
