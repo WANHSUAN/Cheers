@@ -185,38 +185,12 @@ const BarSection = styled(Link)`
 
 const BarTitle = styled.div`
   width: 250px;
-  font-size: 20px;
+  font-size: 18px;
+  font-family: "Noto Sans TC", sans-serif;
   padding-top: 10px;
   color: #ffffffb9;
   margin: 20px 0;
 `;
-
-// const BarImg = styled.img`
-//   width: 200px;
-//   height: 200px;
-//   border-radius: 50%;
-//   padding: 10px;
-//   border: 1px solid #ffffff7c;
-//   margin-right: 10px;
-// `;
-
-// const MoreBarsButton = styled.button`
-//   padding: 13px 40px;
-//   border: 1px solid #ffffff7c;
-//   background-color: #000;
-//   color: #fff;
-//   border-radius: 5px;
-//   font-size: 15px;
-//   margin-top: 80px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #d19b18;
-//     color: #000;
-//     border: 1px solid #d19b18;
-//     transition: linear 0.2s;
-//   }
-// `;
 
 const CalendarSubTitle = styled.p`
   color: #d19b18;
@@ -364,7 +338,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const eventsCollectionRef = collection(db, "events");
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
       setBars(
@@ -463,9 +436,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                       stroke="none"
                       fill="none"
                     />
-                    <text className="link__text" textLength="460">
+                    <text className="link__text" textLength="480" dy="-8px">
                       <textPath href="#link-circle" stroke="none">
-                        {item.name} {item.name}
+                        {`${item.name.toUpperCase()}   ${item.name.toUpperCase()}`}
                       </textPath>
                     </text>
                   </svg>
@@ -474,9 +447,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             </BarSection>
           ))}
           {!showMore && (
-            <a href="#0" className="more" onClick={handleShowMore}>
+            <button className="more" onClick={handleShowMore}>
               More
-            </a>
+            </button>
           )}
           {showMore && (
             <>
@@ -513,7 +486,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                           stroke="none"
                           fill="none"
                         />
-                        <text className="link__text" textLength="480">
+                        <text className="link__text" textLength="480" dy="-8px">
                           <textPath href="#link-circle" stroke="none">
                             {bar.name.toUpperCase()} {bar.name.toUpperCase()}
                           </textPath>
