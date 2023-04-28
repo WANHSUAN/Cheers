@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
-import styled from "styled-components/macro";
-import {Link, NavLink} from "react-router-dom";
+import styled, {keyframes} from "styled-components/macro";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import {HashLink} from "react-router-hash-link";
@@ -12,7 +11,7 @@ const Wrapper = styled.div`
 const HashTagSection = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 350px auto;
+  margin: 800px auto;
 `;
 
 const HashtagType = styled(HashLink)`

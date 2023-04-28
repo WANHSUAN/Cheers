@@ -18,6 +18,10 @@
   animation-play-state: paused;
 } */
 
+.link:hover {
+  cursor: pointer;
+}
+
 @keyframes rotate {
   to {
     transform: rotate(360deg);
@@ -112,6 +116,224 @@ a:active {
   border-color: #d19b18;
 }
 
+/* flicker */
+
+.sign {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(
+    ellipse 50% 35% at 50% 50%,
+    #7f5c0b,
+    transparent
+  );
+  transform: translate(-50%, -50%);
+  letter-spacing: 3px;
+  left: 50%;
+  top: 32%;
+  font-size: 70px;
+  color: #e4d4b1;
+  text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
+    -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+    0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  animation: shine 2s forwards, flicker 3s infinite;
+}
+
+.signSecond {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(
+    ellipse 50% 35% at 50% 50%,
+    #7f5c0b,
+    transparent
+  );
+  transform: translate(-50%, -50%);
+  left: 52%;
+  top: 35%;
+  font-size: 70px;
+  color: #e4d4b1;
+  text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
+    -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+    0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  animation: shine 2s forwards, flicker 3s infinite;
+}
+
+@keyframes blink {
+  0%,
+  22%,
+  36%,
+  75% {
+    color: #e4d4b1;
+    text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #e4d4b1,
+      -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+      0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  }
+  28%,
+  33% {
+    color: #e2b03a;
+    text-shadow: none;
+  }
+  82%,
+  97% {
+    color: #d19b18;
+    text-shadow: none;
+  }
+}
+
+.flicker {
+  width: 280px;
+  animation: shine 2s forwards, blink 3s 2s infinite;
+}
+
+.fast-flicker {
+  width: 450px;
+  animation: shine 2s forwards, blink 10s 1s infinite;
+}
+
+@keyframes shine {
+  0% {
+    color: #7f5c0b;
+    text-shadow: none;
+  }
+  100% {
+    color: #e4d4b1;
+    text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #e4d4b1,
+      -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+      0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  }
+}
+
+/* #D19B18 */
+
+@keyframes flicker {
+  from {
+    opacity: 1;
+  }
+
+  4% {
+    opacity: 0.9;
+  }
+
+  6% {
+    opacity: 0.85;
+  }
+
+  8% {
+    opacity: 0.95;
+  }
+
+  10% {
+    opacity: 0.9;
+  }
+
+  11% {
+    opacity: 0.922;
+  }
+
+  12% {
+    opacity: 0.9;
+  }
+
+  14% {
+    opacity: 0.95;
+  }
+
+  16% {
+    opacity: 0.98;
+  }
+
+  17% {
+    opacity: 0.9;
+  }
+
+  19% {
+    opacity: 0.93;
+  }
+
+  20% {
+    opacity: 0.99;
+  }
+
+  24% {
+    opacity: 1;
+  }
+
+  26% {
+    opacity: 0.94;
+  }
+
+  28% {
+    opacity: 0.98;
+  }
+
+  37% {
+    opacity: 0.93;
+  }
+
+  38% {
+    opacity: 0.5;
+  }
+
+  39% {
+    opacity: 0.96;
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  44% {
+    opacity: 0.97;
+  }
+
+  46% {
+    opacity: 0.94;
+  }
+
+  56% {
+    opacity: 0.9;
+  }
+
+  58% {
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0.99;
+  }
+
+  68% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.9;
+  }
+
+  72% {
+    opacity: 0.95;
+  }
+
+  93% {
+    opacity: 0.93;
+  }
+
+  95% {
+    opacity: 0.95;
+  }
+
+  97% {
+    opacity: 0.93;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 /* Hashtag */
 
 @keyframes lights {
@@ -155,8 +377,6 @@ a:active {
       -1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
   }
 }
-/* color: hsl(132, 100%, 16%, 0.5); */
-/* color: hsl(230, 40%, 80%); */
 
 .hashtag {
   display: flex;
@@ -165,4 +385,9 @@ a:active {
   font-weight: 300;
   justify-content: center;
   animation: lights 5s 750ms linear infinite;
+}
+
+.hashtag:hover {
+  transform: translateY(-10px);
+  transition: ease 0.5s;
 }
