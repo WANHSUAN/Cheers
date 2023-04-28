@@ -21,6 +21,7 @@ import {BsSuitHeartFill, BsSuitHeart} from "react-icons/bs";
 import {TiStarFullOutline} from "react-icons/ti";
 import {FiExternalLink} from "react-icons/fi";
 import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
+import "./Bar.css";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -211,55 +212,135 @@ const CommentTitle = styled.h2`
 
 const CommentContent = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
-  border: 1px solid #fff;
-  border-radius: 5px;
   margin-top: 50px;
   padding: 50px;
 `;
 
-// const LeftArrow = styled.button`
-//   font-size: 30px;
-//   color: #fff;
-//   background-color: rgba(255, 255, 255, 0);
-//   border: none;
-//   height: 473px;
-//   padding: 0 10px;
-//   display: flex;
-//   align-items: center;
-//   cursor: pointer;
-// `;
+// .arrow {
+// 	position: absolute;
+// 	top: 50%;
+// 	width: 3vmin;
+// 	height: 3vmin;
+// 	background: transparent;
+// 	border-top: 1vmin solid white;
+// 	border-right: 1vmin solid white;
+// 	box-shadow: 0 0 0 lightgray;
+// 	transition: all 200ms ease;
 
-// const RightArrow = styled.button`
-//   font-size: 30px;
-//   color: #fff;
-//   background-color: rgba(255, 255, 255, 0);
-//   border: none;
-//   height: 473px;
-//   padding: 0 10px;
-//   display: flex;
-//   align-items: center;
-//   cursor: pointer;
-// `;
+// 	&.left {
+// 		left: 0;
+// 		transform: translate3d(0,-50%,0) rotate(-135deg);
+// 	}
+
+// 	&.right {
+// 		right: 0;
+// 		transform: translate3d(0,-50%,0) rotate(45deg);
+// 	}
+
+// 	&:hover {
+// 		border-color: orange;
+// 		box-shadow: 0.5vmin -0.5vmin 0 white;
+// 	}
+
+// 	&:before { // for better hit area
+// 		content: '';
+// 		position: absolute;
+// 		top: 50%;
+// 		left: 50%;
+// 		transform: translate(-40%,-60%) rotate(45deg);
+// 		width: 200%;
+// 		height: 200%;
+// 	}
+// }
+
+const LeftArrow = styled.button`
+  /* font-size: 30px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  height: 473px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer; */
+
+  width: 3vmin;
+  height: 3vmin;
+  background: transparent;
+  border-top: 1vmin solid white;
+  border-right: 1vmin solid white;
+  box-shadow: 0 0 0 lightgray;
+  transition: all 200ms ease;
+  transform: translate3d(0, -50%, 0) rotate(-135deg);
+
+  &:hover {
+    border-color: orange;
+    box-shadow: 0.5vmin -0.5vmin 0 white;
+  }
+
+  &:after {
+    content: "";
+    transform: translate(-40%, -60%) rotate(45deg);
+    width: 200%;
+    height: 200%;
+  }
+`;
+
+const RightArrow = styled.button`
+  /* font-size: 30px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  height: 473px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer; */
+
+  width: 3vmin;
+  height: 3vmin;
+  background: transparent;
+  border-top: 1vmin solid white;
+  border-right: 1vmin solid white;
+  box-shadow: 0 0 0 lightgray;
+  transition: all 200ms ease;
+  transform: translate3d(0, -50%, 0) rotate(45deg);
+
+  &:hover {
+    border-color: orange;
+    box-shadow: 0.5vmin -0.5vmin 0 white;
+  }
+
+  &:after {
+    content: "";
+    transform: translate(-40%, -60%) rotate(45deg);
+    width: 200%;
+    height: 200%;
+  }
+`;
 
 const CommentBox = styled.div`
+  height: 400px;
   display: flex;
-  overflow: auto;
-  width: 1000px;
+  align-items: center;
 `;
 
 const CommentItem = styled.div`
-  width: 1000px;
-  border: 1px solid #000;
+  height: 350px;
   color: #fff;
+  flex-direction: column;
+  margin: 10px;
+  text-align: center;
 `;
 
 const Comment = styled.li`
   list-style: none;
   font-size: 20px;
   margin: 30px;
+  width: 720px;
+  padding-top: 50px;
+  height: 100px;
 `;
 
 const MemberScores = styled.div`
@@ -267,7 +348,7 @@ const MemberScores = styled.div`
   justify-content: center;
   font-size: 10px;
   color: #d19b18;
-  margin: 10px;
+  margin: 80px 10px 10px 10px;
 `;
 
 const UserName = styled.p`
@@ -369,8 +450,6 @@ const BarMapTitle = styled.h2`
   font-size: 30px;
 `;
 
-/* Focus */
-
 const ScoreForm = styled.form`
   position: relative;
 `;
@@ -416,7 +495,7 @@ const InputTextArea = styled.textarea`
 const SubmitButton = styled.button`
   width: 130px;
   height: 30px;
-  font-size: 20px;
+  /* font-size: 20px;
   background-color: #000;
   color: #fff;
   border: 1px solid #ffffff7c;
@@ -426,7 +505,7 @@ const SubmitButton = styled.button`
   &:hover {
     background-color: #d18b19;
     border: 1px solid #d18b19;
-  }
+  } */
 `;
 
 interface IBar {
@@ -584,7 +663,17 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
           </StarSection>
         </LabelSection>
         <br />
-        <SubmitButton type="submit">SUBMIT</SubmitButton>
+        {/* <SubmitButton type="submit"> */}
+        <button className="mainContainer" type="submit">
+          <a href="#" className="commentButton">
+            <div className="commentButton__line"></div>
+            <div className="commentButton__line"></div>
+            <span className="commentButton__text">ENTRY</span>
+            <div className="commentButton__drow1"></div>
+            <div className="commentButton__drow2"></div>
+          </a>
+        </button>
+        {/* </SubmitButton> */}
       </SubmitSection>
     </ScoreForm>
   );
@@ -720,6 +809,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const {id} = useParams();
   const [formattedText, setFormattedText] = useState("");
   const [showButton, setShowButton] = useState(false);
+  const [currentIdx, setCurrentIdx] = useState(0);
 
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
@@ -731,13 +821,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    // async function getBar() {
-    //   if (barCollectionRef) {
-    //     const barSnapshot = await getDoc(barCollectionRef);
-    //     setBar(barSnapshot.data() as any);
-    //   }
-    // }
+    // window.scrollTo(0, 0);
 
     getBar();
 
@@ -772,6 +856,18 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       top: 0,
       behavior: "smooth",
     });
+  };
+
+  const goToPrevComment = () => {
+    setCurrentIdx(currentIdx > 0 ? currentIdx - 1 : 0);
+  };
+
+  const goToNextComment = () => {
+    setCurrentIdx(
+      currentIdx < bar.member_comment.length - 1
+        ? currentIdx + 1
+        : bar.member_comment.length - 1
+    );
   };
 
   return (
@@ -864,28 +960,28 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       <CommentSection>
         <CommentTitle>WHAT THEY'RE SAYING</CommentTitle>
         <CommentContent>
-          {/* <LeftArrow>
-              <MdArrowBackIosNew />
-            </LeftArrow> */}
+          <LeftArrow onClick={goToPrevComment}>
+            <MdArrowBackIosNew />
+          </LeftArrow>
           <CommentBox>
-            {bar.member_comment.map((item, index) => (
-              <CommentItem key={index}>
-                <Comment>{item.comment}</Comment>
-                <MemberScores>
-                  {[...Array(item.score)].map((_, i) => (
+            <CommentItem key={currentIdx}>
+              <Comment>{bar.member_comment[currentIdx].comment}</Comment>
+              <MemberScores>
+                {[...Array(bar.member_comment[currentIdx].score)].map(
+                  (_, i) => (
                     <CommentScore key={i}>
                       <TiStarFullOutline />
                     </CommentScore>
-                  ))}
-                </MemberScores>
-                <UserName>{item.userName}</UserName>
-                <Page>1 / 1</Page>
-              </CommentItem>
-            ))}
+                  )
+                )}
+              </MemberScores>
+              <UserName>{bar.member_comment[currentIdx].userName}</UserName>
+              <Page>{`${currentIdx + 1} / ${bar.member_comment.length}`}</Page>
+            </CommentItem>
           </CommentBox>
-          {/* <RightArrow>
-              <MdArrowForwardIos />
-            </RightArrow> */}
+          <RightArrow onClick={goToNextComment}>
+            <MdArrowForwardIos />
+          </RightArrow>
         </CommentContent>
       </CommentSection>
       <MemberScoreSection>

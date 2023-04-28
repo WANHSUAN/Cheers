@@ -483,7 +483,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </ArrowWrapper>
         <div id="section2"></div>
         {/* OPEN */}
-        <Title>
+        {/* <Title>
           <div className="sign">
             <span className="flicker">We've</span>
             <span className="flicker">prepared</span>
@@ -493,7 +493,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <span className="fast-flicker">Types of BARS</span>
             <span className="flicker">for You!</span>
           </div>
-        </Title>
+        </Title> */}
         {showButton && (
           <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
         )}
