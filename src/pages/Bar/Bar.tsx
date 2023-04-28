@@ -105,6 +105,29 @@ const BarContent = styled.div`
   margin: 130px 0;
 `;
 
+const ScrollButton = styled.button`
+  width: 80px;
+  height: 80px;
+  position: fixed;
+  bottom: 110px;
+  right: 50px;
+  z-index: 999;
+  border: none;
+  font-size: 18px;
+  background-color: #fff;
+  color: #d19b18;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d19b18;
+    color: #fff;
+
+    transition: ease 0.5s;
+  }
+`;
+
 const BarIntro = styled.h2`
   color: #d19b18;
   font-size: 40px;
@@ -511,6 +534,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bar, setBar] = useState<IBar>();
   const {id} = useParams();
   const [formattedText, setFormattedText] = useState("");
+  const [showButton, setShowButton] = useState(false);
 
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
@@ -524,6 +548,16 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     }
 
     getBar();
+
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [id]);
 
   if (bar === undefined) {
@@ -540,6 +574,13 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       )
     ),
   ];
+
+  const handleScrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <>
@@ -583,6 +624,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </BarInfo>
       </BarInfoSection>
       <Wrapper>
+        {showButton && (
+          <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
+        )}
         <BarContent>
           <BarIntro>ABOUT US</BarIntro>
           <BarHashTagSection>

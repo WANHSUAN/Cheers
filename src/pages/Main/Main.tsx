@@ -104,6 +104,29 @@ const ScrollTitle = styled.span`
   letter-spacing: 0.1em;
 `;
 
+const ScrollButton = styled.button`
+  width: 80px;
+  height: 80px;
+  position: fixed;
+  bottom: 110px;
+  right: 50px;
+  z-index: 999;
+  border: none;
+  font-size: 18px;
+  background-color: #fff;
+  color: #d19b18;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d19b18;
+    color: #fff;
+
+    transition: ease 0.5s;
+  }
+`;
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -336,6 +359,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [showMore, setShowMore] = useState(false);
   const barsCollectionRef = collection(db, "bars");
   const eventsCollectionRef = collection(db, "events");
+  const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     const getBars = async () => {
@@ -357,6 +381,16 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
     getBars();
     getEvents();
+
+    const handleScroll = () => {
+      if (window.scrollY > 1500) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   if (bars.length === 0) {
@@ -368,6 +402,13 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   // 當按鈕被點擊時，將 showMore 設為 true
   const handleShowMore = () => {
     setShowMore(true);
+  };
+
+  const handleScrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -394,6 +435,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           We've prepared various <br />
           types of bars for You!
         </Title>
+        {showButton && (
+          <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
+        )}
         <Hashtag />
         <AllBarTitleSection>
           <AllBarSubTitle>ALL BARS LIST</AllBarSubTitle>

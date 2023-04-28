@@ -39,7 +39,7 @@ const fadeInPosition = keyframes`
 `;
 
 const SloganContent = styled.div`
-  width: 36%;
+  width: 35%;
   margin: 7% 0 0 10%;
   font-size: 50px;
   color: #ffffffdd;
@@ -50,8 +50,8 @@ const SloganContent = styled.div`
 `;
 
 const SecondSloganContent = styled.div`
-  width: 40%;
-  margin: 0 0 5% 50%;
+  width: 35%;
+  margin: 8% 0 5% 50%;
   font-size: 50px;
   color: #ffffffdd;
   line-height: 80px;
@@ -60,29 +60,6 @@ const SecondSloganContent = styled.div`
   animation: ${fadeInPosition} ease-in-out 3.5s;
   display: flex;
 `;
-
-// const ScrollButton = styled.button`
-//   width: 80px;
-//   height: 80px;
-//   position: fixed;
-//   bottom: 110px;
-//   right: 50px;
-//   z-index: 999;
-//   border: none;
-//   font-size: 18px;
-//   background-color: #fff;
-//   color: #d19b18;
-//   border-radius: 50%;
-//   padding: 10px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #d19b18;
-//     color: #fff;
-
-//     transition: ease 0.5s;
-//   }
-// `;
 
 const SecondSection = styled.div`
   height: 100vh;
@@ -107,7 +84,6 @@ const LoginImgSection = styled.div`
 const LoginTitle = styled.p`
   font-size: 50px;
   font-weight: bold;
-  /* margin-top: 150px; */
   color: #fff;
 `;
 
@@ -172,6 +148,7 @@ const NativeLogin = styled.button`
   &:hover {
     color: #d19b18;
     background-color: #fff;
+    transition: ease 0.5s;'
   }
 `;
 
@@ -188,6 +165,7 @@ const NativeSignUp = styled.button`
   &:hover {
     color: #d19b18;
     background-color: #fff;
+    transition: ease 0.5s;
   }
 `;
 
@@ -196,7 +174,7 @@ const OtherButtonSection = styled.div`
 `;
 
 const LoginButton = styled.button`
-  width : 50px;
+  width: 50px;
   height: 50px;
   font-size: 35px;
   padding: 10px;
@@ -206,8 +184,8 @@ const LoginButton = styled.button`
   color: #ffffff7c;
 
   &:hover {
-    color: 
-    background-color: #000;
+    color: #fff;
+    transition: ease 0.5s;
   }
 `;
 
@@ -217,27 +195,52 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const auth = getAuth();
   const {signIn} = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
-  // const [showButton, setShowButton] = useState(false);
+  const [showButton, setShowButton] = useState(true);
+  const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
+
+  const handleScroll = () => {
+    // 檢查當前位置是否已到達指定部分
+    const section2 = document.getElementById("section2");
+    if (!section2) return; // 如果 section2 不存在，不做任何處理
+    if (
+      section2 &&
+      section2.getBoundingClientRect().top <= window.innerHeight
+    ) {
+      setShowButton(false); // 隱藏按鈕
+    } else if (section2 && window.scrollY < section2.offsetTop) {
+      setShowButton(true); // 顯示按鈕
+    }
+    if (window.scrollY === 0) {
+      setShowButton(true); // 畫面到頂部時顯示按鈕
+    }
+  };
+
+  const scrollToSection2 = () => {
+    // 捲動到指定部分
+    const section2 = document.getElementById("section2");
+    if (section2) {
+      window.scrollTo({
+        top: section2.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    //   const handleScroll = () => {
-    //     if (window.scrollY > 300) {
-    //       setShowButton(true);
-    //     } else {
-    //       setShowButton(false);
-    //     }
-    //   };
-    //   window.addEventListener("scroll", handleScroll);
-    //   return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    // 綁定事件監聽器
+    window.addEventListener("scroll", handleScroll);
 
-  // const handleScrollTop = () => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: "smooth",
-  //   });
-  // };
+    // 獲取 section2 元素
+    const section2El = document.getElementById("section2");
+    if (!section2El) return; // 如果 section2 不存在，不做任何處理
+    setSection2(section2El);
+
+    return () => {
+      // 在元件解除掛載前，取消事件監聽器
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <Wrapper>
@@ -245,14 +248,13 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
         <SloganSection>
           <SloganContentAnimation />
           <SecondSloganContentAnimation />
-          {/* {showButton && (
-            <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
-          )} */}
-          <Link to="section2" smooth={true}>
-            <div className="encircle bounce animated">
-              <div className="arrow"></div>
-            </div>
-          </Link>
+          {showButton && (
+            <Link to="section2" smooth={true} onClick={scrollToSection2}>
+              <div className="encircle bounce animated">
+                <div className="arrow"></div>
+              </div>
+            </Link>
+          )}
         </SloganSection>
       </FirstSection>
       <SecondSection id="section2">
@@ -308,7 +310,7 @@ const SecondSloganContentAnimation = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(true);
-    }, 3000);
+    }, 3500);
     return () => clearTimeout(timer);
   }, []);
 

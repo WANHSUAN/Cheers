@@ -3,7 +3,6 @@ import styled from "styled-components/macro";
 import {db} from "../../App";
 import {Link} from "react-router-dom";
 import {collection, getDocs} from "firebase/firestore";
-import {HashLink} from "react-router-hash-link";
 
 const PageImg = styled.img`
   width: 100vw;
@@ -52,6 +51,29 @@ const CategoryImg = styled.img`
   padding: 5px;
 `;
 
+const ScrollButton = styled.button`
+  width: 80px;
+  height: 80px;
+  position: fixed;
+  bottom: 110px;
+  right: 50px;
+  z-index: 999;
+  border: none;
+  font-size: 18px;
+  background-color: #fff;
+  color: #d19b18;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d19b18;
+    color: #fff;
+
+    transition: ease 0.5s;
+  }
+`;
+
 interface IHashtag {
   type: string;
   colorCode: string;
@@ -63,6 +85,7 @@ export interface ICategoryProps {}
 const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
   const [hashtags, setHashtags] = useState<IHashtag[]>([]);
   const hashtagsCollectionRef = collection(db, "hashtags");
+  const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,11 +97,28 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
     };
 
     getHashtags();
+
+    const handleScroll = () => {
+      if (window.scrollY > 500) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   if (hashtags.length === 0) {
     return <p>Loading...</p>;
   }
+
+  const handleScrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <>
@@ -105,6 +145,9 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
             </CategoryCollection>
           </div>
         ))}
+        {showButton && (
+          <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
+        )}
       </Wrapper>
     </>
   );
