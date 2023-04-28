@@ -482,6 +482,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </WrapperInner>
         </ArrowWrapper>
         <div id="section2"></div>
+        {/* OPEN */}
         <Title>
           <div className="sign">
             <span className="flicker">We've</span>

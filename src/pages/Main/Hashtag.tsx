@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 const HashTagSection = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 800px auto;
+  margin: 800px auto 500px;
 `;
 
 const HashtagType = styled(HashLink)`
