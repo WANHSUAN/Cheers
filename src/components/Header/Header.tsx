@@ -15,9 +15,6 @@ import {
 } from "react-instantsearch-hooks-web";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
 import {AuthContext} from "../../Context/AuthContext";
-
-import {HiBars3CenterLeft} from "react-icons/hi2";
-import {TfiClose} from "react-icons/tfi";
 import side from "./side.png";
 
 const searchClient = algoliasearch(
@@ -43,7 +40,7 @@ const Nav = styled.div`
 
 const Menu = styled.p`
   color: #fff;
-  margin: 0;
+  margin: 5px 0;
   font-size: 20px;
 `;
 
@@ -107,7 +104,7 @@ const SideMenuList = styled.ul`
 `;
 
 const MenuItem = styled.li`
-  width: 400px;
+  width: 480px;
   list-style: none;
   font-size: 70px;
   margin: 20px 0;
@@ -126,7 +123,7 @@ const StyledLink = styled(Link)`
 const LogOutButton = styled.button`
   background-color: transparent;
   border: none;
-  width: 400px;
+  width: 480px;
   font-size: 70px;
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
@@ -257,6 +254,20 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
 
+  const auth = getAuth();
+  const {logOut} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({
+    prompt: "select_account",
+  });
+
+  function handleLogOut() {
+    logOut(auth);
+    handleSideMenu();
+    navigate("/");
+  }
+
   const handleSideMenu: HandleSideMenuType = () => {
     setIsToggle(!isToggle);
   };
@@ -282,10 +293,40 @@ const Header = () => {
     <Wrapper>
       <Nav>
         <MenuSection>
-          <NavButton onClick={handleSideMenu}>
-            {isToggle ? <TfiClose /> : <HiBars3CenterLeft />}
-          </NavButton>
-          {isToggle && <SideMenu handleSideMenu={handleSideMenu} />}
+          <div className="menu-toggle" onClick={() => setIsToggle(!isToggle)}>
+            <div className={isToggle ? "hamBox hamBoxOpen" : "hamBox"}>
+              <span className={isToggle ? "lineTop spin" : "lineTop"}></span>
+              <span
+                className={isToggle ? "lineBottom spin" : "lineBottom"}
+              ></span>
+              <div
+                className="nav-overlay"
+                style={{
+                  top: isToggle ? "0" : "-100%",
+                  transitionDelay: isToggle ? "0s" : "0s",
+                }}
+              >
+                <SideMenuList>
+                  <MenuItem>
+                    <StyledLink onClick={handleSideMenu} to={"/member"}>
+                      Member
+                    </StyledLink>
+                  </MenuItem>
+                  <MenuItem>
+                    <StyledLink onClick={handleSideMenu} to={"/main"}>
+                      All Bars
+                    </StyledLink>
+                  </MenuItem>
+                  <MenuItem>
+                    <StyledLink onClick={handleSideMenu} to={"/category"}>
+                      Category
+                    </StyledLink>
+                  </MenuItem>
+                  <LogOutButton onClick={handleLogOut}>Log Out</LogOutButton>
+                </SideMenuList>
+              </div>
+            </div>
+          </div>
           <Menu>MENU</Menu>
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
@@ -297,46 +338,6 @@ const Header = () => {
     </Wrapper>
   );
 };
-
-function SideMenu({handleSideMenu}: {handleSideMenu: HandleSideMenuType}) {
-  const auth = getAuth();
-  const {logOut} = useContext(AuthContext);
-  const navigate = useNavigate();
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({
-    prompt: "select_account",
-  });
-
-  function handleLogOut() {
-    logOut(auth);
-    handleSideMenu();
-    navigate("/");
-  }
-  return (
-    <>
-      <SideMenuWrapper>
-        <SideMenuList>
-          <MenuItem>
-            <StyledLink onClick={handleSideMenu} to={"/member"}>
-              Member
-            </StyledLink>
-          </MenuItem>
-          <MenuItem>
-            <StyledLink onClick={handleSideMenu} to={"/main"}>
-              All Bars
-            </StyledLink>
-          </MenuItem>
-          <MenuItem>
-            <StyledLink onClick={handleSideMenu} to={"/category"}>
-              Category
-            </StyledLink>
-          </MenuItem>
-          <LogOutButton onClick={handleLogOut}>Log Out</LogOutButton>
-        </SideMenuList>
-      </SideMenuWrapper>
-    </>
-  );
-}
 
 const MySearchComponent = () => {
   const [showBars, setShowBars] = useState(false);

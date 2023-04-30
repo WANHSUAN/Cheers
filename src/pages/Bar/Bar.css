@@ -1,7 +1,4 @@
-:root {
-  --line_color: #ffffffbd;
-  --back_color: #ffecf6;
-}
+/* Comment */
 
 .commentButton {
   position: relative;
@@ -11,7 +8,7 @@
   text-decoration: none;
   font-size: 14px;
   font-weight: bold;
-  color: var(--line_color);
+  color: #ffffffbd;
   letter-spacing: 2px;
   transition: all 0.3s ease;
 }
@@ -30,7 +27,7 @@
   position: absolute;
   height: 3px;
   border-radius: 2px;
-  background: var(--line_color);
+  background: #ffffffbd;
   transition: all 0.5s ease;
 }
 .commentButton::before {
@@ -68,7 +65,7 @@
   height: 100%;
   box-sizing: border-box;
   border-radius: 300px;
-  border: solid 3px var(--line_color);
+  border: solid 3px #ffffff7c;
 }
 .commentButton__line:nth-child(1),
 .commentButton__line:nth-child(1)::before {
@@ -89,78 +86,7 @@
 .commentButton:hover .commentButton__text::after {
   width: calc(100% - 56px * 2 - 16px);
 }
-.commentButton__drow1,
-.commentButton__drow2 {
-  position: absolute;
-  z-index: -1;
-  border-radius: 16px;
-  transform-origin: 16px 16px;
-}
-.commentButton__drow1 {
-  top: -16px;
-  left: 40px;
-  width: 32px;
-  height: 0;
-  transform: rotate(30deg);
-}
-.commentButton__drow2 {
-  top: 44px;
-  left: 77px;
-  width: 32px;
-  height: 0;
-  transform: rotate(-127deg);
-}
-.commentButton__drow1::before,
-.commentButton__drow1::after,
-.commentButton__drow2::before,
-.commentButton__drow2::after {
-  content: "";
-  position: absolute;
-}
-.commentButton__drow1::before {
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 32px;
-  border-radius: 16px;
-  transform-origin: 16px 16px;
-  transform: rotate(-60deg);
-}
-.commentButton__drow1::after {
-  top: -10px;
-  left: 45px;
-  width: 0;
-  height: 32px;
-  border-radius: 16px;
-  transform-origin: 16px 16px;
-  transform: rotate(69deg);
-}
-.commentButton__drow2::before {
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 32px;
-  border-radius: 16px;
-  transform-origin: 16px 16px;
-  transform: rotate(-146deg);
-}
-.commentButton__drow2::after {
-  bottom: 26px;
-  left: -40px;
-  width: 0;
-  height: 32px;
-  border-radius: 16px;
-  transform-origin: 16px 16px;
-  transform: rotate(-262deg);
-}
-.commentButton__drow1,
-.commentButton__drow1::before,
-.commentButton__drow1::after,
-.commentButton__drow2,
-.commentButton__drow2::before,
-.commentButton__drow2::after {
-  background: var(--back_color);
-}
+
 .commentButton:hover .commentButton__drow1 {
   animation: drow1 ease-in 0.06s;
   animation-fill-mode: forwards;

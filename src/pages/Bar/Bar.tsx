@@ -20,7 +20,7 @@ import {BsBookmarkFill, BsBookmark} from "react-icons/bs";
 import {BsSuitHeartFill, BsSuitHeart} from "react-icons/bs";
 import {TiStarFullOutline} from "react-icons/ti";
 import {FiExternalLink} from "react-icons/fi";
-import {MdArrowBackIosNew, MdArrowForwardIos} from "react-icons/md";
+import {FaQuoteLeft, FaQuoteRight} from "react-icons/fa";
 import "./Bar.css";
 
 const Wrapper = styled.div`
@@ -113,7 +113,7 @@ const ScrollButton = styled.button`
   position: fixed;
   bottom: 110px;
   right: 50px;
-  z-index: 999;
+  z-index: 3;
   border: none;
   font-size: 18px;
   background-color: #fff;
@@ -188,14 +188,7 @@ const BarText = styled.p`
   color: #fff;
   line-height: 30px;
   margin: 0 auto;
-
-  /* white-space: pre-wrap;
-
-  &:after {
-    content: "";
-    display: block;
-    margin-top: 0.5em; // 设置上边距为 0.5em，可根据需要自行调整
-  } */
+  white-space: pre-wrap;
 `;
 
 const CommentSection = styled.div`
@@ -217,66 +210,21 @@ const CommentContent = styled.div`
   padding: 50px;
 `;
 
-// .arrow {
-// 	position: absolute;
-// 	top: 50%;
-// 	width: 3vmin;
-// 	height: 3vmin;
-// 	background: transparent;
-// 	border-top: 1vmin solid white;
-// 	border-right: 1vmin solid white;
-// 	box-shadow: 0 0 0 lightgray;
-// 	transition: all 200ms ease;
-
-// 	&.left {
-// 		left: 0;
-// 		transform: translate3d(0,-50%,0) rotate(-135deg);
-// 	}
-
-// 	&.right {
-// 		right: 0;
-// 		transform: translate3d(0,-50%,0) rotate(45deg);
-// 	}
-
-// 	&:hover {
-// 		border-color: orange;
-// 		box-shadow: 0.5vmin -0.5vmin 0 white;
-// 	}
-
-// 	&:before { // for better hit area
-// 		content: '';
-// 		position: absolute;
-// 		top: 50%;
-// 		left: 50%;
-// 		transform: translate(-40%,-60%) rotate(45deg);
-// 		width: 200%;
-// 		height: 200%;
-// 	}
-// }
-
-const LeftArrow = styled.button`
-  /* font-size: 30px;
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  height: 473px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  cursor: pointer; */
-
-  width: 3vmin;
-  height: 3vmin;
+const LeftArrow = styled.a`
+  width: 30px;
+  height: 30px;
+  margin-top: 35px;
   background: transparent;
-  border-top: 1vmin solid white;
-  border-right: 1vmin solid white;
+  border-top: 10px solid white;
+  border-right: 10px solid white;
   box-shadow: 0 0 0 lightgray;
   transition: all 200ms ease;
   transform: translate3d(0, -50%, 0) rotate(-135deg);
 
   &:hover {
     border-color: orange;
-    box-shadow: 0.5vmin -0.5vmin 0 white;
+    box-shadow: 5px -5px 0 white;
+    cursor: pointer;
   }
 
   &:after {
@@ -287,29 +235,21 @@ const LeftArrow = styled.button`
   }
 `;
 
-const RightArrow = styled.button`
-  /* font-size: 30px;
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  height: 473px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  cursor: pointer; */
-
-  width: 3vmin;
-  height: 3vmin;
+const RightArrow = styled.a`
+  width: 30px;
+  height: 30px;
+  margin-top: 50px;
   background: transparent;
-  border-top: 1vmin solid white;
-  border-right: 1vmin solid white;
+  border-top: 10px solid white;
+  border-right: 10px solid white;
   box-shadow: 0 0 0 lightgray;
   transition: all 200ms ease;
   transform: translate3d(0, -50%, 0) rotate(45deg);
 
   &:hover {
     border-color: orange;
-    box-shadow: 0.5vmin -0.5vmin 0 white;
+    box-shadow: 5px -5px 0 white;
+    cursor: pointer;
   }
 
   &:after {
@@ -331,7 +271,26 @@ const CommentItem = styled.div`
   color: #fff;
   flex-direction: column;
   margin: 10px;
+  border-radius: 50px;
   text-align: center;
+  border-top: 1px solid #ffffff7c;
+  border-bottom: 1px solid #ffffff7c;
+  position: relative;
+  box-shadow: 1px 1px 8px #ffffff7c;
+`;
+
+const CommaRight = styled.div`
+  font-size: 30px;
+  position: absolute;
+  top: -4%;
+  right: 10%;
+`;
+
+const CommaLeft = styled.div`
+  font-size: 30px;
+  position: absolute;
+  bottom: -6%;
+  left: 10%;
 `;
 
 const Comment = styled.li`
@@ -339,25 +298,27 @@ const Comment = styled.li`
   font-size: 20px;
   margin: 30px;
   width: 720px;
-  padding-top: 50px;
+  padding: 50px 70px 0;
   height: 100px;
+  line-height: 28px;
+  white-space: pre-wrap;
 `;
 
 const MemberScores = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 10px;
+  font-size: 18px;
   color: #d19b18;
   margin: 80px 10px 10px 10px;
 `;
 
 const UserName = styled.p`
-  font-size: 15px;
+  font-size: 20px;
   margin-bottom: 30px;
 `;
 
 const Page = styled.p`
-  font-size: 10px;
+  font-size: 15px;
 `;
 
 const BarRec = styled.div`
@@ -484,28 +445,12 @@ const StarSection = styled.div`
 const InputTextArea = styled.textarea`
   width: 600px;
   height: 250px;
-  border: 2px solid #ffffff7c;
+  border: 3px solid #ffffff7c;
   background-color: #000;
   border-radius: 10px;
   padding: 60px 20px;
-  font-size: 30px;
+  font-size: 20px;
   color: #ffffffc1;
-`;
-
-const SubmitButton = styled.button`
-  width: 130px;
-  height: 30px;
-  /* font-size: 20px;
-  background-color: #000;
-  color: #fff;
-  border: 1px solid #ffffff7c;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #d18b19;
-    border: 1px solid #d18b19;
-  } */
 `;
 
 interface IBar {
@@ -648,6 +593,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
         <InputTextArea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          maxLength={100}
           placeholder="Leave a message..."
         ></InputTextArea>
       </LabelSectionInput>
@@ -663,17 +609,13 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
           </StarSection>
         </LabelSection>
         <br />
-        {/* <SubmitButton type="submit"> */}
         <button className="mainContainer" type="submit">
           <a href="#" className="commentButton">
             <div className="commentButton__line"></div>
             <div className="commentButton__line"></div>
             <span className="commentButton__text">ENTRY</span>
-            <div className="commentButton__drow1"></div>
-            <div className="commentButton__drow2"></div>
           </a>
         </button>
-        {/* </SubmitButton> */}
       </SubmitSection>
     </ScoreForm>
   );
@@ -807,7 +749,6 @@ export interface IMainProps {}
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [bar, setBar] = useState<IBar>();
   const {id} = useParams();
-  const [formattedText, setFormattedText] = useState("");
   const [showButton, setShowButton] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -857,6 +798,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       behavior: "smooth",
     });
   };
+
+  const introductionWithLineBreaks = bar.introduction.replace(/。/g, "。\n");
 
   const goToPrevComment = () => {
     setCurrentIdx(currentIdx > 0 ? currentIdx - 1 : 0);
@@ -926,7 +869,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               ))}
           </BarHashTagSection>
           <BarIntroTextSection>
-            <BarText>{formattedText}</BarText>
+            <BarText>{introductionWithLineBreaks}</BarText>
           </BarIntroTextSection>
         </BarContent>
         <BarRecTitle>SPECIAL MENU</BarRecTitle>
@@ -960,11 +903,12 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       <CommentSection>
         <CommentTitle>WHAT THEY'RE SAYING</CommentTitle>
         <CommentContent>
-          <LeftArrow onClick={goToPrevComment}>
-            <MdArrowBackIosNew />
-          </LeftArrow>
+          <LeftArrow onClick={goToPrevComment} />
           <CommentBox>
             <CommentItem key={currentIdx}>
+              <CommaRight>
+                <FaQuoteRight />
+              </CommaRight>
               <Comment>{bar.member_comment[currentIdx].comment}</Comment>
               <MemberScores>
                 {[...Array(bar.member_comment[currentIdx].score)].map(
@@ -977,11 +921,12 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               </MemberScores>
               <UserName>{bar.member_comment[currentIdx].userName}</UserName>
               <Page>{`${currentIdx + 1} / ${bar.member_comment.length}`}</Page>
+              <CommaLeft>
+                <FaQuoteLeft />
+              </CommaLeft>
             </CommentItem>
           </CommentBox>
-          <RightArrow onClick={goToNextComment}>
-            <MdArrowForwardIos />
-          </RightArrow>
+          <RightArrow onClick={goToNextComment} />
         </CommentContent>
       </CommentSection>
       <MemberScoreSection>
