@@ -195,6 +195,7 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const auth = getAuth();
   const {signIn} = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
+  // TODO
   const [showButton, setShowButton] = useState(true);
   const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
 

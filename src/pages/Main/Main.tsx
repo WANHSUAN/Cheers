@@ -16,7 +16,6 @@ const Wrapper = styled.div`
   width: 1100px;
   margin: 0 auto;
   padding-top: 60px;
-  position: relative;
 `;
 
 const ImageContainer = styled.div`
@@ -104,7 +103,7 @@ const ScrollTitle = styled.span`
   font-weight: bold;
   letter-spacing: 0.1em;
 `;
-
+// TODO
 const ScrollButton = styled.button`
   width: 80px;
   height: 80px;
@@ -169,7 +168,7 @@ const fadeInPosition = keyframes`
   }
 `;
 
-const Title = styled.p`
+const Title = styled.div`
   font-size: 70px;
   color: #fff;
   padding: 50px;
@@ -241,8 +240,8 @@ const MapTitle = styled.p`
 
 const AlertWrapper = styled.div`
   position: absolute;
-  top: 6%;
-  left: 33%;
+  top: 43%;
+  left: 40%;
   z-index: 3;
 `;
 
@@ -447,6 +446,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     setShowMore(true);
   };
 
+  // TODO
+
   const handleScrollTop = () => {
     window.scrollTo({
       top: 0,
@@ -494,6 +495,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <span className="flicker">for You!</span>
           </div>
         </Title>
+
+        {/* TODO */}
         {showButton && (
           <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
         )}

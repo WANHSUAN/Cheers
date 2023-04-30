@@ -1,14 +1,15 @@
 import React from "react";
 // OPEN
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {useState, useEffect} from "react";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import "./styles.css";
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 50px 200px 100px;
+  margin: 50px 200px 100px 50px;
 `;
 
 const GoogleMap = styled.div`
@@ -41,10 +42,12 @@ const CategoryButton = styled.button`
   border-radius: 5px;
   text-align: right;
   font-size: 20px;
-  cursor: pointer;
 
   &:hover {
     color: #d19b18;
+    transform: translateX(-10px);
+    transition: ease 0.5s;
+    cursor: pointer;
   }
 `;
 
@@ -120,6 +123,8 @@ interface IBar {
   type: string;
   name: string;
   tel: string;
+  barId: string;
+  opening_time: {opening_date: string; opening_hours: string};
 }
 
 export interface IMainProps {}
@@ -226,20 +231,153 @@ function Address(props: IAddressProps) {
   const [loaded] = useScript(
     "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
   );
+
   function selectedMap() {
     const myLatLng = props.latLng;
 
     const map = new window.google.maps.Map(document.getElementById("map"), {
       zoom: 15,
       center: myLatLng[3],
+      mapTypeId: "terrain",
+      mapTypeControl: false,
+      streetViewControl: false,
+      rotateControl: false,
     });
 
     const infoWindow = new window.google.maps.InfoWindow();
+
+    const locationButton = document.createElement("button");
+    locationButton.textContent = "Current Location";
+    locationButton.classList.add("custom-map-control-button");
+
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+
+    locationButton.addEventListener("click", () => {
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position: GeolocationPosition) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent("Your location");
+            infoWindow.open(map);
+            map.setCenter(pos);
+          },
+          () => {
+            handleLocationError(true, infoWindow, map.getCenter()!);
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter()!);
+      }
+    });
+
+    function handleLocationError(
+      browserHasGeolocation: boolean,
+      infoWindow: google.maps.InfoWindow,
+      pos: google.maps.LatLng
+    ) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(
+        browserHasGeolocation
+          ? "Error: The Geolocation service failed."
+          : "Error: Your browser doesn't support geolocation."
+      );
+      infoWindow.open(map);
+    }
+
     // const icons = {
     //   url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
     //   scaledSize: new window.google.maps.Size(50, 50)
     // };
 
+    map.setOptions({
+      styles: [
+        {elementType: "geometry", stylers: [{color: "#242f3e"}]},
+        {elementType: "labels.text.stroke", stylers: [{color: "#242f3e"}]},
+        {elementType: "labels.text.fill", stylers: [{color: "#746855"}]},
+        {
+          featureType: "administrative.locality",
+          elementType: "labels.text.fill",
+          stylers: [{color: "#d59563"}],
+        },
+        {
+          featureType: "poi",
+          elementType: "labels.text.fill",
+          stylers: [{color: "#d59563"}],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "geometry",
+          stylers: [{color: "#263c3f"}],
+        },
+        {
+          featureType: "poi.park",
+          elementType: "labels.text.fill",
+          stylers: [{color: "#6b9a76"}],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry",
+          stylers: [{color: "#38414e"}],
+        },
+        {
+          featureType: "road",
+          elementType: "geometry.stroke",
+          stylers: [{color: "#212a37"}],
+        },
+        {
+          featureType: "road",
+          elementType: "labels.text.fill",
+          stylers: [{color: "#9ca5b3"}],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry",
+          stylers: [{color: "#746855"}],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "geometry.stroke",
+          stylers: [{color: "#1f2835"}],
+        },
+        {
+          featureType: "road.highway",
+          elementType: "labels.text.fill",
+          stylers: [{color: "#f3d19c"}],
+        },
+        {
+          featureType: "transit",
+          elementType: "geometry",
+          stylers: [{color: "#2f3948"}],
+        },
+        {
+          featureType: "transit.station",
+          elementType: "labels.text.fill",
+          stylers: [{color: "#d59563"}],
+        },
+        {
+          featureType: "water",
+          elementType: "geometry",
+          stylers: [{color: "#17263c"}],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.fill",
+          stylers: [{color: "#515c6d"}],
+        },
+        {
+          featureType: "water",
+          elementType: "labels.text.stroke",
+          stylers: [{color: "#17263c"}],
+        },
+      ],
+    });
     myLatLng.forEach((location, index) => {
       // barType.map((bar: string) => console.log(bar));
       const marker = new window.google.maps.Marker({
@@ -252,11 +390,18 @@ function Address(props: IAddressProps) {
         const barAddress = props.bars[index].address; // 從 props 中取得 bars 數據
         const barName = props.bars[index].name;
         const barTel = props.bars[index].tel;
+        const barLink = props.bars[index].barId;
+        const barDate = props.bars[index].opening_time.opening_date;
+        const barHours = props.bars[index].opening_time.opening_hours;
         // 設定 info window 的內容
         infoWindow.setContent(`
-          Bar Name: ${barName}  <br />
-          Address: ${barAddress} <br />
-          Tel: ${barTel}
+        <div class="infowindow">
+          <h2>${barName}</h2>  <br />
+          <p>${barDate} ${barHours}</p> <br />
+          <p>${barAddress}</p> <br />
+          <p>${barTel}</p> <br />
+          <a href="/bars/${barLink}">&#128279;</i></a>
+          </div>
         `);
         // 開啟 info window
         infoWindow.open(map, marker);
