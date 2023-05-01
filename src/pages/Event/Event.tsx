@@ -94,6 +94,7 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   const eventCollectionRef = id ? doc(db, "events", id) : undefined;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     async function getEvent() {
       if (eventCollectionRef) {
         const barSnapshot = await getDoc(eventCollectionRef);

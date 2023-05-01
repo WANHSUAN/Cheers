@@ -5,7 +5,7 @@ import {collection, getDocs} from "firebase/firestore";
 import {HashLink} from "react-router-hash-link";
 
 const Wrapper = styled.div`
-  width: 1000px;
+  width: 1100px;
 `;
 
 const HashTagSection = styled.div`
@@ -19,7 +19,7 @@ const HashtagType = styled(HashLink)`
 `;
 
 const StyledHashtagType = styled.p`
-  width: 200px;
+  width: 220px;
   font-size: 30px;
   margin: 30px 0;
 `;

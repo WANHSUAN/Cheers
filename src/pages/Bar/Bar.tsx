@@ -16,12 +16,13 @@ import {
 } from "firebase/firestore";
 import BarMap from "./BarMap";
 import {AuthContext} from "../../Context/AuthContext";
-import {BsBookmarkFill, BsBookmark} from "react-icons/bs";
+// import {BsBookmarkFill, BsBookmark} from "react-icons/bs";
 import {BsSuitHeartFill, BsSuitHeart} from "react-icons/bs";
 import {TiStarFullOutline} from "react-icons/ti";
 import {FiExternalLink} from "react-icons/fi";
 import {FaQuoteLeft, FaQuoteRight} from "react-icons/fa";
 import "./Bar.css";
+import userImg from "../../img/userImg.png";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -52,15 +53,15 @@ const BarTitle = styled.h1`
 const Like = styled.span`
   font-size: 25px;
   cursor: pointer;
-  margin: 15px;
+  /* margin: 15px; */
   color: #d19b18;
 `;
 
-const Collection = styled.span`
-  font-size: 25px;
-  cursor: pointer;
-  color: #d19b18;
-`;
+// const Collection = styled.span`
+//   font-size: 25px;
+//   cursor: pointer;
+//   color: #d19b18;
+// `;
 
 const BarImg = styled.img`
   width: 50%;
@@ -389,7 +390,7 @@ const BarRecIngredientsItem = styled.li`
 const MemberScoreSection = styled.div`
   width: 1000px;
   height: 500px;
-  margin: 400px auto;
+  margin: 100px auto;
   text-align: center;
 `;
 
@@ -564,7 +565,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   const [currentDocId, setCurrentDocId] = useState(id);
   const [key, setKey] = useState(0);
   const {user} = useContext(AuthContext);
-  // console.log(user.userImg);
+  console.log(user.userImg);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -588,8 +589,8 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   return (
     <ScoreForm onSubmit={handleSubmit}>
       <LabelSectionInput>
-        <MemberImg />
-        {/* src={user.userImg}  */}
+        <MemberImg src={userImg} />
+        {/* src={user.userImg} */}
         <InputTextArea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -685,56 +686,56 @@ function CollectionButton(name: any) {
     }
   };
 
-  const handleCollectionButtonClick = async () => {
-    const newIsCollection = !isCollection;
+  // const handleCollectionButtonClick = async () => {
+  //   const newIsCollection = !isCollection;
 
-    localStorage.setItem(collectionStorageKey, JSON.stringify(newIsCollection));
-    setIsCollection(newIsCollection);
-    try {
-      if (newIsCollection) {
-        alert("已去過！");
-        const userRef = doc(db, "users", userUID);
-        await addDoc(collection(userRef, "collections"), {
-          name: name.name,
-          address: name.address,
-          link: name.link,
-          img: name.img,
-          barId: name.barId,
-          // score: name.score,
-        });
-      } else {
-        alert("其實沒去過，我要取消！！");
+  //   localStorage.setItem(collectionStorageKey, JSON.stringify(newIsCollection));
+  //   setIsCollection(newIsCollection);
+  //   try {
+  //     if (newIsCollection) {
+  //       alert("已去過！");
+  //       const userRef = doc(db, "users", userUID);
+  //       await addDoc(collection(userRef, "collections"), {
+  //         name: name.name,
+  //         address: name.address,
+  //         link: name.link,
+  //         img: name.img,
+  //         barId: name.barId,
+  //         // score: name.score,
+  //       });
+  //     } else {
+  //       alert("其實沒去過，我要取消！！");
 
-        const collectionsRef = collection(db, "users", userUID, "collections");
-        const q = query(collectionsRef, where("barId", "==", name.barId));
+  //       const collectionsRef = collection(db, "users", userUID, "collections");
+  //       const q = query(collectionsRef, where("barId", "==", name.barId));
 
-        let collectionDocId;
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          collectionDocId = doc.id;
-        });
+  //       let collectionDocId;
+  //       const querySnapshot = await getDocs(q);
+  //       querySnapshot.forEach((doc) => {
+  //         collectionDocId = doc.id;
+  //       });
 
-        if (collectionDocId) {
-          const collectionsRef = doc(
-            db,
-            "users",
-            userUID,
-            "collections",
-            collectionDocId
-          );
-          await deleteDoc(collectionsRef);
-        }
-      }
-    } catch (error) {
-      console.error("Error adding bar data to Firestore:", error);
-    }
-  };
+  //       if (collectionDocId) {
+  //         const collectionsRef = doc(
+  //           db,
+  //           "users",
+  //           userUID,
+  //           "collections",
+  //           collectionDocId
+  //         );
+  //         await deleteDoc(collectionsRef);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding bar data to Firestore:", error);
+  //   }
+  // };
 
   return (
     <>
-      <Collection onClick={handleCollectionButtonClick}>
+      {/* <Collection onClick={handleCollectionButtonClick}>
         {isCollection ? <BsBookmarkFill /> : <BsBookmark />}
-      </Collection>
+      </Collection> */}
       <Like onClick={handleHeartButtonClick}>
         {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
       </Like>
@@ -762,7 +763,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   };
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
 
     getBar();
 

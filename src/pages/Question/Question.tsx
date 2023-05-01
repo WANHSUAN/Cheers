@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useContext} from "react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import styled from "styled-components/macro";
 import {db} from "../../App";
 import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
 import {AuthContext} from "../../Context/AuthContext";
 import main from "./main.png";
 import {RxDoubleArrowDown, RxDoubleArrowRight} from "react-icons/rx";
+import "../Calendar/Calendar.css";
 
 const Wrapper = styled.div`
   width: 83.5%;
@@ -104,24 +105,15 @@ const Submit = styled.div`
   margin-bottom: 50px;
 `;
 
-const SubmitButton = styled.button`
-  width: 300px;
-  color: #fff;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  font-size: 40px;
-`;
-
-const StyledDoubleArrow = styled.button`
-  height: 50px;
-  color: #fff;
+const EventButton = styled.button`
+  text-decoration: none;
+  color: #d19b18;
   font-size: 50px;
-  background-color: rgba(255, 255, 255, 0);
+  width: 200px;
   border: none;
-  text-align: center;
+  background-color: rgba(255, 255, 255, 0);
   cursor: pointer;
-  justify-content: center;
+  text-align: left;
 `;
 
 interface IBar {
@@ -175,6 +167,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const usersCollectionRef = collection(db, "users");
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
       setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
@@ -298,12 +291,26 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
           ))}
         </TestSection>
         <Submit>
-          <SubmitButton onClick={handleButtonClick}>
-            FIND YOUR TYPE
-          </SubmitButton>
-          <StyledDoubleArrow>
-            <RxDoubleArrowRight />
-          </StyledDoubleArrow>
+          <EventButton onClick={handleButtonClick}>
+            <div className="btn">
+              <span className="btn__circle"></span>
+              <span className="btn__white-circle">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="icon-arrow-right"
+                  viewBox="0 0 21 12"
+                >
+                  <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
+                </svg>
+              </span>
+              <span
+                className="btn__text"
+                style={{fontSize: "40px", marginLeft: "25px"}}
+              >
+                Go to the Bar Event!
+              </span>
+            </div>
+          </EventButton>
         </Submit>
       </Wrapper>
     </>
