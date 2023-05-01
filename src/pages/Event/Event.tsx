@@ -3,8 +3,7 @@ import {Link} from "react-router-dom";
 import {useState, useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {db} from "../../App";
-import {getDoc, doc} from "firebase/firestore";
-import {RxDoubleArrowRight} from "react-icons/rx";
+import {getDoc, doc, Timestamp} from "firebase/firestore";
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -20,7 +19,7 @@ const PageImg = styled.img`
 const EventTitle = styled.h2`
   color: #d19b18;
   font-size: 40px;
-  margin: 70px 80px 80px 0;
+  margin: 70px 80px 20px 0;
 `;
 
 const InnerDiv = styled.div`
@@ -55,41 +54,33 @@ const EventContent = styled.div`
   line-height: 30px;
 `;
 
-// const EventTime = styled.div``;
-
-const StyledBarEnterButton = styled.div`
-  width: 1000px;
-  height: 30px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0);
-  cursor: pointer;
-  border: none;
+const EventTime = styled.div`
+  width: 100px;
+  height: 100px;
   font-size: 30px;
-  margin: 80px 0 150px 0;
-  display: flex;
-  justify-content: right;
+  color: #fff;
+  margin-bottom: 50px;
 `;
 
-const BarEnterButton = styled(Link)`
+const StyledEventButton = styled.button`
+  width: 870px;
+  border: none;
+  padding: 50px;
+  background-color: rgba(255, 255, 255, 0);
+  cursor: pointer;
+  text-align: right;
+`;
+
+const EventButton = styled(Link)`
   text-decoration: none;
-  color: #fff;
-`;
-
-const StyledDoubleArrow = styled.button`
-  height: 50px;
-  color: #fff;
+  color: #d19b18;
   font-size: 30px;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  text-align: center;
-  cursor: pointer;
-  justify-content: center;
 `;
 
 interface IEvent {
   bar: string;
   content: string;
-  // time: {};
+  time: Timestamp;
   id: string;
   img: string;
 }
@@ -116,27 +107,39 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   if (event === undefined) {
     return <p>Loading...</p>;
   }
+  const dateObj = new Date(
+    event.time.seconds * 1000 + event.time.nanoseconds / 1000000
+  );
+  const dateStr = dateObj.toLocaleDateString(); // 格式為 YYYY/MM/DD
 
   return (
     <Wrapper>
       <PageImg src={event.img} />
       <EventSection>
         <EventTitle>{event.bar}</EventTitle>
-        {/* <EventTime>{event.time}</EventTime> */}
+        <EventTime>{dateStr}</EventTime>
         <OuterDiv>
           <InnerDiv>
             <EventContent>{event.content}</EventContent>
           </InnerDiv>
         </OuterDiv>
-
-        <StyledBarEnterButton>
-          <BarEnterButton to={`/bars/${event.id}`} key={event.id}>
-            EXPLORE THE BAR
-          </BarEnterButton>
-          <StyledDoubleArrow>
-            <RxDoubleArrowRight />
-          </StyledDoubleArrow>
-        </StyledBarEnterButton>
+        <StyledEventButton>
+          <EventButton to={`/bars/${event.id}`} key={event.id}>
+            <div className="btn">
+              <span className="btn__circle"></span>
+              <span className="btn__white-circle">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  id="icon-arrow-right"
+                  viewBox="0 0 21 12"
+                >
+                  <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
+                </svg>
+              </span>
+              <span className="btn__text">Go to the Bar Event!</span>
+            </div>
+          </EventButton>
+        </StyledEventButton>
       </EventSection>
     </Wrapper>
   );

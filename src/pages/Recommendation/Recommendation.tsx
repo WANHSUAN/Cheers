@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
@@ -7,7 +7,7 @@ import {collection, getDocs} from "firebase/firestore";
 const Wrapper = styled.div`
   width: 700px;
   margin: 0 auto;
-  padding-top: 60px;
+  padding-top: 180px;
 `;
 
 const RecSection = styled.div`
@@ -21,6 +21,11 @@ const RecSection = styled.div`
 
 const RecItem = styled(Link)`
   text-decoration: none;
+
+  &:hover {
+    transition: ease 0.5s;
+    transform: translateY(-10px);
+  }
 `;
 
 const RecName = styled.h3`
@@ -30,10 +35,14 @@ const RecName = styled.h3`
 `;
 
 const RecImg = styled.img`
-  width: 140px;
-  height: 140px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  border: 1px solid #fff;
+  border: 1px solid #ffffff7c;
+
+  &:hover {
+    box-shadow: 3px 3px 10px #ffffff7c;
+  }
 `;
 
 const ReLink = styled.div``;

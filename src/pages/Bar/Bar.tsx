@@ -104,7 +104,7 @@ const BarLink = styled.a`
 
 const BarContent = styled.div`
   height: 500px;
-  margin: 130px 0;
+  margin: 200px 0 300px 0;
 `;
 
 const ScrollButton = styled.button`
@@ -206,7 +206,7 @@ const CommentTitle = styled.h2`
 const CommentContent = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 50px;
+  margin: 50px 0;
   padding: 50px;
 `;
 
@@ -337,7 +337,7 @@ const BarRecContentSection = styled.div`
 const BarRecTitle = styled.h2`
   color: #fff;
   font-size: 40px;
-  margin-bottom: 350px;
+  margin: 450px 0 200px;
 `;
 
 const BarTitleContent = styled.div``;
@@ -389,7 +389,7 @@ const BarRecIngredientsItem = styled.li`
 const MemberScoreSection = styled.div`
   width: 1000px;
   height: 500px;
-  margin: 0 auto;
+  margin: 400px auto;
   text-align: center;
 `;
 
