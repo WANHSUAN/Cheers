@@ -215,6 +215,8 @@ const BarTitle = styled.div`
   margin: 20px 0;
 `;
 
+const CalendarSection = styled.div``;
+
 const CalendarSubTitle = styled.p`
   color: #d19b18;
   margin: 200px 0 10px 0;
@@ -225,6 +227,45 @@ const CalendarTitle = styled.h2`
   color: #fff;
   margin-bottom: 150px;
   font-size: 40px;
+`;
+
+const CalendarColorSection = styled.div`
+  width: 1000px;
+  display: flex;
+  justify-content: right;
+  margin-left: 50px;
+`;
+
+const ColorItem = styled.div`
+  width: 170px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ColorToday = styled.div`
+  width: 30px;
+  height: 30px;
+  background-color: #c48370;
+  border-radius: 50%;
+`;
+const ColorEvent = styled.div`
+  width: 30px;
+  height: 30px;
+  background-color: #ff8800a0;
+  border-radius: 50%;
+`;
+const ColorSelected = styled.div`
+  width: 30px;
+  height: 30px;
+  background-color: #e6af70b7;
+  border-radius: 50%;
+`;
+
+const ColorName = styled.div`
+  color: #fff;
+  font-size: 20px;
+  padding: 20px;
 `;
 
 const MapSubTitle = styled.p`
@@ -605,9 +646,25 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             </>
           )}
         </AllBarSection>
-        <CalendarSubTitle>BAR EVENTS</CalendarSubTitle>
-        <CalendarTitle>It's time to join the Bar Event!</CalendarTitle>
-        <Calendar />
+        <CalendarSection>
+          <CalendarSubTitle>BAR EVENTS</CalendarSubTitle>
+          <CalendarTitle>It's time to join the Bar Event!</CalendarTitle>
+          <CalendarColorSection>
+            <ColorItem>
+              <ColorToday />
+              <ColorName>Today</ColorName>
+            </ColorItem>
+            <ColorItem>
+              <ColorEvent />
+              <ColorName>Event</ColorName>
+            </ColorItem>
+            <ColorItem>
+              <ColorSelected />
+              <ColorName>Selected</ColorName>
+            </ColorItem>
+          </CalendarColorSection>
+          <Calendar />
+        </CalendarSection>
         <MapSubTitle>POSITION</MapSubTitle>
         <MapTitle>Where is the Bar?</MapTitle>
         {/* OPEN */}

@@ -18,6 +18,7 @@
   width: 100%;
   box-shadow: 0 0 1px 1px #d19b18;
   transition: 0.3s linear;
+  color: #fff;
 }
 .btn__white-circle {
   top: 50%;
@@ -36,7 +37,7 @@
   margin: auto;
 }
 .btn__text {
-  font-size: 13px;
+  font-size: 18px;
   top: 50%;
   left: -50%;
   transform: translateY(-50%);
@@ -45,15 +46,19 @@
   padding: 24px 0;
   transition: 0.3s linear;
 }
+
 .btn:hover .btn__circle {
   transform: scale(0);
 }
+
 .btn:hover .btn__white-circle {
   transform: translate(-50%, -50%) scale(1);
 }
+
 .btn:hover .btn__text {
   transform: translate(30px, -50%);
 }
+
 .content {
   background: black;
   height: 100vh;

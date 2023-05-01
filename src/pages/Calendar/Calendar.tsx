@@ -1,35 +1,37 @@
 import React from "react";
 import styled from "styled-components/macro";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useRef} from "react";
 import {Link} from "react-router-dom";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import {SlArrowLeft, SlArrowRight} from "react-icons/sl";
-import {RxEnter} from "react-icons/rx";
+import {TiDeleteOutline} from "react-icons/ti";
 import "../Calendar/Calendar.css";
 
 const CalendarWrapper = styled.div`
   width: 1000px;
-  margin: 0 auto 250px;
+  margin-left: 50px;
   position: relative;
+  border-radius: 5px;
 `;
 
 const CalendarSection = styled.div`
-  width: 490px;
-  height: 510px;
-  border-radius: 8px;
-  background-color: #4c4a49;
+  width: 1000px;
+  height: 820px;
+  background-color: #ffffff33;
   border: 1px solid #ffffff7c;
+  box-shadow: 2px 3px 10px #a27610;
+  margin: 0 auto;
+  border-radius: 10px;
 `;
 
 const CalendarSectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background-color: #4c4a49;
+  padding: 40px;
   border-radius: 8px 8px 0 0;
-  color: #ffffff7c;
+  color: #fff;
 `;
 
 const CalendarWeekdaysSection = styled.div`
@@ -37,20 +39,22 @@ const CalendarWeekdaysSection = styled.div`
   justify-content: space-around;
   color: #fff;
   padding: 8px;
+  font-size: 40px;
 `;
 
 const CalendarButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 25px;
-  color: #ffffff7c;
+  font-size: 35px;
+  color: #fff;
   margin: 0 20px;
+  padding-top: 15px;
 `;
 
 const CalendarMonth = styled.div`
-  font-size: 30px;
   font-weight: bold;
+  font-size: 50px;
 `;
 
 const Arrow = styled.div`
@@ -58,27 +62,39 @@ const Arrow = styled.div`
 `;
 
 const CalendarDay = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 90px;
+  height: 90px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
   font-size: 20px;
-  padding-left: 10%;
+  padding-left: 35%;
 
   &.calendar__day--today {
-    background-color: #d19b18;
+    background-color: #c48370;
     color: #fff;
+    margin-left: 20px;
+    padding-left: 5px;
   }
   &.calendar__day--event {
-    background-color: #ee8270;
+    background-color: #ff8800a0;
     color: #fff;
+    margin-left: 20px;
+    padding-left: 5px;
+
+    &:hover {
+      background-color: #e39b489f;
+      transition: ease 0.5s;
+      transform: translateY(-5px);
+    }
   }
   &.calendar__day--selected {
-    background-color: #a291c5;
+    background-color: #e6af70b7;
     color: #fff;
+    margin-left: 20px;
+    padding-left: 5px;
   }
 `;
 
@@ -87,32 +103,29 @@ const CalendarDaysSection = styled.div`
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
   padding: 10px;
-  background-color: #4c4a49;
   border-radius: 0 0 8px 8px;
   color: #fff;
 `;
 
 const CalendarDayEmpty = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 90px;
+  height: 90px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 50%;
   background-color: #f5f5f55c;
   cursor: pointer;
-  margin-left: 8px;
+  margin-left: 20px;
 `;
 
 const CalendarDayHeader = styled.div`
-  width: 40px;
+  width: 140px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: bold;
   color: #fff;
 `;
@@ -124,42 +137,61 @@ const OuterDiv = styled.div`
   padding: 10px;
   margin: 0 auto;
   position: relative;
+  background-color: #ffffffbb;
+  box-shadow: 5px 3px 10px #ffffff7c;
 `;
 
 const InnerDiv = styled.div`
   width: 100%;
   height: 510px;
   border: 1px solid #ffffff7c;
-  padding: 10px;
   margin-top: -25px;
+  background-color: #ffffffbb;
+  padding: 40px;
+  box-shadow: 5px 3px 10px #ffffff7c;
+`;
+
+const Delete = styled.div`
+  height: 40px;
+  font-size: 40px;
+  color: #d19b18;
+  text-align: right;
+
+  &:hover {
+    cursor: pointer;
+    color: #d19a18a5;
+    transition: ease 0.5s;
+  }
 `;
 
 const EventSection = styled.div`
-  width: 400px;
+  width: 600px;
   height: 500px;
   position: absolute;
-  top: 2%;
-  left: 55%;
+  top: 21%;
+  left: 20%;
   border-radius: 10px;
 `;
 
 const EventTitle = styled.p`
   color: #d19b18;
-  font-size: 30px;
-  margin: 40px 0;
+  font-size: 40px;
+  margin: 30px 0;
+  font-weight: 700;
 `;
 
 const EventName = styled.p`
-  color: #fff;
+  color: #000;
   font-size: 20px;
   margin-bottom: 40px;
 `;
 
 const EventContent = styled.p`
-  color: #fff;
+  color: #000000ac;
   font-size: 15px;
   line-height: 20px;
   text-align: left;
+  white-space: pre-wrap;
 `;
 
 const StyledEventButton = styled.button`
@@ -193,6 +225,7 @@ const Calendar: React.FC<ICalendarProps> = (props: ICalendarProps) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [events, setEvents] = useState<IEvent[]>([]);
   const eventsCollectionRef = collection(db, "events");
+
   useEffect(() => {
     const getEvents = async () => {
       const data = await getDocs(eventsCollectionRef);
@@ -254,7 +287,7 @@ function CalendarHeader({
   prevMonth: () => void;
   nextMonth: () => void;
 }) {
-  const monthYear = selectedDate.toLocaleString("default", {
+  const monthYear = selectedDate.toLocaleString("en-US", {
     month: "long",
     year: "numeric",
   });
@@ -296,6 +329,7 @@ function CalendarDays({
   events: IEvent[];
 }) {
   const [seconds, setSeconds] = useState(0);
+  const [isOuterDivVisible, setIsOuterDivVisible] = useState(true);
 
   if (events.length === 0) {
     return <p>Loading...</p>;
@@ -358,40 +392,86 @@ function CalendarDays({
     );
   }
 
+  const handleDeleteClick = () => {
+    setIsOuterDivVisible(false);
+  };
+
   return (
     <>
       <CalendarDaysSection>{days}</CalendarDaysSection>
       {events.map((event, index) => {
+        const EventContentWithLineBreaks = event.content.replace(/。/g, "。\n");
         const daySeconds = event.time.seconds;
         if (seconds < daySeconds && daySeconds <= seconds + 86400) {
           return (
             <EventSection key={index}>
-              <OuterDiv>
-                <InnerDiv>
-                  <EventTitle>Today's Event</EventTitle>
-                  <EventName>{event.bar}</EventName>
-                  <EventContent>{event.content}</EventContent>
-                  <StyledEventButton>
-                    <EventButton to={`/events/${event.id}`}>
-                      {/* <main className="content" data-form-type="card"> */}
-                      <div className="btn">
-                        <span className="btn__circle"></span>
-                        <span className="btn__white-circle">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            id="icon-arrow-right"
-                            viewBox="0 0 21 12"
-                          >
-                            <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
-                          </svg>
-                        </span>
-                        <span className="btn__text">Go to the Bar Event!</span>
-                      </div>
-                      {/* </main> */}
-                    </EventButton>
-                  </StyledEventButton>
-                </InnerDiv>
-              </OuterDiv>
+              <div>
+                {isOuterDivVisible ? (
+                  <OuterDiv>
+                    <InnerDiv>
+                      <Delete onClick={handleDeleteClick}>
+                        <TiDeleteOutline />
+                      </Delete>
+                      <EventTitle>Today's Event</EventTitle>
+                      <EventName>{event.bar}</EventName>
+                      <EventContent>{EventContentWithLineBreaks}</EventContent>
+                      <StyledEventButton>
+                        <EventButton to={`/events/${event.id}`}>
+                          <div className="btn">
+                            <span className="btn__circle"></span>
+                            <span className="btn__white-circle">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                id="icon-arrow-right"
+                                viewBox="0 0 21 12"
+                              >
+                                <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
+                              </svg>
+                            </span>
+                            <span className="btn__text">
+                              Go to the Bar Event!
+                            </span>
+                          </div>
+                        </EventButton>
+                      </StyledEventButton>
+                    </InnerDiv>
+                  </OuterDiv>
+                ) : null}
+              </div>
+
+              {/* {isOuterDivVisible && (
+                <OuterDiv>
+                  <InnerDiv>
+                    <Delete onClick={handleDeleteClick}>
+                      <TiDeleteOutline />
+                    </Delete>
+                    <EventTitle>Today's Event</EventTitle>
+                    <EventName>{event.bar}</EventName>
+                    <EventContent>{EventContentWithLineBreaks}</EventContent>
+                    <StyledEventButton>
+                      <EventButton to={`/events/${event.id}`}> */}
+              {/* <main className="content" data-form-type="card"> */}
+              {/* <div className="btn">
+                          <span className="btn__circle"></span>
+                          <span className="btn__white-circle">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              id="icon-arrow-right"
+                              viewBox="0 0 21 12"
+                            >
+                              <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
+                            </svg>
+                          </span>
+                          <span className="btn__text">
+                            Go to the Bar Event!
+                          </span>
+                        </div> */}
+              {/* </main> */}
+              {/* </EventButton>
+                    </StyledEventButton>
+                  </InnerDiv>
+                </OuterDiv> */}
+              {/* )} */}
             </EventSection>
           );
         }
