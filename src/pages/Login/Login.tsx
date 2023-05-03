@@ -193,7 +193,8 @@ export interface ILoginPageProps {}
 
 const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const auth = getAuth();
-  const {signIn} = useContext(AuthContext);
+  const {isLogin, signIn} = useContext(AuthContext);
+  console.log(isLogin);
   const provider = new GoogleAuthProvider();
   // TODO
   const [showButton, setShowButton] = useState(true);

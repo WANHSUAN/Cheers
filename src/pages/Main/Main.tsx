@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import styled, {keyframes} from "styled-components/macro";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {AuthContext} from "../../Context/AuthContext";
 // import {Link} from "react-scroll";
 import {db} from "../../App";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
@@ -403,6 +404,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [showButton, setShowButton] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(true);
   const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
+  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleScroll = () => {
     // 檢查當前位置是否已到達指定部分
@@ -495,6 +498,13 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       behavior: "smooth",
     });
   };
+
+  if (isLogin) {
+    console.log("登入");
+  } else {
+    console.log("登出");
+    navigate("/");
+  }
 
   return (
     <>

@@ -1,3 +1,4 @@
+import {useEffect, useContext} from "react";
 import styled from "styled-components";
 import {createGlobalStyle} from "styled-components";
 import {initializeApp} from "firebase/app";

@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import styled from "styled-components/macro";
 import {db} from "../../App";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {AuthContext} from "../../Context/AuthContext";
 import {collection, getDocs} from "firebase/firestore";
 
 const PageImg = styled.img`
@@ -126,6 +127,9 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
   const [hashtags, setHashtags] = useState<IHashtag[]>([]);
   const hashtagsCollectionRef = collection(db, "hashtags");
   const [showButton, setShowButton] = useState(false);
+  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -159,6 +163,13 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
       behavior: "smooth",
     });
   };
+
+  if (isLogin) {
+    console.log("登入");
+  } else {
+    console.log("登出");
+    navigate("/");
+  }
 
   return (
     <>

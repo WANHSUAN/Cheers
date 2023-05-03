@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import styled from "styled-components/macro";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 
@@ -62,6 +63,8 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
 ) => {
   const [recommendations, setRecommendations] = useState<IRecommendation[]>([]);
   const recommendationsRef = collection(db, "users");
+  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getRecommendations = async () => {
@@ -79,6 +82,12 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
 
   if (recommendations[0] === undefined) {
     return <p>Loading...</p>;
+  }
+  if (isLogin) {
+    console.log("登入");
+  } else {
+    console.log("登出");
+    navigate("/");
   }
 
   return (

@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom/client";
-// import React from "react";
 import {BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
 import "../src/css/normalize.css";
 import App from "./App";
@@ -20,9 +19,9 @@ root.render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route index element={<Login />} />
+        <Route path="/main" element={<Main />} />
         <Route path="/question" element={<Question />} />
         <Route path="/recommendation" element={<RecommendationPage />} />
-        <Route path="/main" element={<Main />} />
         <Route path="/bars/:id" element={<Bar />} />
         <Route path="/events/:id" element={<Event />} />
         <Route path="/member" element={<Member />} />

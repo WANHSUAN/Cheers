@@ -1,6 +1,7 @@
 import styled from "styled-components/macro";
-import {Link} from "react-router-dom";
-import {useState, useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {useState, useEffect, useContext} from "react";
+import {AuthContext} from "../../Context/AuthContext";
 import {useParams} from "react-router-dom";
 import {db} from "../../App";
 import {getDoc, doc, Timestamp} from "firebase/firestore";
@@ -89,9 +90,10 @@ export interface IEventProps {}
 
 const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   const [event, setEvent] = useState<IEvent>();
-
   const {id} = useParams();
   const eventCollectionRef = id ? doc(db, "events", id) : undefined;
+  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -112,7 +114,12 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
     event.time.seconds * 1000 + event.time.nanoseconds / 1000000
   );
   const dateStr = dateObj.toLocaleDateString(); // 格式為 YYYY/MM/DD
-
+  if (isLogin) {
+    console.log("登入");
+  } else {
+    console.log("登出");
+    navigate("/");
+  }
   return (
     <Wrapper>
       <PageImg src={event.img} />

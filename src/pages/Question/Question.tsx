@@ -160,11 +160,12 @@ const groups = {
 export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
-  const navigate = useNavigate();
   const [bars, setBars] = useState<IBar[]>([]);
   const [users, setUsers] = useState<IUser[] | undefined>();
   const barsCollectionRef = collection(db, "bars");
   const usersCollectionRef = collection(db, "users");
+  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -246,7 +247,12 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     }
   };
 
-  const {userUID} = useContext(AuthContext);
+  if (isLogin) {
+    console.log("登入");
+  } else {
+    console.log("登出");
+    navigate("/");
+  }
 
   return (
     <>

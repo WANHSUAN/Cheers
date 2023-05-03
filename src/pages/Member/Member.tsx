@@ -11,7 +11,7 @@ import {
   where,
   collectionGroup,
 } from "firebase/firestore";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../Context/AuthContext";
 import {AiOutlineMinusCircle} from "react-icons/ai";
 import "./Member.css";
@@ -311,7 +311,8 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const [collections, setCollections] = useState<ICollections[] | null>(null);
   const [users, setUsers] = useState<IUser[] | undefined>();
 
-  const {user, userUID} = useContext(AuthContext);
+  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const usersCollectionRef = collection(db, "users");
   const likesCollectionRef = collectionGroup(db, "likes");
@@ -416,6 +417,12 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     }
   };
 
+  if (isLogin) {
+    console.log("登入");
+  } else {
+    console.log("登出");
+    navigate("/");
+  }
   return (
     <>
       <PageImg
@@ -487,5 +494,4 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     </>
   );
 };
-
 export default MemberPage;

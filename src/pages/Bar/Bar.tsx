@@ -15,6 +15,7 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import BarMap from "./BarMap";
+import {useNavigate} from "react-router-dom";
 import {AuthContext} from "../../Context/AuthContext";
 // import {BsBookmarkFill, BsBookmark} from "react-icons/bs";
 import {BsSuitHeartFill, BsSuitHeart} from "react-icons/bs";
@@ -565,7 +566,6 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   const [currentDocId, setCurrentDocId] = useState(id);
   const [key, setKey] = useState(0);
   const {user} = useContext(AuthContext);
-  console.log(user.userImg);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -752,6 +752,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const {id} = useParams();
   const [showButton, setShowButton] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
+  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
@@ -813,6 +815,12 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         : bar.member_comment.length - 1
     );
   };
+  if (isLogin) {
+    console.log("登入");
+  } else {
+    console.log("登出");
+    navigate("/");
+  }
 
   return (
     <>

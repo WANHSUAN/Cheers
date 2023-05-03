@@ -50,7 +50,7 @@ const initialUserData: User = {
 export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
   const [user, setUser] = useState<User>(initialUserData);
   const [loading, setLoading] = useState<boolean>(true);
   const [userUID, setUserUID] = useState<string>("");
@@ -65,13 +65,14 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
+      console.log(user);
       if (user) {
         // User is signed in, see docs for a list of available properties
         const getUser = await getUsers(user.uid);
         setUserUID(user.uid);
+        console.log(getUser);
         if (getUser) {
           setIsLogin(true);
-
           console.log("有此使用者");
 
           const data: User = {
