@@ -99,15 +99,15 @@ const SideMenuList = styled.ul`
   justify-content: space-around;
   padding: 20px;
   text-align: center;
-  margin: 10% auto;
+  margin: 16% auto;
   gap: 40px;
 `;
 
 const MenuItem = styled.li`
   width: 480px;
   list-style: none;
-  font-size: 70px;
-  margin: 20px 0;
+  font-size: 90px;
+  margin: 50px 0;
   padding: 0 30px;
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
@@ -124,7 +124,7 @@ const LogOutButton = styled.button`
   background-color: transparent;
   border: none;
   width: 480px;
-  font-size: 70px;
+  font-size: 90px;
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 16px;

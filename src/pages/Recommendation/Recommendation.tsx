@@ -7,7 +7,7 @@ import {collection, getDocs} from "firebase/firestore";
 const Wrapper = styled.div`
   width: 700px;
   margin: 0 auto;
-  padding-top: 180px;
+  padding-top: 100px;
 `;
 
 const RecSection = styled.div`
@@ -21,6 +21,7 @@ const RecSection = styled.div`
 
 const RecItem = styled(Link)`
   text-decoration: none;
+  margin-bottom: 30px;
 
   &:hover {
     transition: ease 0.5s;
@@ -100,7 +101,6 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
                 ></div>
                 <RecItem
                   to={`/bars/${recommendation.id}`}
-                  key={index}
                   style={{display: index === 7 ? "none" : "block"}}
                 >
                   <RecName>{recommendation.name}</RecName>
