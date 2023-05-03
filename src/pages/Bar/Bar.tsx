@@ -590,7 +590,6 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
     <ScoreForm onSubmit={handleSubmit}>
       <LabelSectionInput>
         <MemberImg src={userImg} />
-        {/* src={user.userImg} */}
         <InputTextArea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -752,7 +751,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const {id} = useParams();
   const [showButton, setShowButton] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
-  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const {isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;

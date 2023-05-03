@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import styled, {keyframes} from "styled-components/macro";
+import styled from "styled-components/macro";
 import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
 import {HashLink} from "react-router-hash-link";

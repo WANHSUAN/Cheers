@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useContext} from "react";
-import {useNavigate, Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import styled from "styled-components/macro";
 import {db} from "../../App";
 import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
 import {AuthContext} from "../../Context/AuthContext";
 import main from "./main.png";
-import {RxDoubleArrowDown, RxDoubleArrowRight} from "react-icons/rx";
+import {RxDoubleArrowDown} from "react-icons/rx";
 import "../Calendar/Calendar.css";
 
 const Wrapper = styled.div`
@@ -164,7 +164,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const [users, setUsers] = useState<IUser[] | undefined>();
   const barsCollectionRef = collection(db, "bars");
   const usersCollectionRef = collection(db, "users");
-  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const {userUID, isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -65,12 +65,10 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
-      console.log(user);
       if (user) {
         // User is signed in, see docs for a list of available properties
         const getUser = await getUsers(user.uid);
         setUserUID(user.uid);
-        console.log(getUser);
         if (getUser) {
           setIsLogin(true);
           console.log("有此使用者");

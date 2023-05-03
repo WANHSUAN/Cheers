@@ -292,6 +292,7 @@ interface IUser {
   ];
   name: string;
   img: string;
+  userUID: string;
 }
 
 interface ICollections {
@@ -310,8 +311,9 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const [likes, setLikes] = useState<ILikes[] | null>(null);
   const [collections, setCollections] = useState<ICollections[] | null>(null);
   const [users, setUsers] = useState<IUser[] | undefined>();
+  const [matchIndex, setMatchIndex] = useState<number>();
 
-  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const {user, userUID, isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const usersCollectionRef = collection(db, "users");
@@ -320,10 +322,10 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    let foundMatch = false;
     const getDatas = async () => {
       const like = await getDocs(likesCollectionRef);
       const collection = await getDocs(collectionsCollectionRef);
-      const user = await getDocs(usersCollectionRef);
 
       setLikes(
         like.docs.map((doc) => ({...(doc.data() as ILikes), id: doc.id}))
@@ -334,12 +336,33 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
           id: doc.id,
         }))
       );
-      setUsers(
-        user.docs.map((doc) => ({
+      const getUsers = async () => {
+        const user = await getDocs(usersCollectionRef);
+        const loadedUsers = user.docs.map((doc) => ({
           ...(doc.data() as IUser),
           id: doc.id,
-        }))
-      );
+        }));
+        setUsers(loadedUsers);
+
+        loadedUsers.some((loadedUser, index) => {
+          if (loadedUser.userUID === userUID) {
+            setMatchIndex(index);
+            foundMatch = true;
+            return true;
+          }
+        });
+      };
+      getUsers();
+
+      if (!foundMatch) {
+        setMatchIndex(undefined);
+      }
+      // setUsers(
+      //   user.docs.map((doc) => ({
+      //     ...(doc.data() as IUser),
+      //     id: doc.id,
+      //   }))
+      // );
     };
 
     getDatas();
@@ -423,6 +446,9 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     console.log("登出");
     navigate("/");
   }
+
+  console.log(matchIndex);
+
   return (
     <>
       <PageImg
@@ -446,16 +472,18 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
           you
         </RecommendationTitle>
         <RecommendationSection>
-          <ImgList>
-            {users[0].matchingBars.map((matchingBar, index) => (
-              <RecommendationItem key={index}>
-                <StyledRecommendationImg src={matchingBar.img[1]} />
-                <RecommendationName to={`/bars/${matchingBar.id}`}>
-                  {matchingBar.name}
-                </RecommendationName>
-              </RecommendationItem>
-            ))}
-          </ImgList>
+          {matchIndex !== undefined && (
+            <ImgList>
+              {users[matchIndex].matchingBars.map((matchingBar, index: any) => (
+                <RecommendationItem key={index}>
+                  <StyledRecommendationImg src={matchingBar.img[1]} />
+                  <RecommendationName to={`/bars/${matchingBar.id}`}>
+                    {matchingBar.name}
+                  </RecommendationName>
+                </RecommendationItem>
+              ))}
+            </ImgList>
+          )}
         </RecommendationSection>
         {likes === null ? (
           <p>Loading...</p>

@@ -54,6 +54,7 @@ interface IRecommendation {
   id: string;
   name: string;
   img: string[];
+  userUID: string;
 }
 
 export interface IRecommendationProps {}
@@ -63,26 +64,41 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
 ) => {
   const [recommendations, setRecommendations] = useState<IRecommendation[]>([]);
   const recommendationsRef = collection(db, "users");
-  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const [matchIndex, setMatchIndex] = useState<number>();
+  const {isLogin, userUID} = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    let foundMatch = false;
+
     const getRecommendations = async () => {
       const data = await getDocs(recommendationsRef);
-      setRecommendations(
-        data.docs.map((doc) => ({
-          ...(doc.data() as IRecommendation),
-          id: doc.id,
-        }))
-      );
+      const loadedRecommendations = data.docs.map((doc) => ({
+        ...(doc.data() as IRecommendation),
+        id: doc.id,
+      }));
+      setRecommendations(loadedRecommendations);
+
+      loadedRecommendations.some((recommendation, index) => {
+        if (recommendation.userUID === userUID) {
+          setMatchIndex(index);
+          foundMatch = true;
+          return true;
+        }
+      });
     };
 
     getRecommendations();
+
+    if (!foundMatch) {
+      setMatchIndex(undefined);
+    }
   }, []);
 
-  if (recommendations[0] === undefined) {
+  if (recommendations.length === 0) {
     return <p>Loading...</p>;
   }
+
   if (isLogin) {
     console.log("登入");
   } else {
@@ -92,38 +108,40 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
 
   return (
     <Wrapper>
-      <RecSection>
-        {recommendations[0].matchingBars
-          .slice(0, 8)
-          .map((recommendation: IRecommendation, index) => {
-            return (
-              <>
-                <div
-                  style={{
-                    width: "120px",
-                    height: "180px",
-                    transform: `rotate(${
-                      index * 60
-                    }deg) translateX(200px) rotate(${-index * 60}deg)`,
-                  }}
-                  key={index}
-                ></div>
-                <RecItem
-                  to={`/bars/${recommendation.id}`}
-                  style={{display: index === 7 ? "none" : "block"}}
-                >
-                  <RecName>{recommendation.name}</RecName>
-                  <ReLink>
-                    <RecImg
-                      src={recommendation.img[1]}
-                      alt={recommendation.name}
-                    />
-                  </ReLink>
-                </RecItem>
-              </>
-            );
-          })}
-      </RecSection>
+      {matchIndex !== undefined && (
+        <RecSection>
+          {recommendations[matchIndex].matchingBars
+            .slice(0, 8)
+            .map((recommendation: IRecommendation, index: any) => {
+              return (
+                <>
+                  <div
+                    style={{
+                      width: "120px",
+                      height: "180px",
+                      transform: `rotate(${
+                        index * 60
+                      }deg) translateX(200px) rotate(${-index * 60}deg)`,
+                    }}
+                    key={index}
+                  ></div>
+                  <RecItem
+                    to={`/bars/${recommendation.id}`}
+                    style={{display: index === 7 ? "none" : "block"}}
+                  >
+                    <RecName>{recommendation.name}</RecName>
+                    <ReLink>
+                      <RecImg
+                        src={recommendation.img[1]}
+                        alt={recommendation.name}
+                      />
+                    </ReLink>
+                  </RecItem>
+                </>
+              );
+            })}
+        </RecSection>
+      )}
     </Wrapper>
   );
 };

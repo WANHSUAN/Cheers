@@ -402,38 +402,38 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const barsCollectionRef = collection(db, "bars");
   const eventsCollectionRef = collection(db, "events");
   const [showButton, setShowButton] = useState(false);
-  const [showScrollButton, setShowScrollButton] = useState(true);
-  const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
-  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  // const [showScrollButton, setShowScrollButton] = useState(true);
+  // const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
+  const {isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleScroll = () => {
-    // 檢查當前位置是否已到達指定部分
-    const section2 = document.getElementById("section2");
-    if (!section2) return; // 如果 section2 不存在，不做任何處理
-    if (
-      section2 &&
-      section2.getBoundingClientRect().top <= window.innerHeight
-    ) {
-      setShowScrollButton(false); // 隱藏按鈕
-    } else if (section2 && window.scrollY < section2.offsetTop) {
-      setShowScrollButton(true); // 顯示按鈕
-    }
-    if (window.scrollY === 0) {
-      setShowScrollButton(true); // 畫面到頂部時顯示按鈕
-    }
-  };
+  // const handleScroll = () => {
+  //   // 檢查當前位置是否已到達指定部分
+  //   const section2 = document.getElementById("section2");
+  //   if (!section2) return; // 如果 section2 不存在，不做任何處理
+  //   if (
+  //     section2 &&
+  //     section2.getBoundingClientRect().top <= window.innerHeight
+  //   ) {
+  //     setShowScrollButton(false); // 隱藏按鈕
+  //   } else if (section2 && window.scrollY < section2.offsetTop) {
+  //     setShowScrollButton(true); // 顯示按鈕
+  //   }
+  //   if (window.scrollY === 0) {
+  //     setShowScrollButton(true); // 畫面到頂部時顯示按鈕
+  //   }
+  // };
 
-  const scrollToSection2 = () => {
-    // 捲動到指定部分
-    const section2 = document.getElementById("section2");
-    if (section2) {
-      window.scrollTo({
-        top: section2.offsetTop,
-        behavior: "smooth",
-      });
-    }
-  };
+  // const scrollToSection2 = () => {
+  //   // 捲動到指定部分
+  //   const section2 = document.getElementById("section2");
+  //   if (section2) {
+  //     window.scrollTo({
+  //       top: section2.offsetTop,
+  //       behavior: "smooth",
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     const getBars = async () => {
