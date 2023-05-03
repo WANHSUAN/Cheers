@@ -75,10 +75,10 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
           console.log("有此使用者");
 
           const data: User = {
-            name: getUser.name || "",
-            email: getUser.email || "",
-            userImg: getUser.photoURL || "",
-            userUID: getUser.userUID || "",
+            name: getUser.name || user.displayName || "",
+            email: getUser.email || user.email || "",
+            userImg: getUser.photoURL || user.photoURL || "",
+            userUID: getUser.userUID || user.uid || "",
           };
           setUser(data);
           setUserUID(user.uid);

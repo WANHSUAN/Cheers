@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import {useState, useEffect, useContext} from "react";
 import styled from "styled-components/macro";
 import "./styles.css";
 import {Link} from "react-router-dom";
@@ -63,6 +63,13 @@ const Title = styled(Link)`
   font-size: 35px;
   color: #fff;
   text-decoration: none;
+`;
+
+const MemberImg = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #ffffff7c;
 `;
 
 const SearchSection = styled.div`
@@ -255,7 +262,9 @@ const Header = () => {
   const [isToggle, setIsToggle] = useState(false);
 
   const auth = getAuth();
-  const {logOut} = useContext(AuthContext);
+  const {user, logOut} = useContext(AuthContext);
+  const [userImg, setUserImg] = useState(null);
+
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
@@ -330,6 +339,7 @@ const Header = () => {
           <Menu>MENU</Menu>
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
+        <MemberImg src={user.userImg} />
         <SearchSection>
           <SearchItem onClick={OpenSearch}>SEARCH</SearchItem>
           {isOpen && <Search />}

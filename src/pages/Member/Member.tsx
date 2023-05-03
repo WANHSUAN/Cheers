@@ -14,7 +14,6 @@ import {
 import {Link} from "react-router-dom";
 import {AuthContext} from "../../Context/AuthContext";
 import {AiOutlineMinusCircle} from "react-icons/ai";
-import userImg from "../../img/userImg.png";
 import "./Member.css";
 
 const PageImg = styled.img`
@@ -292,7 +291,7 @@ interface IUser {
     }
   ];
   name: string;
-  img: [];
+  img: string;
 }
 
 interface ICollections {
@@ -429,7 +428,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
           <strong style={{color: "#fff"}}>Welcome,</strong> {user.name}!
         </MemberTitle>
         <MemberSection>
-          <MemberImg src={userImg} />
+          <MemberImg src={user.userImg} />
           <MemberInfo>
             <MemberName>{user.name}</MemberName>
             <MemberEmail>{user.email}</MemberEmail>
