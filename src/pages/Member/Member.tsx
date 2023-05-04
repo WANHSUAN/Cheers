@@ -276,6 +276,7 @@ interface ILikes {
   address: string;
   id: string;
   barId: string;
+  barImg: string;
 }
 
 interface IUser {
@@ -304,14 +305,19 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const [matchIndex, setMatchIndex] = useState<number>();
 
   const navigate = useNavigate();
-  const usersCollectionRef = collection(db, "users");
-  const userRef = doc(usersCollectionRef, userUID);
-  const likesCollectionRef = collection(userRef, "likes");
 
   useEffect(() => {
     window.scrollTo(0, 0);
     let foundMatch = false;
     const getDatas = async () => {
+      const usersCollectionRef = collection(db, "users");
+
+      if (userUID === "") {
+        return;
+      }
+
+      const userRef = doc(usersCollectionRef, userUID);
+      const likesCollectionRef = collection(userRef, "likes");
       const like = await getDocs(likesCollectionRef);
       setLikes(
         like.docs.map((doc) => ({...(doc.data() as ILikes), id: doc.id}))
@@ -341,7 +347,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     };
 
     getDatas();
-  }, []);
+  }, [userUID]);
 
   if (users === undefined) {
     return <p>Loading...</p>;
@@ -361,19 +367,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
 
       if (likeDocId) {
         const likeRef = doc(db, "users", userUID, "likes", likeDocId);
-        const docSnap = await getDoc(likeRef);
-        if (docSnap.exists()) {
-          const targetBarId = docSnap.data().barId;
-          await deleteDoc(likeRef);
-          if (likes) {
-            likes.forEach((like) => {
-              if (like.barId === targetBarId) {
-                const localStorageKey = `isLike_${like.barId}`;
-                localStorage.removeItem(localStorageKey);
-              }
-            });
-          }
-        }
+        await deleteDoc(likeRef);
       }
     }
   };
@@ -404,26 +398,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
               <MemberEmail>{user.email}</MemberEmail>
             </MemberInfo>
           </MemberSection>
-          <RecommendationTitle>
-            We <strong style={{color: "#D19B18"}}>RECOMMEND</strong> the bars
-            for you
-          </RecommendationTitle>
-          <RecommendationSection>
-            {matchIndex !== undefined && (
-              <ImgList>
-                {users[matchIndex].matchingBars.map(
-                  (matchingBar, index: any) => (
-                    <RecommendationItem key={index}>
-                      <StyledRecommendationImg src={matchingBar.img[1]} />
-                      <RecommendationName to={`/bars/${matchingBar.id}`}>
-                        {matchingBar.name}
-                      </RecommendationName>
-                    </RecommendationItem>
-                  )
-                )}
-              </ImgList>
-            )}
-          </RecommendationSection>
           {likes === null ? (
             <p>Loading...</p>
           ) : (
@@ -435,7 +409,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
                 <ImgList>
                   {likes.map((like, index) => (
                     <RecommendationItem key={index}>
-                      <StyledRecommendationImg src={like.img} />
+                      <StyledRecommendationImg src={like.barImg} />
                       <RecommendationName to={`/bars/${like.id}`}>
                         {like.name}
                       </RecommendationName>
@@ -457,6 +431,26 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
               </RecommendationSection>
             </>
           )}
+          <RecommendationTitle>
+            We <strong style={{color: "#D19B18"}}>RECOMMEND</strong> the bars
+            for you
+          </RecommendationTitle>
+          <RecommendationSection>
+            {matchIndex !== undefined && (
+              <ImgList>
+                {users[matchIndex].matchingBars.map(
+                  (matchingBar, index: any) => (
+                    <RecommendationItem key={index}>
+                      <StyledRecommendationImg src={matchingBar.img[1]} />
+                      <RecommendationName to={`/bars/${matchingBar.id}`}>
+                        {matchingBar.name}
+                      </RecommendationName>
+                    </RecommendationItem>
+                  )
+                )}
+              </ImgList>
+            )}
+          </RecommendationSection>
         </>
       </Wrapper>
     </>

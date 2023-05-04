@@ -282,8 +282,8 @@ const MapTitle = styled.p`
 
 const AlertWrapper = styled.div`
   position: absolute;
-  top: 43%;
-  left: 40%;
+  top: 35%;
+  left: 32%;
   z-index: 3;
 `;
 
@@ -291,30 +291,28 @@ const Background = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: #0000009d;
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
   z-index: 2;
 `;
 
 const AlertSection = styled.div`
-  width: 400px;
-  height: 130px;
-  border: 1px solid #fff;
-  background-color: #d19b18;
-  color: #fff;
-  border-radius: 10px;
+  width: 700px;
+  height: 400px;
+  background-color: #d19a18df;
+  box-shadow: 5px 5px 5px #ffffff50;
+  color: #ffffffe3;
+  border-radius: 20px;
   text-align: left;
-  padding: 15px;
+  padding: 40px;
   position: absolute;
   top: 50%;
-  left: 32%;
+  left: 20%;
 `;
 
 const AlertMessage = styled.div`
-  font-size: 15px;
-  padding: 15px 0;
-  line-height: 20px;
+  font-size: 35px;
+  padding: 40px 20px;
+  line-height: 60px;
 `;
 
 const AlertCheck = styled.div`
@@ -325,49 +323,66 @@ const AlertCheck = styled.div`
 const ButtonSection = styled.div``;
 
 const CheckboxWrapper = styled.label`
-  width: 120px;
+  display: flex;
+  width: 250px;
   text-align: left;
+  margin: 30px;
 `;
 
-const CheckboxInput = styled.input`
-  vertical-align: middle;
-`;
+// const CheckboxInput = styled.input`
+//   vertical-align: middle;
+//   width: 30px;
+//   height: 30px;
+// `;
 
 const CheckboxLabel = styled.span`
-  font-size: 10px;
+  font-size: 30px;
   margin-left: 10px;
 `;
 
 const StyledEnterButton = styled.button`
-  width: 60px;
-  height: 20px;
+  width: 120px;
+  height: 50px;
   border: none;
-  font-size: 10px;
-  border-radius: 3px;
+  font-size: 20px;
+  border-radius: 8px;
+  margin-top: 25px;
+  box-shadow: 3px 3px 8px #605d5d82;
+  background-color: #ffffffe3;
 
   &:hover {
-    background-color: #cd863a;
+    background-color: #edb06e;
+    transform: translateY(-3px);
+    transition: ease 0.5s;
+    cursor: pointer;
   }
 `;
 
 const EnterButton = styled(Link)`
   text-decoration: none;
   color: #000;
-  cursor: pointer;
+
+  &:hover {
+    color: #000;
+  }
 `;
 
 const CloseButton = styled.button`
-  width: 60px;
-  height: 20px;
-  font-size: 10px;
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
   border: none;
-  border-radius: 3px;
-  margin-left: 5px;
+  border-radius: 8px;
+  margin-left: 20px;
   color: #000;
-  cursor: pointer;
+  box-shadow: 3px 3px 8px #605d5d82;
+  background-color: #ffffffe3;
 
   &:hover {
-    background-color: #cd863a;
+    background-color: #edb06e;
+    transform: translateY(-3px);
+    transition: ease 0.5s;
+    cursor: pointer;
   }
 `;
 
@@ -686,16 +701,20 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
 const Alert = ({events}: {events: IAlertEvent[]}) => {
   const [showAlert, setShowAlert] = useState(true);
-  const [ischecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [showBackground, setShowBackground] = useState(true); // 新增的狀態變數
 
-  useEffect(() => {
-    const hideAlertToday = localStorage.getItem("hideAlertToday");
-    if (hideAlertToday === "true") {
-      setShowAlert(false);
-      setShowBackground(false);
-    }
-  }, []);
+  function shouldShowAlert() {
+    const cookies = document.cookie.split("; ");
+    const hideAlertCookie = cookies.find((cookie) =>
+      cookie.startsWith("hideAlert=")
+    );
+    return !hideAlertCookie || hideAlertCookie.split("=")[1] !== "true";
+  }
+
+  if (!shouldShowAlert()) {
+    return null;
+  }
 
   if (events.length === 0) {
     return null;
@@ -709,11 +728,10 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
   });
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.checked) {
-      setIsChecked(true);
-      localStorage.setItem("hideAlertToday", "true");
-    }
-    return;
+    setIsChecked(!isChecked);
+    document.cookie = `hideAlert=true; expires=${new Date(
+      Date.now() + 86400000
+    ).toUTCString()};`;
   }
 
   function handleCloseClick() {
@@ -730,19 +748,43 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
             return hasEvent[index] ? (
               <AlertSection key={index}>
                 <AlertMessage>
-                  今日 {event.bar} 有特別活動！
+                  今日{" "}
+                  <span style={{color: "black", fontWeight: "700"}}>
+                    {event.bar}
+                  </span>{" "}
+                  有特別活動！
                   <br />
                   邀請您來共襄盛舉～
                 </AlertMessage>
                 <AlertCheck>
-                  <CheckboxWrapper>
-                    <CheckboxInput
-                      type="checkbox"
+                  {/* <CheckboxWrapper> */}
+                  {/* <CheckboxInput */}
+                  {/* type="checkbox"
                       checked={ischecked}
                       onChange={handleOnChange}
-                    />
-                    <CheckboxLabel>今日不再顯示</CheckboxLabel>
-                  </CheckboxWrapper>
+                    > */}
+                  <link
+                    rel="stylesheet"
+                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+                  />
+                  <div className="center">
+                    <label className="label">
+                      <input
+                        className="label__checkbox"
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={handleOnChange}
+                      />
+                      <span className="label__text">
+                        <span className="label__check">
+                          <i className="fa fa-check icon"></i>
+                        </span>
+                      </span>
+                    </label>
+                  </div>
+                  {/* </CheckboxInput> */}
+                  <CheckboxLabel>今日不再顯示</CheckboxLabel>
+                  {/* </CheckboxWrapper> */}
                   <ButtonSection>
                     <StyledEnterButton>
                       <EnterButton to={`/events/${event.id}`} key={event.id}>

@@ -263,7 +263,6 @@ const Header = () => {
 
   const auth = getAuth();
   const {user, logOut} = useContext(AuthContext);
-  const [userImg, setUserImg] = useState(null);
 
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
@@ -339,7 +338,7 @@ const Header = () => {
           <Menu>MENU</Menu>
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
-        <MemberImg src={user.userImg} />
+        {/* <MemberImg src={user.userImg} /> */}
         <SearchSection>
           <SearchItem onClick={OpenSearch}>SEARCH</SearchItem>
           {isOpen && <Search />}

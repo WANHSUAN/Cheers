@@ -624,7 +624,6 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
 
 function CollectionButton(name: any) {
   const {userUID} = useContext(AuthContext);
-  console.log(userUID);
   const [isLike, setIsLike] = useState(false);
 
   useEffect(() => {
@@ -651,13 +650,11 @@ function CollectionButton(name: any) {
       const userRef = doc(db, "users", userUID);
       const likeDocRef = doc(userRef, "likes", name.barId);
 
-      console.log(likeDocRef);
-
       if (newIsLike) {
         alert("已收藏！");
 
         // Save isLike state to Firestore
-        await setDoc(likeDocRef, {isLike: true});
+        await setDoc(likeDocRef, {isLike: true, barImg: name.img});
       } else {
         alert("我沒興趣了，取消收藏！");
 
