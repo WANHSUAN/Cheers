@@ -159,25 +159,25 @@ const LikeTitle = styled.h2`
   margin: 100px 0;
 `;
 
-const LikeSection = styled.div`
-  margin-bottom: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-`;
+// const LikeSection = styled.div`
+//   margin-bottom: 30px;
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 10px;
+// `;
 
-const LikeImg = styled(Link)`
-  width: 170px;
-  height: 170px;
-  border-radius: 10px;
-  text-decoration: none;
-  /* border: 1px solid #fff; */
-`;
+// const LikeImg = styled(Link)`
+//   width: 170px;
+//   height: 170px;
+//   border-radius: 10px;
+//   text-decoration: none;
+//   /* border: 1px solid #fff; */
+// `;
 
-const LikeHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
+// const LikeHeader = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+// `;
 
 const LikeDeleteButton = styled.button`
   width: 60px;
@@ -198,12 +198,12 @@ const LikeDeleteButton = styled.button`
   }
 `;
 
-const LikeBarName = styled.p`
-  text-decoration: none;
-  color: #fff;
-  font-size: 15px;
-  padding: 5px;
-`;
+// const LikeBarName = styled.p`
+//   text-decoration: none;
+//   color: #fff;
+//   font-size: 15px;
+//   padding: 5px;
+// `;
 
 // const LikeScoreSection = styled.div`
 //   display: flex;
@@ -215,25 +215,25 @@ const LikeBarName = styled.p`
 //   text-align: center;
 // `;
 
-const CollectionTitle = styled.h2`
-  color: #fff;
-  font-size: 30px;
-  margin: 100px 0;
-`;
+// const CollectionTitle = styled.h2`
+//   color: #fff;
+//   font-size: 30px;
+//   margin: 100px 0;
+// `;
 
-const CollectionSection = styled.ul`
-  margin-bottom: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-`;
+// const CollectionSection = styled.ul`
+//   margin-bottom: 30px;
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 10px;
+// `;
 
-const CollectionImg = styled(Link)`
-  width: 190px;
-  height: 200px;
-  border-radius: 10px;
-  text-decoration: none;
-`;
+// const CollectionImg = styled(Link)`
+//   width: 190px;
+//   height: 200px;
+//   border-radius: 10px;
+//   text-decoration: none;
+// `;
 
 // const CollectionScoreSection = styled.div`
 //   display: flex;
@@ -245,28 +245,28 @@ const CollectionImg = styled(Link)`
 //   text-align: center;
 // `;
 
-const CollectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
+// const CollectionHeader = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+// `;
 
-const CollectionDeleteButton = styled.button`
-  width: 60px;
-  height: 20px;
-  border: none;
-  background-color: rgba(255, 255, 255, 0);
-  color: #fff;
-  font-size: 20px;
-  padding-top: 5px;
-  cursor: pointer;
-`;
+// const CollectionDeleteButton = styled.button`
+//   width: 60px;
+//   height: 20px;
+//   border: none;
+//   background-color: rgba(255, 255, 255, 0);
+//   color: #fff;
+//   font-size: 20px;
+//   padding-top: 5px;
+//   cursor: pointer;
+// `;
 
-const CollectionBarName = styled.p`
-  text-decoration: none;
-  color: #fff;
-  font-size: 15px;
-  padding: 5px;
-`;
+// const CollectionBarName = styled.p`
+//   text-decoration: none;
+//   color: #fff;
+//   font-size: 15px;
+//   padding: 5px;
+// `;
 
 interface ILikes {
   name: string;
@@ -295,47 +295,28 @@ interface IUser {
   userUID: string;
 }
 
-interface ICollections {
-  name: string;
-  link: string;
-  img: string;
-  score: number;
-  address: string;
-  id: string;
-  barId: string;
-}
-
 export interface IMemberProps {}
 
 const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
+  const {user, userUID, isLogin} = useContext(AuthContext);
   const [likes, setLikes] = useState<ILikes[] | null>(null);
-  const [collections, setCollections] = useState<ICollections[] | null>(null);
   const [users, setUsers] = useState<IUser[] | undefined>();
   const [matchIndex, setMatchIndex] = useState<number>();
 
-  const {user, userUID, isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
-
   const usersCollectionRef = collection(db, "users");
-  const likesCollectionRef = collectionGroup(db, "likes");
-  const collectionsCollectionRef = collectionGroup(db, "collections");
+  const userRef = doc(usersCollectionRef, userUID);
+  const likesCollectionRef = collection(userRef, "likes");
 
   useEffect(() => {
     window.scrollTo(0, 0);
     let foundMatch = false;
     const getDatas = async () => {
       const like = await getDocs(likesCollectionRef);
-      const collection = await getDocs(collectionsCollectionRef);
-
       setLikes(
         like.docs.map((doc) => ({...(doc.data() as ILikes), id: doc.id}))
       );
-      setCollections(
-        collection.docs.map((doc) => ({
-          ...(doc.data() as ICollections),
-          id: doc.id,
-        }))
-      );
+
       const getUsers = async () => {
         const user = await getDocs(usersCollectionRef);
         const loadedUsers = user.docs.map((doc) => ({
@@ -357,12 +338,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
       if (!foundMatch) {
         setMatchIndex(undefined);
       }
-      // setUsers(
-      //   user.docs.map((doc) => ({
-      //     ...(doc.data() as IUser),
-      //     id: doc.id,
-      //   }))
-      // );
     };
 
     getDatas();
@@ -403,51 +378,12 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     }
   };
 
-  const handleDeleteCollectionClick = async (collectionDocId: string) => {
-    let confirmDelete = window.confirm("確定要刪除嗎？");
-
-    if (confirmDelete === true) {
-      const collectionsRef = collection(db, "users", userUID, "collections");
-      const q = query(collectionsRef, where("barId", "==", collectionDocId));
-
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        collectionDocId = doc.id;
-      });
-
-      if (collectionDocId) {
-        const collectionRef = doc(
-          db,
-          "users",
-          userUID,
-          "collections",
-          collectionDocId
-        );
-        const docSnap = await getDoc(collectionRef);
-        if (docSnap.exists()) {
-          const targetBarId = docSnap.data().barId;
-          await deleteDoc(collectionRef);
-          if (collections) {
-            collections.forEach((collection) => {
-              if (collection.barId === targetBarId) {
-                const localStorageKey = `isCollection_${collection.barId}`;
-                localStorage.removeItem(localStorageKey);
-              }
-            });
-          }
-        }
-      }
-    }
-  };
-
   if (isLogin) {
     console.log("登入");
   } else {
     console.log("登出");
     navigate("/");
   }
-
-  console.log(matchIndex);
 
   return (
     <>
@@ -457,67 +393,71 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
         }
       />
       <Wrapper>
-        <MemberTitle>
-          <strong style={{color: "#fff"}}>Welcome,</strong> {user.name}!
-        </MemberTitle>
-        <MemberSection>
-          <MemberImg src={user.userImg} />
-          <MemberInfo>
-            <MemberName>{user.name}</MemberName>
-            <MemberEmail>{user.email}</MemberEmail>
-          </MemberInfo>
-        </MemberSection>
-        <RecommendationTitle>
-          We <strong style={{color: "#D19B18"}}>RECOMMEND</strong> the bars for
-          you
-        </RecommendationTitle>
-        <RecommendationSection>
-          {matchIndex !== undefined && (
-            <ImgList>
-              {users[matchIndex].matchingBars.map((matchingBar, index: any) => (
-                <RecommendationItem key={index}>
-                  <StyledRecommendationImg src={matchingBar.img[1]} />
-                  <RecommendationName to={`/bars/${matchingBar.id}`}>
-                    {matchingBar.name}
-                  </RecommendationName>
-                </RecommendationItem>
-              ))}
-            </ImgList>
-          )}
-        </RecommendationSection>
-        {likes === null ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            <LikeTitle>
-              The Bars you <strong style={{color: "#D19B18"}}>LIKE</strong>
-            </LikeTitle>
-            <RecommendationSection>
+        <>
+          <MemberTitle>
+            <strong style={{color: "#fff"}}>Welcome,</strong> {user.name}!
+          </MemberTitle>
+          <MemberSection>
+            <MemberImg src={user.userImg} />
+            <MemberInfo>
+              <MemberName>{user.name}</MemberName>
+              <MemberEmail>{user.email}</MemberEmail>
+            </MemberInfo>
+          </MemberSection>
+          <RecommendationTitle>
+            We <strong style={{color: "#D19B18"}}>RECOMMEND</strong> the bars
+            for you
+          </RecommendationTitle>
+          <RecommendationSection>
+            {matchIndex !== undefined && (
               <ImgList>
-                {likes.map((like, index) => (
-                  <RecommendationItem key={index}>
-                    <StyledRecommendationImg src={like.img} />
-                    <RecommendationName to={`/bars/${like.id}`}>
-                      {like.name}
-                    </RecommendationName>
-                    {/* <LikeScoreSection>
+                {users[matchIndex].matchingBars.map(
+                  (matchingBar, index: any) => (
+                    <RecommendationItem key={index}>
+                      <StyledRecommendationImg src={matchingBar.img[1]} />
+                      <RecommendationName to={`/bars/${matchingBar.id}`}>
+                        {matchingBar.name}
+                      </RecommendationName>
+                    </RecommendationItem>
+                  )
+                )}
+              </ImgList>
+            )}
+          </RecommendationSection>
+          {likes === null ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              <LikeTitle>
+                The Bars you <strong style={{color: "#D19B18"}}>LIKE</strong>
+              </LikeTitle>
+              <RecommendationSection>
+                <ImgList>
+                  {likes.map((like, index) => (
+                    <RecommendationItem key={index}>
+                      <StyledRecommendationImg src={like.img} />
+                      <RecommendationName to={`/bars/${like.id}`}>
+                        {like.name}
+                      </RecommendationName>
+                      {/* <LikeScoreSection>
                      {[...Array(parseInt(like.score.toString()))].map(
                        (_, i) => (
                          <LikeScore key={i.toString()}>{"\u2605"}</LikeScore>
                        )
                      )}
                    </LikeScoreSection> */}
-                    <LikeDeleteButton
-                      onClick={() => handleDeleteLikeClick(like.id)}
-                    >
-                      <AiOutlineMinusCircle />
-                    </LikeDeleteButton>
-                  </RecommendationItem>
-                ))}
-              </ImgList>
-            </RecommendationSection>
-          </>
-        )}
+                      <LikeDeleteButton
+                        onClick={() => handleDeleteLikeClick(like.id)}
+                      >
+                        <AiOutlineMinusCircle />
+                      </LikeDeleteButton>
+                    </RecommendationItem>
+                  ))}
+                </ImgList>
+              </RecommendationSection>
+            </>
+          )}
+        </>
       </Wrapper>
     </>
   );

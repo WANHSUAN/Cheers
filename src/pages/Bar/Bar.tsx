@@ -11,6 +11,7 @@ import {
   doc,
   where,
   query,
+  setDoc,
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
@@ -622,123 +623,56 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
 }
 
 function CollectionButton(name: any) {
-  const {id} = useParams();
   const {userUID} = useContext(AuthContext);
-
-  const likeStorageKey = `isLike_${id}`;
-  const collectionStorageKey = `isCollection_${id}`;
-
-  const [isLike, setIsLike] = useState(
-    JSON.parse(localStorage.getItem(likeStorageKey) || "false")
-  );
-
-  const [isCollection, setIsCollection] = useState(
-    JSON.parse(localStorage.getItem(collectionStorageKey) || "false")
-  );
+  console.log(userUID);
+  const [isLike, setIsLike] = useState(false);
 
   useEffect(() => {
-    const storedIsLike = localStorage.getItem(likeStorageKey);
-    if (storedIsLike) {
-      setIsLike(JSON.parse(storedIsLike));
+    async function fetchLikeStatus() {
+      try {
+        const userRef = doc(db, "users", userUID);
+        const likeDocRef = doc(userRef, "likes", name.barId);
+        const likeDoc = await getDoc(likeDocRef);
+        if (likeDoc.exists()) {
+          setIsLike(likeDoc.data().isLike);
+        }
+      } catch (error) {
+        console.error("Error getting like data from Firestore:", error);
+      }
     }
-    const storedIsCollection = localStorage.getItem(collectionStorageKey);
-    if (storedIsCollection) {
-      setIsCollection(JSON.parse(storedIsCollection));
-    }
+
+    fetchLikeStatus();
   }, []);
 
   const handleHeartButtonClick = async () => {
     const newIsLike = !isLike;
-
-    localStorage.setItem(likeStorageKey, JSON.stringify(newIsLike));
     setIsLike(newIsLike);
     try {
+      const userRef = doc(db, "users", userUID);
+      const likeDocRef = doc(userRef, "likes", name.barId);
+
+      console.log(likeDocRef);
+
       if (newIsLike) {
         alert("已收藏！");
-        const userRef = doc(db, "users", userUID);
-        await addDoc(collection(userRef, "likes"), {
-          name: name.name,
-          address: name.address,
-          link: name.link,
-          img: name.img,
-          barId: name.barId,
-          // score: name.score,
-        });
+
+        // Save isLike state to Firestore
+        await setDoc(likeDocRef, {isLike: true});
       } else {
         alert("我沒興趣了，取消收藏！");
-        const likesRef = collection(db, "users", userUID, "likes");
-        const q = query(likesRef, where("barId", "==", name.barId));
 
-        let likeDocId;
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          likeDocId = doc.id;
-        });
-
-        if (likeDocId) {
-          const likeRef = doc(db, "users", userUID, "likes", likeDocId);
-          await deleteDoc(likeRef);
-        }
+        // Remove isLike state from Firestore
+        await deleteDoc(likeDocRef);
       }
     } catch (error) {
       console.error("Error adding bar data to Firestore:", error);
     }
   };
 
-  // const handleCollectionButtonClick = async () => {
-  //   const newIsCollection = !isCollection;
-
-  //   localStorage.setItem(collectionStorageKey, JSON.stringify(newIsCollection));
-  //   setIsCollection(newIsCollection);
-  //   try {
-  //     if (newIsCollection) {
-  //       alert("已去過！");
-  //       const userRef = doc(db, "users", userUID);
-  //       await addDoc(collection(userRef, "collections"), {
-  //         name: name.name,
-  //         address: name.address,
-  //         link: name.link,
-  //         img: name.img,
-  //         barId: name.barId,
-  //         // score: name.score,
-  //       });
-  //     } else {
-  //       alert("其實沒去過，我要取消！！");
-
-  //       const collectionsRef = collection(db, "users", userUID, "collections");
-  //       const q = query(collectionsRef, where("barId", "==", name.barId));
-
-  //       let collectionDocId;
-  //       const querySnapshot = await getDocs(q);
-  //       querySnapshot.forEach((doc) => {
-  //         collectionDocId = doc.id;
-  //       });
-
-  //       if (collectionDocId) {
-  //         const collectionsRef = doc(
-  //           db,
-  //           "users",
-  //           userUID,
-  //           "collections",
-  //           collectionDocId
-  //         );
-  //         await deleteDoc(collectionsRef);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding bar data to Firestore:", error);
-  //   }
-  // };
-
   return (
-    <>
-      {/* <Collection onClick={handleCollectionButtonClick}>
-        {isCollection ? <BsBookmarkFill /> : <BsBookmark />}
-      </Collection> */}
-      <Like onClick={handleHeartButtonClick}>
-        {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
-      </Like>
-    </>
+    <Like onClick={handleHeartButtonClick}>
+      {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
+    </Like>
   );
 }
 

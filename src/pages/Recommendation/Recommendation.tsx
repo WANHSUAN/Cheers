@@ -62,15 +62,15 @@ export interface IRecommendationProps {}
 const RecommendationPage: React.FC<IRecommendationProps> = (
   props: IRecommendationProps
 ) => {
-  const [recommendations, setRecommendations] = useState<IRecommendation[]>([]);
+  const [recommendations, setRecommendations] = useState<
+    IRecommendation[] | undefined
+  >(undefined);
   const recommendationsRef = collection(db, "users");
-  const [matchIndex, setMatchIndex] = useState<number>();
+  const [matchIndex, setMatchIndex] = useState<number | null>(null);
   const {isLogin, userUID} = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    let foundMatch = false;
-
     const getRecommendations = async () => {
       const data = await getDocs(recommendationsRef);
       const loadedRecommendations = data.docs.map((doc) => ({
@@ -79,23 +79,20 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
       }));
       setRecommendations(loadedRecommendations);
 
-      loadedRecommendations.some((recommendation, index) => {
-        if (recommendation.userUID === userUID) {
-          setMatchIndex(index);
-          foundMatch = true;
-          return true;
-        }
-      });
+      const index = loadedRecommendations.findIndex(
+        (recommendation) => recommendation.userUID === userUID
+      );
+      if (index >= 0) {
+        setMatchIndex(index);
+      } else {
+        setMatchIndex(null); // 如果找不到匹配的项，就将 matchIndex 设置为 null
+      }
     };
 
     getRecommendations();
-
-    if (!foundMatch) {
-      setMatchIndex(undefined);
-    }
   }, []);
 
-  if (recommendations.length === 0) {
+  if (recommendations === undefined || matchIndex === null) {
     return <p>Loading...</p>;
   }
 
@@ -105,10 +102,11 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
     console.log("登出");
     navigate("/");
   }
+  console.log(matchIndex);
 
   return (
     <Wrapper>
-      {matchIndex !== undefined && (
+      {matchIndex !== null && (
         <RecSection>
           {recommendations[matchIndex].matchingBars
             .slice(0, 8)
