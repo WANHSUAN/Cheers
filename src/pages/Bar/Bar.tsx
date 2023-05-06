@@ -713,7 +713,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   };
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
 
     getBar();
 

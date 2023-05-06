@@ -148,7 +148,7 @@ const NativeLogin = styled.button`
   &:hover {
     color: #d19b18;
     background-color: #fff;
-    transition: ease 0.5s;'
+    transition: ease 0.5s;
   }
 `;
 

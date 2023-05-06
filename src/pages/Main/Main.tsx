@@ -104,6 +104,38 @@ const ScrollTitle = styled.span`
   font-size: 2rem;
   font-weight: bold;
 `;
+
+const Jump = keyframes`
+  from, to { transform: scale(1, 1); }
+  25% { transform: scale(0.95, 1.05); }
+  50% { transform: scale(1.05, 0.95); }
+  75% { transform: scale(0.955, 1.055); }
+`;
+
+const Test = styled(Link)`
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  bottom: 250px;
+  right: 50px;
+  z-index: 1;
+  border: none;
+  font-size: 0.5rem;
+  background-color: #d19b18;
+  color: #fff;
+  border-radius: 50%;
+  padding-top: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  animation: ${Jump} 1s infinite;
+
+  &:hover {
+    background-color: #fff;
+    color: #d19b18;
+    transition: ease 0.5s;
+  }
+`;
+
 // TODO
 const ScrollButton = styled.button`
   width: 100px;
@@ -563,8 +595,11 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <span className="flicker">for You!</span>
           </div>
         </Title>
+        <Test to={"/question"} className="selectBar">
+          <span>Select Your Type!</span>
+          <div className="liquid"></div>
+        </Test>
 
-        {/* TODO */}
         {showButton && (
           <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
         )}

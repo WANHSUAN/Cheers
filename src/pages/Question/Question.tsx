@@ -4,38 +4,14 @@ import styled from "styled-components/macro";
 import {db} from "../../App";
 import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
 import {AuthContext} from "../../Context/AuthContext";
-import main from "./main.png";
-import {RxDoubleArrowDown} from "react-icons/rx";
+import {MdOutlineLiquor} from "react-icons/md";
 import "../Calendar/Calendar.css";
+import "./Question.css";
 
 const Wrapper = styled.div`
-  width: 83.5%;
+  width: 1000px;
   margin: 0 auto;
   padding-top: 60px;
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-`;
-
-const Slogan = styled.p`
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  font-size: 130px;
-  color: #fff;
-  letter-spacing: 10px;
-  text-align: center;
-`;
-
-const MainImg = styled.img`
-  width: 100%;
-  height: 550px;
-  margin-top: 270px;
-  vertical-align: bottom;
-  object-fit: cover;
 `;
 
 const TestTitleSection = styled.div`
@@ -51,39 +27,25 @@ const TestTitle = styled.p`
   text-align: center;
 `;
 
-const DoubleArrow = styled.button`
-  height: 100px;
-  color: #d19b18;
-  font-size: 80px;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  text-align: center;
-  cursor: pointer;
-`;
-
 const TestSection = styled.div`
   margin: 200px auto 50px;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
 `;
 
 const SelectItemSection = styled.div`
-  width: 230px;
-  height: 230px;
-  border: 1px solid #fff;
-  border-radius: 3%;
-  padding: 40px;
-  text-align: left;
+  padding: 20px;
 `;
 
 const SelectItem = styled.div`
-  width: 280px;
+  padding: 10px 0;
+  text-align: left;
 `;
 
 const SelectTime = styled.p`
-  font-size: 25px;
+  font-size: 40px;
   color: #d19b18;
-  margin: 10px 0;
+  margin: 20px 0;
 `;
 
 const Checkbox = styled.input`
@@ -91,15 +53,11 @@ const Checkbox = styled.input`
 `;
 
 const SelectContent = styled.div`
-  width: 130px;
-  height: 20px;
-  color: #fff;
-  font-size: 20px;
-  margin: 20px 0;
+  font-size: 30px;
 `;
 
 const Submit = styled.div`
-  width: 100%;
+  width: 90%;
   text-align: center;
   padding: 50px;
   margin-bottom: 50px;
@@ -150,11 +108,11 @@ const options = [
 ];
 
 const groups = {
-  time: "Time",
-  situation: "Situation",
-  category: "Category",
-  visual: "Visual",
-  relationship: "Relationship",
+  time: "What is your favorite time?",
+  situation: "Are you alone or with many people?",
+  category: "Do you like classic or special drinks?",
+  visual: "Do you prefer simplicity or visual appeal?",
+  relationship: "Friends or Couple?",
 };
 
 export interface IQuestionProps {}
@@ -168,7 +126,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
       setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
@@ -188,6 +146,9 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // e.preventDefault();
+    // e.stopPropagation();
+
     const value = e.target.value;
     const option = options.find((option) => option.text === value)!;
 
@@ -257,23 +218,12 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   return (
     <>
       <Wrapper>
-        <ImageContainer>
-          <Slogan>
-            YOUR
-            <br />
-            HAPPINESS
-          </Slogan>
-          <MainImg src={main} />
-        </ImageContainer>
         <TestTitleSection>
-          <TestTitle>Choose your Favorite Type!</TestTitle>
-          <DoubleArrow>
-            <RxDoubleArrowDown />
-          </DoubleArrow>
+          <TestTitle>Select Your Favorite Type!</TestTitle>
         </TestTitleSection>
 
         <TestSection>
-          {Object.entries(groups).map(([key, label]) => (
+          {/* {Object.entries(groups).map(([key, label]) => (
             <SelectItemSection key={key}>
               <SelectTime>{label}</SelectTime>
               {options
@@ -291,6 +241,34 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
                       />
                       {option.hashtag}
                     </SelectContent>
+                  </SelectItem>
+                ))}
+            </SelectItemSection>
+          ))} */}
+          {Object.entries(groups).map(([key, label]) => (
+            <SelectItemSection key={key}>
+              <SelectTime>
+                <MdOutlineLiquor />
+                {label}
+              </SelectTime>
+              {options
+                .filter((option) => option.group === key)
+                .map((option) => (
+                  <SelectItem key={option.hashtag}>
+                    <label className="rad-label">
+                      <input
+                        type="checkbox"
+                        className="rad-input"
+                        name="rad"
+                        value={option.text}
+                        checked={selectedOptions.some(
+                          (o) => o.text === option.text
+                        )}
+                        onChange={handleOptionChange}
+                      />
+                      <div className="rad-design"></div>
+                      <div className="rad-text"> {option.hashtag}</div>
+                    </label>
                   </SelectItem>
                 ))}
             </SelectItemSection>
