@@ -1,5 +1,5 @@
 .link__svg {
-  width: 50%;
+  width: 60%;
   height: 200px;
   transform-box: fill-box;
   fill: #d19b18;
@@ -11,16 +11,11 @@
 .link__text {
   animation: rotate normal infinite 20s linear;
   transform-origin: 50% 50%;
-  font-size: 12px;
 }
 
 /* .link:hover .link__text {
   animation-play-state: paused;
 } */
-
-.link:hover {
-  cursor: pointer;
-}
 
 @keyframes rotate {
   to {
@@ -37,25 +32,20 @@
 }
 
 .link:hover {
+  cursor: pointer;
   transform: scale(2);
   transition: transform 0.5s ease;
 }
 
-/* more bars button*/
+/* more bars button */
 
 a {
-  color: #333;
   text-decoration: none;
   transition: 0.3s all ease;
 }
-a:hover {
-  color: #d19b18;
-}
+
 a:focus {
   text-decoration: none;
-}
-a:active {
-  color: #fff;
 }
 
 .more {
@@ -66,12 +56,13 @@ a:active {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 1rem;
   position: relative;
   margin-top: 60px;
   border: none;
   background-color: transparent;
   cursor: pointer;
+  color: #fff;
 }
 
 .more:after {
@@ -82,7 +73,7 @@ a:active {
   top: 0;
   bottom: 0;
   right: 0;
-  border: 2px solid #d19b18;
+  border: 2px solid #fff;
 }
 
 .more:before {
@@ -94,7 +85,7 @@ a:active {
   right: 0;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
-  background: #fff;
+  background: #d19b18;
   z-index: -1;
 }
 
@@ -106,10 +97,11 @@ a:active {
 .more:active {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+  color: #d19b18;
 }
 
 .more:active:before {
-  background-color: #d19b18;
+  background-color: #fff;
 }
 
 .more:active:after {
@@ -127,9 +119,9 @@ a:active {
     #7f5c0b,
     transparent
   );
-  letter-spacing: 3px;
-  font-size: 70px;
+  font-size: 4rem;
   color: #e4d4b1;
+  margin-bottom: 40px;
   text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
     -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
     0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
@@ -145,7 +137,7 @@ a:active {
     #7f5c0b,
     transparent
   );
-  font-size: 70px;
+  font-size: 4rem;
   color: #e4d4b1;
   text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
     -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
@@ -197,8 +189,6 @@ a:active {
       0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
   }
 }
-
-/* #D19B18 */
 
 @keyframes flicker {
   from {

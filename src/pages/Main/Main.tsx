@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   width: 1100px;
   margin: 0 auto;
   padding-top: 60px;
+  font-size: 16px;
 `;
 
 const ImageContainer = styled.div`
@@ -100,29 +101,28 @@ const ScrollTitle = styled.span`
   display: block;
   text-transform: uppercase;
   color: #d19b18;
-  font-size: 30px;
+  font-size: 2rem;
   font-weight: bold;
-  letter-spacing: 0.1em;
 `;
 // TODO
 const ScrollButton = styled.button`
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   position: fixed;
   bottom: 110px;
   right: 50px;
-  z-index: 0;
+  z-index: 1;
   border: none;
-  font-size: 18px;
-  background-color: #fff;
-  color: #d19b18;
+  font-size: 1.5rem;
+  background-color: #d19b18;
+  color: #fff;
   border-radius: 50%;
   padding: 10px;
   cursor: pointer;
 
   &:hover {
-    background-color: #d19b18;
-    color: #fff;
+    background-color: #fff;
+    color: #d19b18;
 
     transition: ease 0.5s;
   }
@@ -143,7 +143,7 @@ const Slogan = styled.p`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
-  font-size: 130px;
+  font-size: 8rem;
   color: #fff;
   letter-spacing: 10px;
   text-align: center;
@@ -170,7 +170,7 @@ const fadeInPosition = keyframes`
 `;
 
 const Title = styled.div`
-  font-size: 70px;
+  font-size: 4rem;
   color: #fff;
   padding: 50px;
   text-align: center;
@@ -185,13 +185,13 @@ const AllBarTitleSection = styled.div`
 
 const AllBarSubTitle = styled.p`
   color: #d19b18;
-  font-size: 20px;
+  font-size: 2rem;
   margin-bottom: 20px;
 `;
 
 const AllBarTitle = styled.h2`
   color: #fff;
-  font-size: 40px;
+  font-size: 4rem;
   margin-bottom: 20px;
 `;
 
@@ -209,7 +209,7 @@ const BarSection = styled(Link)`
 
 const BarTitle = styled.div`
   width: 250px;
-  font-size: 18px;
+  font-size: 1rem;
   font-family: "Noto Sans TC", sans-serif;
   padding-top: 10px;
   color: #ffffffb9;
@@ -221,24 +221,24 @@ const CalendarSection = styled.div``;
 const CalendarSubTitle = styled.p`
   color: #d19b18;
   margin: 200px 0 10px 0;
-  font-size: 20px;
+  font-size: 2rem;
 `;
 
 const CalendarTitle = styled.h2`
   color: #fff;
   margin-bottom: 150px;
-  font-size: 40px;
+  font-size: 4rem;
 `;
 
 const CalendarColorSection = styled.div`
-  width: 1000px;
+  width: 800px;
   display: flex;
   justify-content: right;
   margin-left: 50px;
 `;
 
 const ColorItem = styled.div`
-  width: 170px;
+  width: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -265,18 +265,18 @@ const ColorSelected = styled.div`
 
 const ColorName = styled.div`
   color: #fff;
-  font-size: 20px;
+  font-size: 1.5rem;
   padding: 20px;
 `;
 
 const MapSubTitle = styled.p`
-  font-size: 20px;
+  font-size: 2rem;
   margin: 200px 0 10px 0;
   color: #d19b18;
 `;
 
 const MapTitle = styled.p`
-  font-size: 40px;
+  font-size: 4rem;
   color: #fff;
 `;
 
@@ -310,7 +310,7 @@ const AlertSection = styled.div`
 `;
 
 const AlertMessage = styled.div`
-  font-size: 35px;
+  font-size: 2rem;
   padding: 40px 20px;
   line-height: 60px;
 `;
@@ -318,6 +318,8 @@ const AlertMessage = styled.div`
 const AlertCheck = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
 `;
 
 const ButtonSection = styled.div``;
@@ -346,7 +348,6 @@ const StyledEnterButton = styled.button`
   border: none;
   font-size: 20px;
   border-radius: 8px;
-  margin-top: 25px;
   box-shadow: 3px 3px 8px #605d5d82;
   background-color: #ffffffe3;
 
@@ -550,6 +551,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </ArrowWrapper>
         <div id="section2"></div>
         {/* OPEN */}
+
         <Title>
           <div className="sign">
             <span className="flicker">We've</span>
@@ -568,7 +570,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         )}
         <Hashtag />
         <AllBarTitleSection>
-          <AllBarSubTitle>ALL BARS LIST</AllBarSubTitle>
+          <AllBarSubTitle id="allbars" style={{scrollMarginTop: "-96vh"}}>
+            ALL BARS LIST
+          </AllBarSubTitle>
           <AllBarTitle>
             The adventure <br />
             starts now
@@ -690,7 +694,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </CalendarColorSection>
           <Calendar />
         </CalendarSection>
-        <MapSubTitle>POSITION</MapSubTitle>
+        <MapSubTitle>LOCATION</MapSubTitle>
         <MapTitle>Where is the Bar?</MapTitle>
         {/* OPEN */}
         <MainMap />
@@ -757,34 +761,34 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
                   邀請您來共襄盛舉～
                 </AlertMessage>
                 <AlertCheck>
-                  {/* <CheckboxWrapper> */}
-                  {/* <CheckboxInput */}
-                  {/* type="checkbox"
+                  <CheckboxWrapper>
+                    {/* <CheckboxInput */}
+                    {/* type="checkbox"
                       checked={ischecked}
                       onChange={handleOnChange}
                     > */}
-                  <link
-                    rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-                  />
-                  <div className="center">
-                    <label className="label">
-                      <input
-                        className="label__checkbox"
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={handleOnChange}
-                      />
-                      <span className="label__text">
-                        <span className="label__check">
-                          <i className="fa fa-check icon"></i>
+                    <link
+                      rel="stylesheet"
+                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+                    />
+                    <div className="center">
+                      <label className="label">
+                        <input
+                          className="label__checkbox"
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={handleOnChange}
+                        />
+                        <span className="label__text">
+                          <span className="label__check">
+                            <i className="fa fa-check icon"></i>
+                          </span>
                         </span>
-                      </span>
-                    </label>
-                  </div>
-                  {/* </CheckboxInput> */}
-                  <CheckboxLabel>今日不再顯示</CheckboxLabel>
-                  {/* </CheckboxWrapper> */}
+                      </label>
+                    </div>
+                    {/* </CheckboxInput> */}
+                    <CheckboxLabel>今日不再顯示</CheckboxLabel>
+                  </CheckboxWrapper>
                   <ButtonSection>
                     <StyledEnterButton>
                       <EnterButton to={`/events/${event.id}`} key={event.id}>

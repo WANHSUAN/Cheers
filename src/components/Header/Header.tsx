@@ -1,7 +1,8 @@
-import {useState, useEffect, useContext} from "react";
+import {useState, useContext} from "react";
 import styled from "styled-components/macro";
 import "./styles.css";
 import {Link} from "react-router-dom";
+import {HashLink} from "react-router-hash-link";
 import {useNavigate} from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import {
@@ -42,6 +43,11 @@ const Menu = styled.p`
   color: #fff;
   margin: 5px 0;
   font-size: 20px;
+
+  &:hover {
+    color: #d19b18;
+    transition: ease 0.5s;
+  }
 `;
 
 const MenuSection = styled.div`
@@ -86,17 +92,11 @@ const SearchItem = styled.button`
   font-size: 20px;
   position: relative;
   cursor: pointer;
-`;
 
-const SideMenuWrapper = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url(${side}) no-repeat center center fixed;
-  background-size: cover;
-  z-index: 1;
+  :hover {
+    color: #d19b18;
+    transition: ease 0.5s;
+  }
 `;
 
 const SideMenuList = styled.ul`
@@ -105,9 +105,9 @@ const SideMenuList = styled.ul`
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 20px;
-  text-align: center;
   margin: 16% auto;
   gap: 40px;
+  text-align: center;
 `;
 
 const MenuItem = styled.li`
@@ -116,27 +116,32 @@ const MenuItem = styled.li`
   font-size: 90px;
   margin: 50px 0;
   padding: 0 30px;
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 16px;
-  color: #fff;
+  position: relative;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(HashLink)`
+  color: #fff;
   text-decoration: none;
-  color: #fff;
-`;
+  display: inline-block;
+  position: relative;
 
-const LogOutButton = styled.button`
-  background-color: transparent;
-  border: none;
-  width: 480px;
-  font-size: 90px;
-  text-decoration-line: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 16px;
-  color: #fff;
-  cursor: pointer;
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    display: block;
+    background: none repeat scroll 0 0 transparent;
+    height: 2px;
+    width: 0;
+    background: #fff;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  }
+
+  &:hover::after {
+    width: 100%;
+    left: 0;
+  }
 `;
 
 const SearchWrapper = styled.div`
@@ -176,6 +181,7 @@ const SelectBarsButton = styled.button`
   &:hover {
     background-color: #d19b18;
     border: #d19b18;
+    transition: ease 0.5s;
   }
 `;
 
@@ -195,6 +201,7 @@ const SelectEventsButton = styled.button`
   &:hover {
     background-color: #d19b18;
     border: #d19b18;
+    transition: ease 0.5s;
   }
 `;
 
@@ -210,7 +217,7 @@ const StyledSearchBarSection = styled.div`
 
 const BarName = styled.p`
   color: #d19b18;
-  font-size: 35px;
+  font-size: 30px;
   padding: 0 5px;
 `;
 
@@ -228,7 +235,7 @@ const BarAddress = styled.p`
 
 const BarIntroduction = styled.p`
   color: #be7808;
-  font-size: 17px;
+  font-size: 15px;
   padding: 30px 5px 0 5px;
   text-align: left;
 `;
@@ -321,7 +328,11 @@ const Header = () => {
                     </StyledLink>
                   </MenuItem>
                   <MenuItem>
-                    <StyledLink onClick={handleSideMenu} to={"/main"}>
+                    <StyledLink
+                      onClick={handleSideMenu}
+                      smooth
+                      to={"/main#allbars"}
+                    >
                       All Bars
                     </StyledLink>
                   </MenuItem>
@@ -330,12 +341,16 @@ const Header = () => {
                       Category
                     </StyledLink>
                   </MenuItem>
-                  <LogOutButton onClick={handleLogOut}>Log Out</LogOutButton>
+                  <MenuItem>
+                    <StyledLink onClick={handleLogOut} to={"/"}>
+                      Log Out
+                    </StyledLink>
+                  </MenuItem>
                 </SideMenuList>
               </div>
             </div>
+            <Menu>MENU</Menu>
           </div>
-          <Menu>MENU</Menu>
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
         {/* <MemberImg src={user.userImg} /> */}

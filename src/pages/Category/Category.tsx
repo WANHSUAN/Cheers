@@ -63,7 +63,7 @@ const CategorySection = styled(Link)`
 
 const CategoryTitle = styled.div`
   font-size: 40px;
-  margin: 60px 0;
+  margin-top: 60px;
 `;
 
 const CategoryCollection = styled.div`

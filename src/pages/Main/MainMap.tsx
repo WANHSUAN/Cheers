@@ -33,17 +33,19 @@ const ButtonSection = styled.div`
   justify-content: space-around;
 `;
 
-const CategoryButton = styled.button`
+const CategoryButton = styled.button<CategoryButtonProps>`
   width: 100px;
   height: 30px;
-  color: #fff;
+  color: ${(props) => (props.selected ? "#D19B18" : "#fff")};
   background-color: rgba(255, 255, 255, 0);
   border: 1px solid #000;
   border-radius: 5px;
   text-align: right;
-  font-size: 20px;
+  font-size: 1.5rem;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     color: #d19b18;
     transform: translateX(-10px);
     transition: ease 0.5s;
@@ -112,6 +114,10 @@ function useScript(src: string) {
     [src] // Only re-run effect if script src changes
   );
   return [state.loaded, state.error];
+}
+
+interface CategoryButtonProps {
+  selected: boolean;
 }
 interface LatLng {
   lat: number;
@@ -228,6 +234,8 @@ interface IAddressProps {
 
 function Address(props: IAddressProps) {
   const [map, setDataMap] = useState();
+  const [selectedButton, setSelectedButton] = useState(null);
+
   const [loaded] = useScript(
     "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
   );
@@ -421,40 +429,110 @@ function Address(props: IAddressProps) {
     return null;
   }
 
+  const handleButtonClick = (buttonId: any) => {
+    setSelectedButton(buttonId);
+  };
+
   return (
     <Wrapper>
       <ButtonSection>
-        <CategoryButton onClick={() => props.setButtonType("")}>
+        <CategoryButton
+          selected={selectedButton === 1}
+          onClick={() => {
+            props.setButtonType("");
+            handleButtonClick(1);
+          }}
+        >
           #All Bars
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("afternoon")}>
+        <CategoryButton
+          selected={selectedButton === 2}
+          onClick={() => {
+            props.setButtonType("afternoon");
+            handleButtonClick(2);
+          }}
+        >
           #Afternoon
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("night")}>
+        <CategoryButton
+          selected={selectedButton === 3}
+          onClick={() => {
+            props.setButtonType("night");
+            handleButtonClick(3);
+          }}
+        >
           #night
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("alone")}>
+        <CategoryButton
+          selected={selectedButton === 4}
+          onClick={() => {
+            props.setButtonType("alone");
+            handleButtonClick(4);
+          }}
+        >
           #alone
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("together")}>
+        <CategoryButton
+          selected={selectedButton === 5}
+          onClick={() => {
+            props.setButtonType("together");
+            handleButtonClick(5);
+          }}
+        >
           #together
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("classic")}>
+        <CategoryButton
+          selected={selectedButton === 6}
+          onClick={() => {
+            props.setButtonType("classic");
+            handleButtonClick(6);
+          }}
+        >
           #classic
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("special")}>
+        <CategoryButton
+          selected={selectedButton === 7}
+          onClick={() => {
+            props.setButtonType("special");
+            handleButtonClick(7);
+          }}
+        >
           #special
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("simple")}>
+        <CategoryButton
+          selected={selectedButton === 8}
+          onClick={() => {
+            props.setButtonType("simple");
+            handleButtonClick(8);
+          }}
+        >
           #simple
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("vision")}>
+        <CategoryButton
+          selected={selectedButton === 9}
+          onClick={() => {
+            props.setButtonType("vision");
+            handleButtonClick(9);
+          }}
+        >
           #vision
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("couple")}>
+        <CategoryButton
+          selected={selectedButton === 10}
+          onClick={() => {
+            props.setButtonType("couple");
+            handleButtonClick(10);
+          }}
+        >
           #couple
         </CategoryButton>
-        <CategoryButton onClick={() => props.setButtonType("friend")}>
+        <CategoryButton
+          selected={selectedButton === 11}
+          onClick={() => {
+            props.setButtonType("friend");
+            handleButtonClick(11);
+          }}
+        >
           #friend
         </CategoryButton>
       </ButtonSection>

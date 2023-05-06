@@ -3,14 +3,9 @@ import {useParams} from "react-router-dom";
 import styled from "styled-components/macro";
 import {db} from "../../App";
 import {
-  collection,
   getDoc,
-  getDocs,
   deleteDoc,
-  addDoc,
   doc,
-  where,
-  query,
   setDoc,
   updateDoc,
   arrayUnion,
@@ -18,11 +13,11 @@ import {
 import BarMap from "./BarMap";
 import {useNavigate} from "react-router-dom";
 import {AuthContext} from "../../Context/AuthContext";
-// import {BsBookmarkFill, BsBookmark} from "react-icons/bs";
 import {BsSuitHeartFill, BsSuitHeart} from "react-icons/bs";
 import {TiStarFullOutline} from "react-icons/ti";
 import {FiExternalLink} from "react-icons/fi";
 import {FaQuoteLeft, FaQuoteRight} from "react-icons/fa";
+import {SlCheck} from "react-icons/sl";
 import "./Bar.css";
 import userImg from "../../img/userImg.png";
 
@@ -168,6 +163,8 @@ const BarHashTagSection = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 15px;
+  font-size: 25px;
 `;
 
 const BarHashtagLink = styled.a`
@@ -565,6 +562,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   const [ratings, setRatings] = useState<number>(0);
   const {id} = useParams();
   const [currentDocId, setCurrentDocId] = useState(id);
+  const [showFlash, setShowFlash] = useState(false);
   const [key, setKey] = useState(0);
   const {user} = useContext(AuthContext);
 
@@ -579,13 +577,21 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
         score: ratings,
       }),
     });
-    setMessages([...messages, `${user.name}: ${inputValue}`]);
+
+    setMessages([`${user.name}: ${inputValue}`, ...messages]);
     setInputValue("");
     setRatings(0);
     setKey(key + 1); // 每次 handleSubmit 後將 key 狀態加 1
 
     props.getBar();
   };
+
+  function handleClick() {
+    setShowFlash(true);
+    setTimeout(() => {
+      setShowFlash(false);
+    }, 3500);
+  }
 
   return (
     <ScoreForm onSubmit={handleSubmit}>
@@ -598,7 +604,6 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
           placeholder="Leave a message..."
         ></InputTextArea>
       </LabelSectionInput>
-      <br />
       <SubmitSection>
         <LabelSection>
           <StarSection>
@@ -609,14 +614,27 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
             />
           </StarSection>
         </LabelSection>
-        <br />
-        <button className="mainContainer" type="submit">
-          <a href="#" className="commentButton">
-            <div className="commentButton__line"></div>
-            <div className="commentButton__line"></div>
-            <span className="commentButton__text">ENTRY</span>
-          </a>
-        </button>
+        <div>
+          <button className="mainContainer" type="submit" onClick={handleClick}>
+            <a href="#" className="commentButton">
+              <div className="commentButton__line"></div>
+              <div className="commentButton__line"></div>
+              <span className="commentButton__text">Confirm</span>
+            </a>
+          </button>
+          {showFlash && (
+            <div className="flash animate--drop-in-fade-out">
+              <div className="flash__icon">
+                <div className="icon">
+                  <SlCheck />
+                </div>
+              </div>
+              <div className="commentText">
+                Your comment was successfully published!
+              </div>
+            </div>
+          )}
+        </div>
       </SubmitSection>
     </ScoreForm>
   );
@@ -695,7 +713,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
 
     getBar();
 

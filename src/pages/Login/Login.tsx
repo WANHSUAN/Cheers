@@ -249,9 +249,15 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
         <SloganSection>
           <SloganContentAnimation />
           <SecondSloganContentAnimation />
-          {showButton && (
+          {showButton ? (
             <Link to="section2" smooth={true} onClick={scrollToSection2}>
               <div className="encircle bounce animated">
+                <div className="arrow"></div>
+              </div>
+            </Link>
+          ) : (
+            <Link to="section2" smooth={true} onClick={scrollToSection2}>
+              <div className="encircle bounce animated fade-out">
                 <div className="arrow"></div>
               </div>
             </Link>

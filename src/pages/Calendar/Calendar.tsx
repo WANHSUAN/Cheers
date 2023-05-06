@@ -9,15 +9,17 @@ import {TiDeleteOutline} from "react-icons/ti";
 import "../Calendar/Calendar.css";
 
 const CalendarWrapper = styled.div`
-  width: 1000px;
+  width: 800px;
   margin-left: 50px;
   position: relative;
   border-radius: 5px;
+  font-size: 16px;
+  margin: 0 auto;
 `;
 
 const CalendarSection = styled.div`
-  width: 1000px;
-  height: 820px;
+  width: 800px;
+  height: 720px;
   background-color: #ffffff33;
   border: 1px solid #ffffff7c;
   box-shadow: 2px 3px 10px #a27610;
@@ -39,14 +41,14 @@ const CalendarWeekdaysSection = styled.div`
   justify-content: space-around;
   color: #fff;
   padding: 8px;
-  font-size: 40px;
+  font-size: 4rem;
 `;
 
 const CalendarButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 35px;
+  font-size: 2rem;
   color: #fff;
   margin: 0 20px;
   padding-top: 15px;
@@ -54,7 +56,7 @@ const CalendarButton = styled.button`
 
 const CalendarMonth = styled.div`
   font-weight: bold;
-  font-size: 50px;
+  font-size: 4rem;
 `;
 
 const Arrow = styled.div`
@@ -62,26 +64,26 @@ const Arrow = styled.div`
 `;
 
 const CalendarDay = styled.div`
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 20px;
-  padding-left: 35%;
+  font-size: 1.5rem;
+  padding-left: 34%;
 
   &.calendar__day--today {
     background-color: #c48370;
     color: #fff;
-    margin-left: 20px;
+    margin-left: 15px;
     padding-left: 5px;
   }
   &.calendar__day--event {
     background-color: #ff8800a0;
     color: #fff;
-    margin-left: 20px;
+    margin-left: 15px;
     padding-left: 5px;
 
     &:hover {
@@ -93,7 +95,7 @@ const CalendarDay = styled.div`
   &.calendar__day--selected {
     background-color: #e6af70b7;
     color: #fff;
-    margin-left: 20px;
+    margin-left: 15px;
     padding-left: 5px;
   }
 `;
@@ -108,8 +110,8 @@ const CalendarDaysSection = styled.div`
 `;
 
 const CalendarDayEmpty = styled.div`
-  width: 90px;
-  height: 90px;
+  width: 70px;
+  height: 70px;
   display: flex;
   border-radius: 50%;
   background-color: #f5f5f55c;
@@ -125,7 +127,7 @@ const CalendarDayHeader = styled.div`
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
 `;
@@ -153,7 +155,7 @@ const InnerDiv = styled.div`
 
 const Delete = styled.div`
   height: 40px;
-  font-size: 40px;
+  font-size: 2rem;
   color: #d19b18;
   text-align: right;
 
@@ -168,28 +170,28 @@ const EventSection = styled.div`
   width: 600px;
   height: 500px;
   position: absolute;
-  top: 21%;
-  left: 20%;
+  top: 13%;
+  left: 12%;
   border-radius: 10px;
 `;
 
 const EventTitle = styled.p`
   color: #d19b18;
-  font-size: 40px;
-  margin: 30px 0;
+  font-size: 2rem;
+  margin: 20px 0 30px;
   font-weight: 700;
 `;
 
 const EventName = styled.p`
   color: #000;
-  font-size: 20px;
+  font-size: 1.5rem;
   margin-bottom: 40px;
 `;
 
 const EventContent = styled.p`
   color: #000000ac;
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 1rem;
+  line-height: 18px;
   text-align: left;
   white-space: pre-wrap;
 `;
@@ -207,7 +209,7 @@ const StyledEventButton = styled.button`
 const EventButton = styled(Link)`
   text-decoration: none;
   color: #d19b18;
-  font-size: 30px;
+  font-size: 1.5rem;
 `;
 
 interface IEvent {
@@ -381,9 +383,9 @@ function CalendarDays({
       <CalendarDay
         key={`day-${i}`}
         className={`
-        ${isToday ? "calendar__day--today" : ""} 
         ${isSelected ? "calendar__day--selected" : ""}
         ${hasEvent ? "calendar__day--event" : ""}
+        ${isToday ? "calendar__day--today" : ""} 
         `}
         onClick={handleClick}
       >

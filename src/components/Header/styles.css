@@ -1,5 +1,7 @@
 .menu-toggle {
   cursor: pointer;
+  display: flex;
+  gap: 10px;
 }
 
 .nav-overlay {
@@ -30,6 +32,7 @@
 
 .hamBox:hover {
   background: #2a2a2f;
+  color: #d19b18;
 }
 
 .hamBoxOpen {
@@ -89,8 +92,12 @@
   position: absolute;
   top: 30px;
   right: 45px;
-  color: #ffffff7c;
+  color: #fff;
   padding: 10px;
+}
+
+.ais-SearchBox-input:focus {
+  outline-color: #d19b18;
 }
 
 .ais-SearchBox-submit {
@@ -112,6 +119,11 @@
   height: 20px;
   margin-top: 5px;
   fill: #ffffff7c;
+}
+
+.ais-SearchBox-submitIcon:hover {
+  fill: #d19b18;
+  transition: ease 0.5s;
 }
 
 .ais-SearchBox-reset {
