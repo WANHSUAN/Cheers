@@ -8,7 +8,7 @@ import {collection, getDocs} from "firebase/firestore";
 const Wrapper = styled.div`
   width: 700px;
   margin: 0 auto;
-  padding-top: 100px;
+  padding-top: 200px;
 `;
 
 const RecSection = styled.div`

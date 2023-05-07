@@ -563,6 +563,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   const {id} = useParams();
   const [currentDocId, setCurrentDocId] = useState(id);
   const [showFlash, setShowFlash] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [key, setKey] = useState(0);
   const {user} = useContext(AuthContext);
 
@@ -600,7 +601,10 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     if (!inputValue || !ratings) {
-      alert("請完整填寫內容");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3500);
       return;
     }
     const commentRef = doc(db, `bars/${currentDocId}`);
@@ -661,6 +665,18 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
               </div>
               <div className="commentText">
                 Your comment was successfully published!
+              </div>
+            </div>
+          )}
+          {showAlert && (
+            <div className="flash__alert animate--drop-in-fade-out">
+              <div className="flash__icon__alert">
+                <div className="icon">
+                  <SlCheck />
+                </div>
+              </div>
+              <div className="commentText">
+                Please fill out the complete content!
               </div>
             </div>
           )}
