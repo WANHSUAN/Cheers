@@ -80,6 +80,22 @@ const ImgList = styled.ul`
   list-style: none;
 `;
 
+const RecommendationName = styled(Link)`
+  width: 300px;
+  margin: 0 auto;
+  text-decoration: none;
+  color: #fff;
+  font-size: 40px;
+  padding: 5px;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+`;
+
 const RecommendationItem = styled.li`
   border: 5px solid transparent;
   box-sizing: border-box;
@@ -98,6 +114,12 @@ const RecommendationItem = styled.li`
     bottom: 0;
     background: #333;
     transform: scale(0);
+  }
+
+  &:hover {
+    ${RecommendationName} {
+      opacity: 1;
+    }
   }
 
   &:hover:before {
@@ -129,26 +151,6 @@ const StyledRecommendationImg = styled.img`
   max-width: 100%;
   vertical-align: middle;
   position: relative;
-`;
-
-const RecommendationName = styled(Link)`
-  width: 300px;
-  margin: 0 auto;
-  text-decoration: none;
-  color: #fff;
-  font-size: 40px;
-  padding: 5px;
-  opacity: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-
-  &:hover {
-    opacity: 1;
-  }
 `;
 
 const LikeTitle = styled.h2`
@@ -275,6 +277,7 @@ interface ILikes {
   id: string;
   barId: string;
   barImg: string;
+  barName: string;
 }
 
 interface IUser {
@@ -409,7 +412,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
                     <RecommendationItem key={index}>
                       <StyledRecommendationImg src={like.barImg} />
                       <RecommendationName to={`/bars/${like.id}`}>
-                        {like.name}
+                        {like.barName}
                       </RecommendationName>
                       {/* <LikeScoreSection>
                      {[...Array(parseInt(like.score.toString()))].map(

@@ -71,6 +71,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getRecommendations = async () => {
       const data = await getDocs(recommendationsRef);
       const loadedRecommendations = data.docs.map((doc) => ({

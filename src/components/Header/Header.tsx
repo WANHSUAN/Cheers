@@ -166,16 +166,16 @@ const InstantSearchContainer = styled.div`
 `;
 
 const SelectBarsButton = styled.button`
-  width: 97px;
-  height: 30px;
+  width: 195px;
+  height: 40px;
   border: 1px solid #ffffff7c;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(3px);
   color: #fff;
   position: absolute;
-  top: 80px;
-  right: 145px;
+  top: 90px;
+  right: 250px;
   cursor: pointer;
 
   &:hover {
@@ -183,18 +183,23 @@ const SelectBarsButton = styled.button`
     border: #d19b18;
     transition: ease 0.5s;
   }
+
+  &:active {
+    background-color: #d19b18;
+    border: #d19b18;
+  }
 `;
 
 const SelectEventsButton = styled.button`
-  width: 97px;
-  height: 30px;
+  width: 195px;
+  height: 40px;
   border: 1px solid #ffffff7c;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(3px);
   color: #fff;
   position: absolute;
-  top: 80px;
+  top: 90px;
   right: 45px;
   cursor: pointer;
 
@@ -202,6 +207,11 @@ const SelectEventsButton = styled.button`
     background-color: #d19b18;
     border: #d19b18;
     transition: ease 0.5s;
+  }
+
+  &:active {
+    background-color: #d19b18;
+    border: #d19b18;
   }
 `;
 
@@ -250,14 +260,14 @@ const SearchEventSection = styled(Link)`
 
 const EventBar = styled.p`
   color: #d19b18;
-  font-size: 35px;
+  font-size: 30px;
   padding: 0 5px;
   text-align: left;
 `;
 
 const EventContent = styled.p`
   color: #be7808;
-  font-size: 18px;
+  font-size: 15px;
   padding: 20px 5px 0;
   text-align: left;
 `;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect, useContext, MouseEventHandler} from "react";
 import {useParams} from "react-router-dom";
 import styled from "styled-components/macro";
 import {db} from "../../App";
@@ -566,10 +566,44 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   const [key, setKey] = useState(0);
   const {user} = useContext(AuthContext);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
 
-    const commentRef = doc(db, `bars/${currentDocId}`); // 使用 currentDocId 獲取檔案引用
+  //   const commentRef = doc(db, `bars/${currentDocId}`); // 使用 currentDocId 獲取檔案引用
+  //   await updateDoc(commentRef, {
+  //     member_comment: arrayUnion({
+  //       userName: user.name,
+  //       comment: inputValue,
+  //       score: ratings,
+  //     }),
+  //   });
+
+  //   setMessages([`${user.name}: ${inputValue}`, ...messages]);
+  //   setInputValue("");
+  //   setRatings(0);
+  //   setKey(key + 1); // 每次 handleSubmit 後將 key 狀態加 1
+
+  //   props.getBar();
+  // };
+
+  // function handleClick() {
+  //   if (!inputValue || !ratings) {
+  //     alert("請填寫內容");
+  //     return;
+  //   }
+  //   setShowFlash(true);
+  //   setTimeout(() => {
+  //     setShowFlash(false);
+  //   }, 3500);
+  // }
+
+  const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    if (!inputValue || !ratings) {
+      alert("請完整填寫內容");
+      return;
+    }
+    const commentRef = doc(db, `bars/${currentDocId}`);
     await updateDoc(commentRef, {
       member_comment: arrayUnion({
         userName: user.name,
@@ -577,24 +611,20 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
         score: ratings,
       }),
     });
-
     setMessages([`${user.name}: ${inputValue}`, ...messages]);
     setInputValue("");
     setRatings(0);
     setKey(key + 1); // 每次 handleSubmit 後將 key 狀態加 1
 
     props.getBar();
-  };
-
-  function handleClick() {
     setShowFlash(true);
     setTimeout(() => {
       setShowFlash(false);
     }, 3500);
-  }
+  };
 
   return (
-    <ScoreForm onSubmit={handleSubmit}>
+    <ScoreForm>
       <LabelSectionInput>
         <MemberImg src={userImg} />
         <InputTextArea
@@ -680,7 +710,11 @@ function CollectionButton(name: any) {
       if (newIsLike) {
         setShowFlash(true);
         // Save isLike state to Firestore
-        await setDoc(likeDocRef, {isLike: true, barImg: name.img});
+        await setDoc(likeDocRef, {
+          isLike: true,
+          barImg: name.img,
+          barName: name.name,
+        });
       } else {
         setShowFlash(false);
         // Remove isLike state from Firestore
