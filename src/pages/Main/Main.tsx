@@ -317,6 +317,7 @@ const AlertWrapper = styled.div`
   top: 35%;
   left: 32%;
   z-index: 3;
+  animation: ${fadeIn} 1s ease-in-out;
 `;
 
 const Background = styled.div`

@@ -15,16 +15,13 @@ const Wrapper = styled.div`
 `;
 
 const TestTitleSection = styled.div`
-  text-align: center;
   margin-bottom: 50px;
 `;
 
 const TestTitle = styled.p`
   font-size: 70px;
   color: #fff;
-  padding: 50px;
   margin: 270px 0 50px 0;
-  text-align: center;
 `;
 
 const TestSection = styled.div`
@@ -33,9 +30,7 @@ const TestSection = styled.div`
   flex-direction: column;
 `;
 
-const SelectItemSection = styled.div`
-  padding: 20px;
-`;
+const SelectItemSection = styled.div``;
 
 const SelectItem = styled.div`
   padding: 10px 0;
@@ -126,7 +121,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
     const getBars = async () => {
       const data = await getDocs(barsCollectionRef);
       setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));

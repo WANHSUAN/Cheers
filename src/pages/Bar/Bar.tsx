@@ -643,6 +643,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
 function CollectionButton(name: any) {
   const {userUID} = useContext(AuthContext);
   const [isLike, setIsLike] = useState(false);
+  const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
     async function fetchLikeStatus() {
@@ -661,21 +662,27 @@ function CollectionButton(name: any) {
     fetchLikeStatus();
   }, []);
 
+  function handleClick() {
+    setShowFlash(true);
+    setTimeout(() => {
+      setShowFlash(false);
+    }, 3500);
+  }
+
   const handleHeartButtonClick = async () => {
     const newIsLike = !isLike;
     setIsLike(newIsLike);
+
     try {
       const userRef = doc(db, "users", userUID);
       const likeDocRef = doc(userRef, "likes", name.barId);
 
       if (newIsLike) {
-        alert("已收藏！");
-
+        setShowFlash(true);
         // Save isLike state to Firestore
         await setDoc(likeDocRef, {isLike: true, barImg: name.img});
       } else {
-        alert("我沒興趣了，取消收藏！");
-
+        setShowFlash(false);
         // Remove isLike state from Firestore
         await deleteDoc(likeDocRef);
       }
@@ -685,9 +692,21 @@ function CollectionButton(name: any) {
   };
 
   return (
-    <Like onClick={handleHeartButtonClick}>
-      {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
-    </Like>
+    <>
+      {showFlash && (
+        <div className="flash animate--drop-in-fade-out">
+          <div className="flash__icon">
+            <div className="icon">
+              <SlCheck />
+            </div>
+          </div>
+          <div className="commentText">Add this bar to Your Page!</div>
+        </div>
+      )}
+      <Like onClick={handleHeartButtonClick}>
+        {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
+      </Like>
+    </>
   );
 }
 
