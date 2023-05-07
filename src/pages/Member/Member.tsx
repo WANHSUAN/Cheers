@@ -67,7 +67,7 @@ const MemberEmail = styled.p`
 const RecommendationTitle = styled.h2`
   color: #fff;
   font-size: 30px;
-  margin: 40px 0;
+  margin: 100px 0 40px;
 `;
 
 const RecommendationSection = styled.div`
@@ -156,28 +156,8 @@ const StyledRecommendationImg = styled.img`
 const LikeTitle = styled.h2`
   color: #fff;
   font-size: 30px;
-  margin: 100px 0;
+  margin: 100px 0 40px;
 `;
-
-// const LikeSection = styled.div`
-//   margin-bottom: 30px;
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 10px;
-// `;
-
-// const LikeImg = styled(Link)`
-//   width: 170px;
-//   height: 170px;
-//   border-radius: 10px;
-//   text-decoration: none;
-//   /* border: 1px solid #fff; */
-// `;
-
-// const LikeHeader = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-// `;
 
 const LikeDeleteButton = styled.button`
   width: 60px;
@@ -197,77 +177,6 @@ const LikeDeleteButton = styled.button`
     color: #ffffffc4;
   }
 `;
-
-// const LikeBarName = styled.p`
-//   text-decoration: none;
-//   color: #fff;
-//   font-size: 15px;
-//   padding: 5px;
-// `;
-
-// const LikeScoreSection = styled.div`
-//   display: flex;
-// `;
-
-// const LikeScore = styled.li`
-//   color: #fff;
-//   list-style: none;
-//   text-align: center;
-// `;
-
-// const CollectionTitle = styled.h2`
-//   color: #fff;
-//   font-size: 30px;
-//   margin: 100px 0;
-// `;
-
-// const CollectionSection = styled.ul`
-//   margin-bottom: 30px;
-//   display: flex;
-//   flex-wrap: wrap;
-//   gap: 10px;
-// `;
-
-// const CollectionImg = styled(Link)`
-//   width: 190px;
-//   height: 200px;
-//   border-radius: 10px;
-//   text-decoration: none;
-// `;
-
-// const CollectionScoreSection = styled.div`
-//   display: flex;
-// `;
-
-// const CollectionScore = styled.li`
-//   color: #fff;
-//   list-style: none;
-//   text-align: center;
-// `;
-
-// const CollectionHeader = styled.div`
-//   display: flex;
-//   justify-content: space-between;
-// `;
-
-// const CollectionDeleteButton = styled.button`
-//   width: 60px;
-//   height: 20px;
-//   border: none;
-//   background-color: rgba(255, 255, 255, 0);
-//   color: #fff;
-//   font-size: 20px;
-//   padding-top: 5px;
-//   cursor: pointer;
-// `;
-
-// const CollectionBarName = styled.p`
-//   text-decoration: none;
-//   color: #fff;
-//   font-size: 15px;
-//   padding: 5px;
-// `;
-
 interface ILikes {
   name: string;
   link: string;
@@ -301,9 +210,10 @@ export interface IMemberProps {}
 
 const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   const {user, userUID, isLogin} = useContext(AuthContext);
-  const [likes, setLikes] = useState<ILikes[] | null>(null);
+  const [likes, setLikes] = useState<ILikes[] | undefined>(undefined);
   const [users, setUsers] = useState<IUser[] | undefined>();
   const [matchIndex, setMatchIndex] = useState<number>();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const navigate = useNavigate();
 
@@ -358,6 +268,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     let confirmDelete = window.confirm("確定要刪除嗎？");
 
     if (confirmDelete === true) {
+      setIsDeleting(true);
       const likesRef = collection(db, "users", userUID, "likes");
       const q = query(likesRef, where("barId", "==", likeDocId));
 
@@ -369,7 +280,10 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
       if (likeDocId) {
         const likeRef = doc(db, "users", userUID, "likes", likeDocId);
         await deleteDoc(likeRef);
+        const updatedLikes = likes?.filter((like) => like.id !== likeDocId);
+        setLikes(updatedLikes);
       }
+      setIsDeleting(false);
     }
   };
 
@@ -399,7 +313,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
               <MemberEmail>{user.email}</MemberEmail>
             </MemberInfo>
           </MemberSection>
-          {likes === null ? (
+          {likes === undefined ? (
             <p>Loading...</p>
           ) : (
             <>
@@ -407,6 +321,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
                 The Bars you <strong style={{color: "#D19B18"}}>LIKE</strong>
               </LikeTitle>
               <RecommendationSection>
+                {isDeleting && <p>Deleting...</p>}
                 <ImgList>
                   {likes.map((like, index) => (
                     <RecommendationItem key={index}>

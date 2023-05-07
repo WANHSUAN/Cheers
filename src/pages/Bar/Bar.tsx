@@ -302,6 +302,7 @@ const Comment = styled.li`
   height: 100px;
   line-height: 28px;
   white-space: pre-wrap;
+  overflow-wrap: break-word;
 `;
 
 const MemberScores = styled.div`
@@ -451,6 +452,10 @@ const InputTextArea = styled.textarea`
   padding: 60px 20px;
   font-size: 20px;
   color: #ffffffc1;
+
+  &:focus {
+    outline-color: #d19b18;
+  }
 `;
 
 interface IBar {
@@ -566,37 +571,6 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   const [showAlert, setShowAlert] = useState(false);
   const [key, setKey] = useState(0);
   const {user} = useContext(AuthContext);
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   const commentRef = doc(db, `bars/${currentDocId}`); // 使用 currentDocId 獲取檔案引用
-  //   await updateDoc(commentRef, {
-  //     member_comment: arrayUnion({
-  //       userName: user.name,
-  //       comment: inputValue,
-  //       score: ratings,
-  //     }),
-  //   });
-
-  //   setMessages([`${user.name}: ${inputValue}`, ...messages]);
-  //   setInputValue("");
-  //   setRatings(0);
-  //   setKey(key + 1); // 每次 handleSubmit 後將 key 狀態加 1
-
-  //   props.getBar();
-  // };
-
-  // function handleClick() {
-  //   if (!inputValue || !ratings) {
-  //     alert("請填寫內容");
-  //     return;
-  //   }
-  //   setShowFlash(true);
-  //   setTimeout(() => {
-  //     setShowFlash(false);
-  //   }, 3500);
-  // }
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
@@ -832,6 +806,10 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         : bar.member_comment.length - 1
     );
   };
+
+  const isFirstComment = currentIdx === 0;
+  const isLastComment = currentIdx === bar.member_comment.length - 1;
+
   if (isLogin) {
     console.log("登入");
   } else {
@@ -929,7 +907,10 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       <CommentSection>
         <CommentTitle>WHAT THEY'RE SAYING</CommentTitle>
         <CommentContent>
-          <LeftArrow onClick={goToPrevComment} />
+          <LeftArrow
+            onClick={isFirstComment ? undefined : goToPrevComment}
+            style={isFirstComment ? {cursor: "not-allowed"} : {}}
+          />
           <CommentBox>
             <CommentItem key={currentIdx}>
               <CommaRight>
@@ -952,7 +933,10 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               </CommaLeft>
             </CommentItem>
           </CommentBox>
-          <RightArrow onClick={goToNextComment} />
+          <RightArrow
+            onClick={isLastComment ? undefined : goToNextComment}
+            style={isLastComment ? {cursor: "not-allowed"} : {}}
+          />
         </CommentContent>
       </CommentSection>
       <MemberScoreSection>

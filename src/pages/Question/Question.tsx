@@ -94,20 +94,20 @@ const options = [
   {text: "Night", hashtag: "night", group: "time"},
   {text: "Alone", hashtag: "alone", group: "situation"},
   {text: "Together", hashtag: "together", group: "situation"},
-  {text: "Classic", hashtag: "classic", group: "category"},
-  {text: "Special", hashtag: "special", group: "category"},
-  {text: "Simple", hashtag: "simple", group: "visual"},
-  {text: "Vision", hashtag: "vision", group: "visual"},
   {text: "Couple", hashtag: "couple", group: "relationship"},
   {text: "Friend", hashtag: "friend", group: "relationship"},
+  {text: "Special", hashtag: "special", group: "category"},
+  {text: "Classic", hashtag: "classic", group: "category"},
+  {text: "Simple", hashtag: "simple", group: "visual"},
+  {text: "Vision", hashtag: "vision", group: "visual"},
 ];
 
 const groups = {
-  time: "What is your favorite time?",
-  situation: "Are you alone or with many people?",
-  category: "Do you like classic or special drinks?",
+  time: "What is your preferred time?",
+  situation: "Alone or with others?",
+  relationship: "Who will be joining you?",
+  category: "Do you prefer something special or classic?",
   visual: "Do you prefer simplicity or visual appeal?",
-  relationship: "Friends or Couple?",
 };
 
 export interface IQuestionProps {}

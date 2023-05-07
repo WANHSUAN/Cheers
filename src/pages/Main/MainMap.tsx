@@ -9,7 +9,7 @@ import "./styles.css";
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 50px 200px 100px 50px;
+  margin: 50px 200px 200px 50px;
 `;
 
 const GoogleMap = styled.div`
