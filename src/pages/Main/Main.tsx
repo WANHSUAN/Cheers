@@ -6,10 +6,9 @@ import {AuthContext} from "../../Context/AuthContext";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
 import {db} from "../../App";
 import Calendar from "../Calendar/Calendar";
-// OPEN
 import main from "../Question/main.png";
 import Hashtag from "./Hashtag";
-import MainMap from "./MainMap";
+// import MainMap from "./MainMap";
 import "./styles.css";
 
 const Wrapper = styled.div`
@@ -136,7 +135,6 @@ const Test = styled(Link)`
   }
 `;
 
-// TODO
 const ScrollButton = styled.button`
   width: 100px;
   height: 100px;
@@ -534,12 +532,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
   const slicedData = bars.slice(0, 8);
 
-  // 當按鈕被點擊時，將 showMore 設為 true
   const handleShowMore = () => {
     setShowMore(true);
   };
-
-  // TODO
 
   const handleScrollTop = () => {
     window.scrollTo({
@@ -583,9 +578,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </WrapperInner>
         </ArrowWrapper>
         <div id="section2"></div>
-        {/* OPEN */}
 
-        <Title>
+        {/* <Title>
           <div className="sign">
             <span className="flicker">We've</span>
             <span className="flicker">prepared</span>
@@ -599,7 +593,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         <Test to={"/question"} className="selectBar">
           <span>Select Your Type!</span>
           <div className="liquid"></div>
-        </Test>
+        </Test> */}
 
         {showButton && (
           <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
@@ -618,8 +612,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           {slicedData.map((item) => (
             <BarSection to={`/bars/${item.id}`} key={item.id}>
               <BarTitle>
-                {/* OPEN */}
-                <div className="link">
+                {/* <div className="link">
                   <svg
                     viewBox="0 0 200 200"
                     width="100"
@@ -654,7 +647,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                       </textPath>
                     </text>
                   </svg>
-                </div>
+                </div> */}
               </BarTitle>
             </BarSection>
           ))}
@@ -668,8 +661,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               {bars.slice(8).map((bar) => (
                 <BarSection to={`/bars/${bar.id}`} key={bar.id}>
                   <BarTitle>
-                    {/* OPEN */}
-                    <div className="link">
+                    {/* <div className="link">
                       <svg
                         viewBox="0 0 200 200"
                         width="100"
@@ -704,7 +696,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                           </textPath>
                         </text>
                       </svg>
-                    </div>
+                    </div> */}
                   </BarTitle>
                 </BarSection>
               ))}
@@ -732,8 +724,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </CalendarSection>
         <MapSubTitle>LOCATION</MapSubTitle>
         <MapTitle>Where is the Bar?</MapTitle>
-        {/* OPEN */}
-        <MainMap />
+        {/* <MainMap /> */}
       </Wrapper>
     </>
   );
@@ -742,7 +733,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 const Alert = ({events}: {events: IAlertEvent[]}) => {
   const [showAlert, setShowAlert] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
-  const [showBackground, setShowBackground] = useState(true); // 新增的狀態變數
+  const [showBackground, setShowBackground] = useState(true);
 
   function shouldShowAlert() {
     const cookies = document.cookie.split("; ");
@@ -776,7 +767,7 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
 
   function handleCloseClick() {
     setShowAlert(false);
-    setShowBackground(false); // 更新狀態變數
+    setShowBackground(false);
   }
 
   return (

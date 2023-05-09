@@ -1,6 +1,5 @@
-// OPEN
 import {collection, getDocs} from "firebase/firestore";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components/macro";
 import {db} from "../../App";
 import "./styles.css";
@@ -58,60 +57,48 @@ declare const window: Window & {
 
 let cachedScripts: string[] = [];
 function useScript(src: string) {
-  // Keeping track of script loaded and error state
-
   const [state, setState] = useState({
     loaded: false,
     error: false,
   });
 
-  useEffect(
-    () => {
-      // If cachedScripts array already includes src that means another instance ...
-      // ... of this hook already loaded this script, so no need to load again.
-      if (cachedScripts.includes(src)) {
+  useEffect(() => {
+    if (cachedScripts.includes(src)) {
+      setState({
+        loaded: true,
+
+        error: false,
+      });
+    } else {
+      cachedScripts.push(src);
+      let script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      const onScriptLoad = () => {
         setState({
           loaded: true,
-
           error: false,
         });
-      } else {
-        cachedScripts.push(src);
-        // Create script
-        let script = document.createElement("script");
-        script.src = src;
-        script.async = true;
-        // Script event listener callbacks for load and error
-        const onScriptLoad = () => {
-          setState({
-            loaded: true,
-            error: false,
-          });
-        };
+      };
 
-        const onScriptError = () => {
-          // Remove from cachedScripts we can try loading again
-          const index = cachedScripts.indexOf(src);
-          if (index >= 0) cachedScripts.splice(index, 1);
-          script.remove();
-          setState({
-            loaded: true,
-            error: true,
-          });
-        };
-        script.addEventListener("load", onScriptLoad);
-        script.addEventListener("error", onScriptError);
-        // Add script to document body
-        document.body.appendChild(script);
-        // Remove event listeners on cleanup
-        return () => {
-          script.removeEventListener("load", onScriptLoad);
-          script.removeEventListener("error", onScriptError);
-        };
-      }
-    },
-    [src] // Only re-run effect if script src changes
-  );
+      const onScriptError = () => {
+        const index = cachedScripts.indexOf(src);
+        if (index >= 0) cachedScripts.splice(index, 1);
+        script.remove();
+        setState({
+          loaded: true,
+          error: true,
+        });
+      };
+      script.addEventListener("load", onScriptLoad);
+      script.addEventListener("error", onScriptError);
+      document.body.appendChild(script);
+      return () => {
+        script.removeEventListener("load", onScriptLoad);
+        script.removeEventListener("error", onScriptError);
+      };
+    }
+  }, [src]);
   return [state.loaded, state.error];
 }
 
@@ -130,7 +117,6 @@ interface IBar {
   tel: string;
   barId: string;
   opening_time: {opening_date: string; opening_hours: string};
-  img: string;
 }
 
 export interface IMainProps {}
@@ -198,14 +184,13 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
       const latLngPromises = address.map((address) => fetchData(address));
       const latLngArr = await Promise.all(latLngPromises);
       setLatLngArr(latLngArr);
-      setIsLoading(false); // 資料加載完成後設定 isLoading 為 false
+      setIsLoading(false);
     };
 
     fetchAllData();
   }, [buttonType]);
 
   if (isLoading) {
-    // 若仍在資料加載中，回傳 null
     return null;
   }
   if (latLngArr.length === 0) {
@@ -229,7 +214,7 @@ async function fetchData(address: string) {
 interface IAddressProps {
   latLng: LatLng[];
   bars: IBar[];
-  setButtonType: (param1: string) => void; // 修正參數名後面的括號和回傳值類型
+  setButtonType: (param1: string) => void;
 }
 
 function Address(props: IAddressProps) {
@@ -261,7 +246,6 @@ function Address(props: IAddressProps) {
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
     locationButton.addEventListener("click", () => {
-      // Try HTML5 geolocation.
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position: GeolocationPosition) => {
@@ -280,7 +264,6 @@ function Address(props: IAddressProps) {
           }
         );
       } else {
-        // Browser doesn't support Geolocation
         handleLocationError(false, infoWindow, map.getCenter()!);
       }
     });
@@ -393,28 +376,23 @@ function Address(props: IAddressProps) {
         map,
         // icon: icons,
       });
-      // 綁定 click 事件
+
       marker.addListener("click", () => {
-        const barAddress = props.bars[index].address; // 從 props 中取得 bars 數據
+        const barAddress = props.bars[index].address;
         const barName = props.bars[index].name;
         const barTel = props.bars[index].tel;
         const barLink = props.bars[index].barId;
         const barDate = props.bars[index].opening_time.opening_date;
         const barHours = props.bars[index].opening_time.opening_hours;
-        const barImg = props.bars[index].img[1];
-
-        // 設定 info window 的內容
         infoWindow.setContent(`
         <div class="infowindow">
           <h2>${barName}</h2>  <br />
-          <img src="${barImg}" />
           <p>${barDate} ${barHours}</p> <br />
           <p>${barAddress}</p> <br />
           <p>${barTel}</p> <br />
           <a href="/bars/${barLink}">&#128279;</i></a>
           </div>
         `);
-        // 開啟 info window
         infoWindow.open(map, marker);
       });
     });

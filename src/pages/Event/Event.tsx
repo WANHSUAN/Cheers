@@ -1,10 +1,9 @@
+import {Timestamp, doc, getDoc} from "firebase/firestore";
+import {useContext, useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components/macro";
-import {Link, useNavigate} from "react-router-dom";
-import {useState, useEffect, useContext} from "react";
-import {AuthContext} from "../../Context/AuthContext";
-import {useParams} from "react-router-dom";
 import {db} from "../../App";
-import {getDoc, doc, Timestamp} from "firebase/firestore";
+import {AuthContext} from "../../Context/AuthContext";
 
 const Wrapper = styled.div`
   padding: 10px;
@@ -92,7 +91,7 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   const [event, setEvent] = useState<IEvent>();
   const {id} = useParams();
   const eventCollectionRef = id ? doc(db, "events", id) : undefined;
-  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const {isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -113,7 +112,7 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   const dateObj = new Date(
     event.time.seconds * 1000 + event.time.nanoseconds / 1000000
   );
-  const dateStr = dateObj.toLocaleDateString(); // 格式為 YYYY/MM/DD
+  const dateStr = dateObj.toLocaleDateString();
   if (isLogin) {
     console.log("登入");
   } else {

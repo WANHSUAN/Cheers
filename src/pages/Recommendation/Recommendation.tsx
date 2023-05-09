@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useContext} from "react";
-import styled from "styled-components/macro";
-import {Link, useNavigate} from "react-router-dom";
-import {AuthContext} from "../../Context/AuthContext";
-import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import React, {useContext, useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import styled from "styled-components/macro";
+import {db} from "../../App";
+import {AuthContext} from "../../Context/AuthContext";
 
 const Wrapper = styled.div`
   width: 700px;
@@ -86,7 +86,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
       if (index >= 0) {
         setMatchIndex(index);
       } else {
-        setMatchIndex(null); // 如果找不到匹配的项，就将 matchIndex 设置为 null
+        setMatchIndex(null);
       }
     };
 

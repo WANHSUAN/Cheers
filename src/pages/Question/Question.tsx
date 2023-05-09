@@ -144,9 +144,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // e.preventDefault();
-    // e.stopPropagation();
-
     const value = e.target.value;
     const option = options.find((option) => option.text === value)!;
 

@@ -1,22 +1,20 @@
-import {useState, useContext} from "react";
-import styled from "styled-components/macro";
-import "./styles.css";
-import {Link} from "react-router-dom";
-import {HashLink} from "react-router-hash-link";
-import {useNavigate} from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
+import {GoogleAuthProvider, getAuth} from "firebase/auth";
+import {useContext, useState} from "react";
 import {
-  SearchBox,
+  CurrentRefinements,
+  Highlight,
   Hits,
   Index,
-  Highlight,
   InstantSearch,
+  SearchBox,
   Snippet,
-  CurrentRefinements,
 } from "react-instantsearch-hooks-web";
-import {getAuth, GoogleAuthProvider} from "firebase/auth";
+import {Link, useNavigate} from "react-router-dom";
+import {HashLink} from "react-router-hash-link";
+import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
-import side from "./side.png";
+import "./styles.css";
 
 const searchClient = algoliasearch(
   "W1FJ2ENITZ",
@@ -56,26 +54,10 @@ const MenuSection = styled.div`
   padding-top: 5px;
 `;
 
-const NavButton = styled.button`
-  width: 20px;
-  height: 25px;
-  border: none;
-  color: #fff;
-  background-color: #000;
-  cursor: pointer;
-`;
-
 const Title = styled(Link)`
   font-size: 35px;
   color: #fff;
   text-decoration: none;
-`;
-
-const MemberImg = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid #ffffff7c;
 `;
 
 const SearchSection = styled.div`
@@ -279,7 +261,7 @@ const Header = () => {
   const [isToggle, setIsToggle] = useState(false);
 
   const auth = getAuth();
-  const {user, logOut} = useContext(AuthContext);
+  const {logOut} = useContext(AuthContext);
 
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
@@ -295,19 +277,6 @@ const Header = () => {
 
   const handleSideMenu: HandleSideMenuType = () => {
     setIsToggle(!isToggle);
-  };
-
-  const canvasStyle = {
-    display: "flex",
-    width: "100vw",
-    height: "100vh",
-    alignItems: "center",
-    justifyContent: "center",
-  };
-
-  const menuButtonStyle = {
-    marginLeft: "2rem",
-    cursor: "pointer",
   };
 
   function OpenSearch() {
@@ -363,7 +332,6 @@ const Header = () => {
           </div>
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
-        {/* <MemberImg src={user.userImg} /> */}
         <SearchSection>
           <SearchItem onClick={OpenSearch}>SEARCH</SearchItem>
           {isOpen && <Search />}
@@ -376,7 +344,7 @@ const Header = () => {
 const MySearchComponent = () => {
   const [showBars, setShowBars] = useState(false);
   const [showEvents, setShowEvents] = useState(false);
-  const [searchBoxVisible, setSearchBoxVisible] = useState(true); // 新增一個狀態用來控制 SearchBox 的顯示
+  const [searchBoxVisible, setSearchBoxVisible] = useState(true);
 
   const BarsTemplate = ({
     hit,
@@ -416,7 +384,7 @@ const MySearchComponent = () => {
               attribute="introduction"
               hit={hit}
               nonHighlightedTagName="span"
-              highlightedTagName="mark" // 指定 highlight 顯示的標籤
+              highlightedTagName="mark"
             />
           </BarIntroduction>
         </SearchBarSection>
@@ -450,13 +418,13 @@ const MySearchComponent = () => {
   const handleBarsClick = () => {
     setShowBars(true);
     setShowEvents(false);
-    setSearchBoxVisible(true); // 當切換到 Bars 時，顯示 SearchBox
+    setSearchBoxVisible(true);
   };
 
   const handleEventsClick = () => {
     setShowBars(false);
     setShowEvents(true);
-    setSearchBoxVisible(true); // 當切換到 Bars 時，顯示 SearchBox
+    setSearchBoxVisible(true);
   };
   return (
     <>

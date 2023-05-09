@@ -1,11 +1,10 @@
-import React from "react";
-import styled from "styled-components/macro";
-import {useState, useEffect, useRef} from "react";
-import {Link} from "react-router-dom";
-import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import React, {useEffect, useState} from "react";
 import {SlArrowLeft, SlArrowRight} from "react-icons/sl";
 import {TiDeleteOutline} from "react-icons/ti";
+import {Link} from "react-router-dom";
+import styled from "styled-components/macro";
+import {db} from "../../App";
 import "../Calendar/Calendar.css";
 
 const CalendarWrapper = styled.div`

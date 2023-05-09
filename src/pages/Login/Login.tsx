@@ -1,16 +1,16 @@
-import React, {useState, useEffect, useContext} from "react";
-import styled, {keyframes} from "styled-components/macro";
-import {getAuth, GoogleAuthProvider} from "firebase/auth";
-import {AuthContext} from "../../Context/AuthContext";
-import {Link} from "react-scroll";
-import relax from "./relax.png";
-import cocktail from "./cocktail.png";
-import "./Login.css";
+import {GoogleAuthProvider, getAuth} from "firebase/auth";
+import React, {useContext, useEffect, useState} from "react";
 import {
-  SlSocialGoogle,
   SlSocialFacebook,
+  SlSocialGoogle,
   SlSocialTwitter,
 } from "react-icons/sl";
+import {Link} from "react-scroll";
+import styled, {keyframes} from "styled-components/macro";
+import {AuthContext} from "../../Context/AuthContext";
+import "./Login.css";
+import cocktail from "./cocktail.png";
+import relax from "./relax.png";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -195,29 +195,27 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const auth = getAuth();
   const {signIn} = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
-  // TODO
+
   const [showButton, setShowButton] = useState(true);
   const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
 
   const handleScroll = () => {
-    // 檢查當前位置是否已到達指定部分
     const section2 = document.getElementById("section2");
-    if (!section2) return; // 如果 section2 不存在，不做任何處理
+    if (!section2) return;
     if (
       section2 &&
       section2.getBoundingClientRect().top <= window.innerHeight
     ) {
-      setShowButton(false); // 隱藏按鈕
+      setShowButton(false);
     } else if (section2 && window.scrollY < section2.offsetTop) {
-      setShowButton(true); // 顯示按鈕
+      setShowButton(true);
     }
     if (window.scrollY === 0) {
-      setShowButton(true); // 畫面到頂部時顯示按鈕
+      setShowButton(true);
     }
   };
 
   const scrollToSection2 = () => {
-    // 捲動到指定部分
     const section2 = document.getElementById("section2");
     if (section2) {
       window.scrollTo({
@@ -229,16 +227,14 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // 綁定事件監聽器
+
     window.addEventListener("scroll", handleScroll);
 
-    // 獲取 section2 元素
     const section2El = document.getElementById("section2");
-    if (!section2El) return; // 如果 section2 不存在，不做任何處理
+    if (!section2El) return;
     setSection2(section2El);
 
     return () => {
-      // 在元件解除掛載前，取消事件監聽器
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);

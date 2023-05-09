@@ -17,8 +17,9 @@ import styled from "styled-components/macro";
 import {db} from "../../App";
 import {AuthContext} from "../../Context/AuthContext";
 import userImg from "../../img/userImg.png";
+import BarMap from "../Bar/BarMap";
 import "./Bar.css";
-import BarMap from "./BarMap";
+import {Star} from "./Star";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -49,15 +50,8 @@ const BarTitle = styled.h1`
 const Like = styled.span`
   font-size: 25px;
   cursor: pointer;
-  /* margin: 15px; */
   color: #d19b18;
 `;
-
-// const Collection = styled.span`
-//   font-size: 25px;
-//   cursor: pointer;
-//   color: #d19b18;
-// `;
 
 const BarImg = styled.img`
   width: 50%;
@@ -494,24 +488,6 @@ interface IMenu {
   ingredients: string[];
 }
 
-interface StarProps {
-  marked: boolean;
-  starId: number;
-}
-
-function Star({marked, starId}: StarProps) {
-  return (
-    <span
-      star-id={starId}
-      style={{color: "#D19B18", cursor: "pointer"}}
-      role="button"
-    >
-      {/* 空星，實星 */}
-      {marked ? "\u2605" : "\u2606"}
-    </span>
-  );
-}
-
 interface StarRatingProps {
   rating: number;
   onRatingChange: (rating: number) => void;
@@ -591,7 +567,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
     setMessages([`${user.name}: ${inputValue}`, ...messages]);
     setInputValue("");
     setRatings(0);
-    setKey(key + 1); // 每次 handleSubmit 後將 key 狀態加 1
+    setKey(key + 1);
 
     props.getBar();
     setShowFlash(true);
@@ -615,7 +591,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
         <LabelSection>
           <StarSection>
             <StarRating
-              key={key} // 將 key 綁定到 ratings 狀態
+              key={key}
               rating={ratings}
               onRatingChange={(rating) => setRatings(rating)}
             />
@@ -681,13 +657,6 @@ function CollectionButton(name: any) {
     fetchLikeStatus();
   }, []);
 
-  function handleClick() {
-    setShowFlash(true);
-    setTimeout(() => {
-      setShowFlash(false);
-    }, 3500);
-  }
-
   const handleHeartButtonClick = async () => {
     const newIsLike = !isLike;
     setIsLike(newIsLike);
@@ -698,7 +667,6 @@ function CollectionButton(name: any) {
 
       if (newIsLike) {
         setShowFlash(true);
-        // Save isLike state to Firestore
         await setDoc(likeDocRef, {
           isLike: true,
           barImg: name.img,
@@ -706,7 +674,6 @@ function CollectionButton(name: any) {
         });
       } else {
         setShowFlash(false);
-        // Remove isLike state from Firestore
         await deleteDoc(likeDocRef);
       }
     } catch (error) {
@@ -944,7 +911,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       </MemberScoreSection>
       <BarSection>
         <BarMapTitle>BAR'S LOCATION</BarMapTitle>
-        {/* OPEN */}
         <BarMap />
       </BarSection>
     </>

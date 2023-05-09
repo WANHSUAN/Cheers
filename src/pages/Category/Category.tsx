@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useContext} from "react";
+import {collection, getDocs} from "firebase/firestore";
+import React, {useContext, useEffect, useState} from "react";
+import {Link, useNavigate} from "react-router-dom";
 import styled from "styled-components/macro";
 import {db} from "../../App";
-import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../Context/AuthContext";
-import {collection, getDocs} from "firebase/firestore";
 
 const PageImg = styled.img`
   width: 100vw;

@@ -1,14 +1,12 @@
-import {useEffect, useContext} from "react";
-import styled from "styled-components";
-import {createGlobalStyle} from "styled-components";
-import {initializeApp} from "firebase/app";
 import {getFirestore} from "@firebase/firestore";
-import {config} from "./config/config";
-import {AuthContextProvider} from "./Context/AuthContext";
+import {initializeApp} from "firebase/app";
 import {Outlet} from "react-router-dom";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
+import styled, {createGlobalStyle} from "styled-components";
 import "../src/css/globalStyle.css";
+import {AuthContextProvider} from "./Context/AuthContext";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
+import {config} from "./config/config";
 
 const GlobalStyle = createGlobalStyle`
   * {

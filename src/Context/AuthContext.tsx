@@ -1,16 +1,21 @@
-import {createContext, useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
 import {
   Auth,
-  getAuth,
   GoogleAuthProvider,
+  getAuth,
   onAuthStateChanged,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import {collection, setDoc, doc, getDoc} from "firebase/firestore";
+import {
+  DocumentData,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import {createContext, useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {db} from "../App";
-import {DocumentData} from "firebase/firestore";
 
 export interface User {
   name: string;
@@ -66,7 +71,6 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
         const getUser = await getUsers(user.uid);
         setUserUID(user.uid);
         if (getUser) {
