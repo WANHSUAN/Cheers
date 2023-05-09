@@ -8,7 +8,7 @@ import {db} from "../../App";
 import Calendar from "../Calendar/Calendar";
 import main from "../Question/main.png";
 import Hashtag from "./Hashtag";
-// import MainMap from "./MainMap";
+import MainMap from "./MainMap";
 import "./styles.css";
 
 const Wrapper = styled.div`
@@ -579,7 +579,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </ArrowWrapper>
         <div id="section2"></div>
 
-        {/* <Title>
+        <Title>
           <div className="sign">
             <span className="flicker">We've</span>
             <span className="flicker">prepared</span>
@@ -593,7 +593,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         <Test to={"/question"} className="selectBar">
           <span>Select Your Type!</span>
           <div className="liquid"></div>
-        </Test> */}
+        </Test>
 
         {showButton && (
           <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
@@ -612,7 +612,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           {slicedData.map((item) => (
             <BarSection to={`/bars/${item.id}`} key={item.id}>
               <BarTitle>
-                {/* <div className="link">
+                <div className="link">
                   <svg
                     viewBox="0 0 200 200"
                     width="100"
@@ -647,7 +647,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                       </textPath>
                     </text>
                   </svg>
-                </div> */}
+                </div>
               </BarTitle>
             </BarSection>
           ))}
@@ -661,7 +661,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               {bars.slice(8).map((bar) => (
                 <BarSection to={`/bars/${bar.id}`} key={bar.id}>
                   <BarTitle>
-                    {/* <div className="link">
+                    <div className="link">
                       <svg
                         viewBox="0 0 200 200"
                         width="100"
@@ -696,7 +696,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                           </textPath>
                         </text>
                       </svg>
-                    </div> */}
+                    </div>
                   </BarTitle>
                 </BarSection>
               ))}
@@ -724,7 +724,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </CalendarSection>
         <MapSubTitle>LOCATION</MapSubTitle>
         <MapTitle>Where is the Bar?</MapTitle>
-        {/* <MainMap /> */}
+        <MainMap />
       </Wrapper>
     </>
   );
