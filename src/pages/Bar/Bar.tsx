@@ -1,25 +1,24 @@
-import React, {useState, useEffect, useContext, MouseEventHandler} from "react";
-import {useParams} from "react-router-dom";
-import styled from "styled-components/macro";
-import {db} from "../../App";
 import {
-  getDoc,
+  arrayUnion,
   deleteDoc,
   doc,
+  getDoc,
   setDoc,
   updateDoc,
-  arrayUnion,
 } from "firebase/firestore";
-import BarMap from "./BarMap";
-import {useNavigate} from "react-router-dom";
-import {AuthContext} from "../../Context/AuthContext";
-import {BsSuitHeartFill, BsSuitHeart} from "react-icons/bs";
-import {TiStarFullOutline} from "react-icons/ti";
-import {FiExternalLink} from "react-icons/fi";
+import React, {MouseEventHandler, useContext, useEffect, useState} from "react";
+import {BsSuitHeart, BsSuitHeartFill} from "react-icons/bs";
 import {FaQuoteLeft, FaQuoteRight} from "react-icons/fa";
+import {FiExternalLink} from "react-icons/fi";
 import {SlCheck} from "react-icons/sl";
-import "./Bar.css";
+import {TiStarFullOutline} from "react-icons/ti";
+import {useNavigate, useParams} from "react-router-dom";
+import styled from "styled-components/macro";
+import {db} from "../../App";
+import {AuthContext} from "../../Context/AuthContext";
 import userImg from "../../img/userImg.png";
+import "./Bar.css";
+import BarMap from "./BarMap";
 
 const Wrapper = styled.div`
   text-align: center;

@@ -1,15 +1,15 @@
-import React, {useState, useEffect, useContext} from "react";
-import styled, {keyframes} from "styled-components/macro";
+import React, {useContext, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 // import {Link} from "react-scroll";
-import {db} from "../../App";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
+import {db} from "../../App";
 import Calendar from "../Calendar/Calendar";
 // OPEN
-import MainMap from "./MainMap";
-import Hashtag from "./Hashtag";
 import main from "../Question/main.png";
+import Hashtag from "./Hashtag";
+import MainMap from "./MainMap";
 import "./styles.css";
 
 const Wrapper = styled.div`

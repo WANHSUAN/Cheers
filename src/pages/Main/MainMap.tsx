@@ -1,9 +1,8 @@
-import React from "react";
 // OPEN
-import styled from "styled-components/macro";
-import {useState, useEffect} from "react";
-import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import {useEffect, useState} from "react";
+import styled from "styled-components/macro";
+import {db} from "../../App";
 import "./styles.css";
 
 const Wrapper = styled.div`
@@ -131,6 +130,7 @@ interface IBar {
   tel: string;
   barId: string;
   opening_time: {opening_date: string; opening_hours: string};
+  img: string;
 }
 
 export interface IMainProps {}
@@ -401,10 +401,13 @@ function Address(props: IAddressProps) {
         const barLink = props.bars[index].barId;
         const barDate = props.bars[index].opening_time.opening_date;
         const barHours = props.bars[index].opening_time.opening_hours;
+        const barImg = props.bars[index].img[1];
+
         // 設定 info window 的內容
         infoWindow.setContent(`
         <div class="infowindow">
           <h2>${barName}</h2>  <br />
+          <img src="${barImg}" />
           <p>${barDate} ${barHours}</p> <br />
           <p>${barAddress}</p> <br />
           <p>${barTel}</p> <br />

@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import {collection, getDocs} from "firebase/firestore";
+import React, {useEffect, useState} from "react";
+import {HashLink} from "react-router-hash-link";
 import styled from "styled-components/macro";
 import {db} from "../../App";
-import {collection, getDocs} from "firebase/firestore";
-import {HashLink} from "react-router-hash-link";
 
 const Wrapper = styled.div`
   width: 1100px;

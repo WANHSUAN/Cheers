@@ -127,7 +127,7 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
   const [hashtags, setHashtags] = useState<IHashtag[]>([]);
   const hashtagsCollectionRef = collection(db, "hashtags");
   const [showButton, setShowButton] = useState(false);
-  const {user, userUID, isLogin, signIn} = useContext(AuthContext);
+  const {isLogin} = useContext(AuthContext);
 
   const navigate = useNavigate();
 

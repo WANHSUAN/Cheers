@@ -458,12 +458,18 @@ a:focus {
 }
 
 .infowindow p {
+  margin-top: 10px;
   font-size: 15px;
 }
 
 .infowindow a {
   cursor: pointer;
   font-size: 20px;
+}
+
+.infowindow img {
+  width: 400px;
+  height: 300px;
 }
 
 /* Checkbox */

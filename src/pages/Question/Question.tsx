@@ -5,8 +5,10 @@ import {db} from "../../App";
 import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
 import {AuthContext} from "../../Context/AuthContext";
 import {MdOutlineLiquor} from "react-icons/md";
+import {SlCheck} from "react-icons/sl";
 import "../Calendar/Calendar.css";
 import "./Question.css";
+import "../Bar/Bar.css";
 
 const Wrapper = styled.div`
   width: 1000px;
@@ -117,6 +119,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const [users, setUsers] = useState<IUser[] | undefined>();
   const barsCollectionRef = collection(db, "bars");
   const usersCollectionRef = collection(db, "users");
+  const [showFlash, setShowFlash] = useState(false);
   const {userUID, isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -199,7 +202,10 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
 
       navigate("/recommendation");
     } else {
-      alert("No matching Bar!");
+      setShowFlash(true);
+      setTimeout(() => {
+        setShowFlash(false);
+      }, 3500);
     }
   };
 
@@ -270,6 +276,16 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
           ))}
         </TestSection>
         <Submit>
+          {showFlash && (
+            <div className="flash animate--drop-in-fade-out">
+              <div className="flash__icon">
+                <div className="icon">
+                  <SlCheck />
+                </div>
+              </div>
+              <div className="commentText">No matching Bar!</div>
+            </div>
+          )}
           <EventButton onClick={handleButtonClick}>
             <div className="btn">
               <span className="btn__circle"></span>

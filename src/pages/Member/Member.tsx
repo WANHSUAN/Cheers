@@ -1,17 +1,17 @@
-import React, {useState, useEffect, useContext} from "react";
-import styled from "styled-components/macro";
-import {db} from "../../App";
 import {
   collection,
-  getDocs,
-  doc,
   deleteDoc,
+  doc,
+  getDocs,
   query,
   where,
 } from "firebase/firestore";
-import {Link, useNavigate} from "react-router-dom";
-import {AuthContext} from "../../Context/AuthContext";
+import React, {useContext, useEffect, useState} from "react";
 import {AiOutlineMinusCircle} from "react-icons/ai";
+import {Link, useNavigate} from "react-router-dom";
+import styled from "styled-components/macro";
+import {db} from "../../App";
+import {AuthContext} from "../../Context/AuthContext";
 import "./Member.css";
 
 const PageImg = styled.img`

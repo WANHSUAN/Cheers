@@ -1,10 +1,9 @@
-import React from "react";
 // OPEN
-import styled from "styled-components";
-import {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
-import {db} from "../../App";
 import {collection, getDocs} from "firebase/firestore";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
+import styled from "styled-components";
+import {db} from "../../App";
 
 const Wrapper = styled.div`
   display: flex;
