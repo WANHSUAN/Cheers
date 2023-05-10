@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 import {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {db} from "../App";
+import {db} from "../utils/firebase";
 
 export interface User {
   name: string;

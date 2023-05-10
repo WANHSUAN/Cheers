@@ -4,7 +4,7 @@ import {SlArrowLeft, SlArrowRight} from "react-icons/sl";
 import {TiDeleteOutline} from "react-icons/ti";
 import {Link} from "react-router-dom";
 import styled from "styled-components/macro";
-import {db} from "../../App";
+import {db} from "../../utils/firebase";
 import "../Calendar/Calendar.css";
 
 const CalendarWrapper = styled.div`

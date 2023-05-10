@@ -10,8 +10,8 @@ import React, {useContext, useEffect, useState} from "react";
 import {AiOutlineMinusCircle} from "react-icons/ai";
 import {Link, useNavigate} from "react-router-dom";
 import styled from "styled-components/macro";
-import {db} from "../../App";
 import {AuthContext} from "../../Context/AuthContext";
+import {db} from "../../utils/firebase";
 import "./Member.css";
 
 const PageImg = styled.img`

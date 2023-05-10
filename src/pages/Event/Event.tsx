@@ -2,8 +2,8 @@ import {Timestamp, doc, getDoc} from "firebase/firestore";
 import {useContext, useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components/macro";
-import {db} from "../../App";
 import {AuthContext} from "../../Context/AuthContext";
+import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
   padding: 10px;

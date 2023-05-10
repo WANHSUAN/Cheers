@@ -2,7 +2,7 @@ import {collection, getDocs} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import {db} from "../../App";
+import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
   display: flex;
@@ -112,14 +112,14 @@ const BarMap: React.FC<IMainProps> = (props: IMainProps) => {
 interface IAddressToLatLngProps {
   address: string;
 }
+
 function AddressToLatLng(props: IAddressToLatLngProps) {
   const [latLng, setLatLng] = useState<LatLng>({lat: 0, lng: 0});
 
   useEffect(() => {
     async function fetchData() {
-      const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=${apiKey}`
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
       );
       const data = await response.json();
 
@@ -140,8 +140,9 @@ interface IAddressProps {
 function Address(props: IAddressProps) {
   const [map, setDataMap] = useState();
   const [loaded] = useScript(
-    "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
+    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places&callback=initMap`
   );
+
   function selectedMap() {
     const myLatLng = [props.latLng];
 

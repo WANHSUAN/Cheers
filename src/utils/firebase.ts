@@ -1,6 +1,9 @@
-export const config = {
+import {getFirestore} from "@firebase/firestore";
+import {initializeApp} from "firebase/app";
+
+const config = {
   firebaseConfig: {
-    apiKey: "AIzaSyAOU-5WU8k4nZrbUotH-9mFmQuJoi_uc0E",
+    apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
     authDomain: "gogobar-737d2.firebaseapp.com",
     projectId: "gogobar-737d2",
     storageBucket: "gogobar-737d2.appspot.com",
@@ -9,3 +12,6 @@ export const config = {
     measurementId: "G-QSJV8JCLC5",
   },
 };
+
+const app = initializeApp(config.firebaseConfig);
+export const db = getFirestore(app);

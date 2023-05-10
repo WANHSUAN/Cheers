@@ -4,7 +4,7 @@ import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 // import {Link} from "react-scroll";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
-import {db} from "../../App";
+import {db} from "../../utils/firebase";
 import Calendar from "../Calendar/Calendar";
 import main from "../Question/main.png";
 import Hashtag from "./Hashtag";

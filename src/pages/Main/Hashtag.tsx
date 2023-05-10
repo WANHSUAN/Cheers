@@ -2,7 +2,7 @@ import {collection, getDocs} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {HashLink} from "react-router-hash-link";
 import styled from "styled-components/macro";
-import {db} from "../../App";
+import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
   width: 1100px;

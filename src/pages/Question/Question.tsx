@@ -1,14 +1,14 @@
-import React, {useState, useEffect, useContext} from "react";
-import {useNavigate} from "react-router-dom";
-import styled from "styled-components/macro";
-import {db} from "../../App";
-import {collection, getDocs, doc, updateDoc} from "firebase/firestore";
-import {AuthContext} from "../../Context/AuthContext";
+import {collection, doc, getDocs, updateDoc} from "firebase/firestore";
+import React, {useContext, useEffect, useState} from "react";
 import {MdOutlineLiquor} from "react-icons/md";
 import {SlCheck} from "react-icons/sl";
+import {useNavigate} from "react-router-dom";
+import styled from "styled-components/macro";
+import {AuthContext} from "../../Context/AuthContext";
+import {db} from "../../utils/firebase";
+import "../Bar/Bar.css";
 import "../Calendar/Calendar.css";
 import "./Question.css";
-import "../Bar/Bar.css";
 
 const Wrapper = styled.div`
   width: 1000px;

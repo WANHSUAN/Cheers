@@ -1,12 +1,9 @@
-import {getFirestore} from "@firebase/firestore";
-import {initializeApp} from "firebase/app";
 import {Outlet} from "react-router-dom";
 import styled, {createGlobalStyle} from "styled-components";
 import "../src/css/globalStyle.css";
 import {AuthContextProvider} from "./Context/AuthContext";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
-import {config} from "./config/config";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -25,9 +22,6 @@ const GlobalStyle = createGlobalStyle`
 const Wrapper = styled.div`
   min-height: calc(100vh - 80px);
 `;
-
-const app = initializeApp(config.firebaseConfig);
-export const db = getFirestore(app);
 
 export interface IAppProps {}
 

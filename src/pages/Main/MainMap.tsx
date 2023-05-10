@@ -1,7 +1,7 @@
 import {collection, getDocs} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import styled from "styled-components/macro";
-import {db} from "../../App";
+import {db} from "../../utils/firebase";
 import "./styles.css";
 
 const Wrapper = styled.div`
@@ -222,7 +222,7 @@ function Address(props: IAddressProps) {
   const [selectedButton, setSelectedButton] = useState(null);
 
   const [loaded] = useScript(
-    "https://maps.googleapis.com/maps/api/js?key=AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c&&libraries=places&callback=initMap"
+    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places&callback=initMap`
   );
 
   function selectedMap() {
