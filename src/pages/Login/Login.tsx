@@ -8,9 +8,9 @@ import {
 import {Link} from "react-scroll";
 import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
+import cocktail from "../Login/img/cocktail.png";
+import relax from "../Login/img/relax.png";
 import "./Login.css";
-import cocktail from "./cocktail.png";
-import relax from "./relax.png";
 
 const Wrapper = styled.div`
   width: 100vw;

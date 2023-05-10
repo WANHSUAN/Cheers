@@ -15,7 +15,6 @@ import {TiStarFullOutline} from "react-icons/ti";
 import {useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
-import userImg from "../../img/userImg.png";
 import {db} from "../../utils/firebase";
 import BarMap from "../Bar/BarMap";
 import "./Bar.css";
@@ -509,7 +508,7 @@ function StarRating(props: StarRatingProps) {
   };
   return (
     <div
-      onMouseOut={() => hoverOver()}
+      onMouseOut={hoverOver}
       onClick={(e) => {
         setIsHoverDisabled(true); // 禁用 hover
 
@@ -537,15 +536,14 @@ function StarRating(props: StarRatingProps) {
 }
 
 function MemberScore(props: {getBar: () => Promise<void>}) {
+  const {id} = useParams();
+  const {user} = useContext(AuthContext);
   const [inputValue, setInputValue] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
   const [ratings, setRatings] = useState<number>(0);
-  const {id} = useParams();
-  const [currentDocId, setCurrentDocId] = useState(id);
   const [showFlash, setShowFlash] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [key, setKey] = useState(0);
-  const {user} = useContext(AuthContext);
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
@@ -556,7 +554,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
       }, 3500);
       return;
     }
-    const commentRef = doc(db, `bars/${currentDocId}`);
+    const commentRef = doc(db, `bars/${id}`);
     await updateDoc(commentRef, {
       member_comment: arrayUnion({
         userName: user.name,
@@ -579,7 +577,7 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
   return (
     <ScoreForm>
       <LabelSectionInput>
-        <MemberImg src={userImg} />
+        <MemberImg src={user.userImg} />
         <InputTextArea
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
@@ -711,6 +709,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const {isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
+  const WINDOW_HEIGHT = 500;
 
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
 
@@ -727,7 +726,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     getBar();
 
     const handleScroll = () => {
-      if (window.scrollY > 500) {
+      if (window.scrollY > WINDOW_HEIGHT) {
         setShowButton(true);
       } else {
         setShowButton(false);

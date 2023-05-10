@@ -74,6 +74,11 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
     window.scrollTo(0, 0);
     const getRecommendations = async () => {
       const data = await getDocs(recommendationsRef);
+
+      if (userUID === "") {
+        return;
+      }
+
       const loadedRecommendations = data.docs.map((doc) => ({
         ...(doc.data() as IRecommendation),
         id: doc.id,
@@ -91,7 +96,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
     };
 
     getRecommendations();
-  }, []);
+  }, [userUID]);
 
   if (recommendations === undefined || matchIndex === null) {
     return <p>Loading...</p>;
@@ -103,7 +108,6 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
     console.log("登出");
     navigate("/");
   }
-  console.log(matchIndex);
 
   return (
     <Wrapper>
@@ -115,6 +119,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
               return (
                 <>
                   <div
+                    key={index}
                     style={{
                       width: "120px",
                       height: "180px",
@@ -122,7 +127,6 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
                         index * 60
                       }deg) translateX(200px) rotate(${-index * 60}deg)`,
                     }}
-                    key={index}
                   ></div>
                   <RecItem
                     to={`/bars/${recommendation.id}`}

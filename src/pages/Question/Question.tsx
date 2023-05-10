@@ -143,6 +143,8 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
 
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
 
+  console.log(selectedOptions);
+
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const option = options.find((option) => option.text === value)!;
@@ -161,18 +163,26 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       setSelectedOptions((prev) => [...prev, option]);
     }
 
+    console.log(selectedOptions);
+
     const selectedGroupOptions = selectedOptions.filter(
       (o) => o.group === option.group
     );
+
+    console.log(selectedGroupOptions);
     const selectedGroupOptionHashtags = selectedGroupOptions.map(
       (o) => o.hashtag
     );
+    console.log(selectedGroupOptionHashtags);
+
     const selectedBars = bars?.filter((bar) =>
       selectedGroupOptionHashtags.every((hashtag) =>
         bar?.type?.includes(hashtag)
       )
     );
-    setBars(selectedBars);
+
+    console.log(selectedBars);
+    // setBars(selectedBars);
   };
 
   const handleButtonClick = async () => {
