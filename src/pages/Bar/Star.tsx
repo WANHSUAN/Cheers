@@ -3,7 +3,7 @@ export interface StarProps {
   starId: number;
 }
 
-export function Star({marked, starId}: StarProps) {
+export const Star = ({marked, starId}: StarProps) => {
   return (
     <span
       star-id={starId}
@@ -16,4 +16,4 @@ export function Star({marked, starId}: StarProps) {
       {marked ? "\u2605" : "\u2606"}
     </span>
   );
-}
+};

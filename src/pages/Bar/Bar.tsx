@@ -12,7 +12,7 @@ import {FaQuoteLeft, FaQuoteRight} from "react-icons/fa";
 import {FiExternalLink} from "react-icons/fi";
 import {SlCheck} from "react-icons/sl";
 import {TiStarFullOutline} from "react-icons/ti";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
@@ -492,7 +492,7 @@ interface StarRatingProps {
   onRatingChange: (rating: number) => void;
 }
 
-function StarRating(props: StarRatingProps) {
+const StarRating = (props: StarRatingProps) => {
   const [rating, setRating] = useState<number>(
     typeof props.rating === "number" ? props.rating : 0
   );
@@ -533,9 +533,9 @@ function StarRating(props: StarRatingProps) {
       ))}
     </div>
   );
-}
+};
 
-function MemberScore(props: {getBar: () => Promise<void>}) {
+const MemberScore = (props: {getBar: () => Promise<void>}) => {
   const {id} = useParams();
   const {user} = useContext(AuthContext);
   const [inputValue, setInputValue] = useState<string>("");
@@ -631,15 +631,15 @@ function MemberScore(props: {getBar: () => Promise<void>}) {
       </SubmitSection>
     </ScoreForm>
   );
-}
+};
 
-function CollectionButton(name: any) {
+const CollectionButton = (name: any) => {
   const {userUID} = useContext(AuthContext);
   const [isLike, setIsLike] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
-    async function fetchLikeStatus() {
+    const fetchLikeStatus = async () => {
       try {
         const userRef = doc(db, "users", userUID);
         const likeDocRef = doc(userRef, "likes", name.barId);
@@ -650,7 +650,7 @@ function CollectionButton(name: any) {
       } catch (error) {
         console.error("Error getting like data from Firestore:", error);
       }
-    }
+    };
 
     fetchLikeStatus();
   }, []);
@@ -696,7 +696,7 @@ function CollectionButton(name: any) {
       </Like>
     </>
   );
-}
+};
 
 interface IMenuArray extends Array<IMenu> {}
 
@@ -707,8 +707,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const {id} = useParams();
   const [showButton, setShowButton] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
-  const {isLogin} = useContext(AuthContext);
-  const navigate = useNavigate();
   const WINDOW_HEIGHT = 500;
 
   const barCollectionRef = id ? doc(db, "bars", id) : undefined;
@@ -774,13 +772,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
   const isFirstComment = currentIdx === 0;
   const isLastComment = currentIdx === bar.member_comment.length - 1;
-
-  if (isLogin) {
-    console.log("登入");
-  } else {
-    console.log("登出");
-    navigate("/");
-  }
 
   return (
     <>

@@ -96,12 +96,12 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    async function getEvent() {
+    const getEvent = async () => {
       if (eventCollectionRef) {
         const barSnapshot = await getDoc(eventCollectionRef);
         setEvent(barSnapshot.data() as any);
       }
-    }
+    };
 
     getEvent();
   }, [id]);

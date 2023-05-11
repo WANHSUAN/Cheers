@@ -269,19 +269,19 @@ const Header = () => {
     prompt: "select_account",
   });
 
-  function handleLogOut() {
+  const handleLogOut = () => {
     logOut(auth);
     handleSideMenu();
     navigate("/");
-  }
+  };
 
   const handleSideMenu: HandleSideMenuType = () => {
     setIsToggle(!isToggle);
   };
 
-  function OpenSearch() {
+  const OpenSearch = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
   return (
     <Wrapper>

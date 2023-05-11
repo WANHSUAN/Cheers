@@ -279,7 +279,7 @@ const Calendar: React.FC<ICalendarProps> = (props: ICalendarProps) => {
   );
 };
 
-function CalendarHeader({
+const CalendarHeader = ({
   selectedDate,
   prevMonth,
   nextMonth,
@@ -287,7 +287,7 @@ function CalendarHeader({
   selectedDate: Date;
   prevMonth: () => void;
   nextMonth: () => void;
-}) {
+}) => {
   const monthYear = selectedDate.toLocaleString("en-US", {
     month: "long",
     year: "numeric",
@@ -306,9 +306,9 @@ function CalendarHeader({
       </Arrow>
     </CalendarSectionHeader>
   );
-}
+};
 
-function CalendarWeekdays() {
+const CalendarWeekdays = () => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
@@ -318,9 +318,9 @@ function CalendarWeekdays() {
       ))}
     </CalendarWeekdaysSection>
   );
-}
+};
 
-function CalendarDays({
+const CalendarDays = ({
   selectedDate,
   setSelectedDate,
   events,
@@ -328,7 +328,7 @@ function CalendarDays({
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
   events: IEvent[];
-}) {
+}) => {
   const [seconds, setSeconds] = useState(0);
   const [isOuterDivVisible, setIsOuterDivVisible] = useState(true);
 
@@ -479,6 +479,6 @@ function CalendarDays({
       })}
     </>
   );
-}
+};
 
 export default Calendar;

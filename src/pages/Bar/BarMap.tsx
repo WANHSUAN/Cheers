@@ -28,7 +28,7 @@ declare const window: Window & {
 };
 
 let cachedScripts: string[] = [];
-function useScript(src: string) {
+const useScript = (src: string) => {
   const [state, setState] = useState({
     loaded: false,
     error: false,
@@ -72,7 +72,7 @@ function useScript(src: string) {
     }
   }, [src]);
   return [state.loaded, state.error];
-}
+};
 interface LatLng {
   lat: number;
   lng: number;
@@ -113,11 +113,11 @@ interface IAddressToLatLngProps {
   address: string;
 }
 
-function AddressToLatLng(props: IAddressToLatLngProps) {
+const AddressToLatLng = (props: IAddressToLatLngProps) => {
   const [latLng, setLatLng] = useState<LatLng>({lat: 0, lng: 0});
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${props.address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
       );
@@ -125,25 +125,25 @@ function AddressToLatLng(props: IAddressToLatLngProps) {
 
       const {lat, lng} = data.results[0].geometry.location;
       setLatLng({lat, lng});
-    }
+    };
     if (props.address !== "") {
       fetchData();
     }
   }, [props.address]);
   return <Address latLng={latLng} />;
-}
+};
 
 interface IAddressProps {
   latLng: {};
 }
 
-function Address(props: IAddressProps) {
+const Address = (props: IAddressProps) => {
   const [map, setDataMap] = useState();
   const [loaded] = useScript(
     `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places&callback=initMap`
   );
 
-  function selectedMap() {
+  const selectedMap = () => {
     const myLatLng = [props.latLng];
 
     const map = new window.google.maps.Map(document.getElementById("map"), {
@@ -252,7 +252,7 @@ function Address(props: IAddressProps) {
     });
 
     setDataMap(map);
-  }
+  };
 
   useEffect(() => {
     if (loaded) {
@@ -271,6 +271,6 @@ function Address(props: IAddressProps) {
       </GoogleMap>
     </Wrapper>
   );
-}
+};
 
 export default BarMap;

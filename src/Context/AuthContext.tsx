@@ -75,11 +75,11 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
 
   const navigate = useNavigate();
 
-  async function getUsers(userUID: string) {
+  const getUsers = async (userUID: string) => {
     const docRef = doc(db, "users", userUID);
     const docSnap = await getDoc(docRef);
     return docSnap.data();
-  }
+  };
 
   useEffect(() => {
     const auth = getAuth();
@@ -111,7 +111,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     });
   }, []);
 
-  async function setUserDoc(data: DocumentData) {
+  const setUserDoc = async (data: DocumentData) => {
     const docRef = doc(db, "users", `${data.userUID}`);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
@@ -124,7 +124,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
       await setDoc(doc(userRef, data.userUID), data);
       navigate("/question");
     }
-  }
+  };
 
   const signIn = async (
     auth: ReturnType<typeof getAuth>,

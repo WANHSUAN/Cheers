@@ -56,7 +56,7 @@ declare const window: Window & {
 };
 
 let cachedScripts: string[] = [];
-function useScript(src: string) {
+const useScript = (src: string) => {
   const [state, setState] = useState({
     loaded: false,
     error: false,
@@ -100,7 +100,7 @@ function useScript(src: string) {
     }
   }, [src]);
   return [state.loaded, state.error];
-}
+};
 
 interface CategoryButtonProps {
   selected: boolean;
@@ -117,6 +117,7 @@ interface IBar {
   tel: string;
   barId: string;
   opening_time: {opening_date: string; opening_hours: string};
+  img: string;
 }
 
 export interface IMainProps {}
@@ -202,7 +203,7 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
   );
 };
 
-async function fetchData(address: string) {
+const fetchData = async (address: string) => {
   const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
   const response = await fetch(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
@@ -210,14 +211,14 @@ async function fetchData(address: string) {
   const data = await response.json();
   const {lat, lng} = data.results[0].geometry.location;
   return {lat, lng};
-}
+};
 interface IAddressProps {
   latLng: LatLng[];
   bars: IBar[];
   setButtonType: (param1: string) => void;
 }
 
-function Address(props: IAddressProps) {
+const Address = (props: IAddressProps) => {
   const [map, setDataMap] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
 
@@ -225,7 +226,7 @@ function Address(props: IAddressProps) {
     `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places&callback=initMap`
   );
 
-  function selectedMap() {
+  const selectedMap = () => {
     const myLatLng = props.latLng;
 
     const map = new window.google.maps.Map(document.getElementById("map"), {
@@ -268,11 +269,11 @@ function Address(props: IAddressProps) {
       }
     });
 
-    function handleLocationError(
+    const handleLocationError = (
       browserHasGeolocation: boolean,
       infoWindow: google.maps.InfoWindow,
       pos: google.maps.LatLng
-    ) {
+    ) => {
       infoWindow.setPosition(pos);
       infoWindow.setContent(
         browserHasGeolocation
@@ -280,7 +281,7 @@ function Address(props: IAddressProps) {
           : "Error: Your browser doesn't support geolocation."
       );
       infoWindow.open(map);
-    }
+    };
 
     // const icons = {
     //   url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
@@ -384,9 +385,11 @@ function Address(props: IAddressProps) {
         const barLink = props.bars[index].barId;
         const barDate = props.bars[index].opening_time.opening_date;
         const barHours = props.bars[index].opening_time.opening_hours;
+        const barImg = props.bars[index].img[1];
         infoWindow.setContent(`
         <div class="infowindow">
           <h2>${barName}</h2>  <br />
+          <img src="${barImg}" />
           <p>${barDate} ${barHours}</p> <br />
           <p>${barAddress}</p> <br />
           <p>${barTel}</p> <br />
@@ -398,7 +401,7 @@ function Address(props: IAddressProps) {
     });
 
     setDataMap(map);
-  }
+  };
 
   useEffect(() => {
     if (loaded) {
@@ -522,6 +525,6 @@ function Address(props: IAddressProps) {
       </GoogleMap>
     </Wrapper>
   );
-}
+};
 
 export default MainMap;
