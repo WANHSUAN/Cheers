@@ -53,7 +53,7 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
 
   return (
     <Wrapper>
-      <HashTagSection>
+      {/* <HashTagSection>
         {hashtags.map((hashtag, index) => {
           return (
             <StyledHashtagType key={index}>
@@ -69,7 +69,7 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
             </StyledHashtagType>
           );
         })}
-      </HashTagSection>
+      </HashTagSection> */}
     </Wrapper>
   );
 };

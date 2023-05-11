@@ -460,7 +460,7 @@ interface IBar {
   tel: string;
   introduction: string;
   type: string;
-  member_comment: ICommentArray;
+  memberComment: ICommentArray;
   menu: IMenuArray;
   score: number;
   barId: string;
@@ -510,7 +510,7 @@ const StarRating = (props: StarRatingProps) => {
     <div
       onMouseOut={hoverOver}
       onClick={(e) => {
-        setIsHoverDisabled(true); // 禁用 hover
+        setIsHoverDisabled(true);
 
         setRating(
           (prevRating) =>
@@ -556,7 +556,7 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
     }
     const commentRef = doc(db, `bars/${id}`);
     await updateDoc(commentRef, {
-      member_comment: arrayUnion({
+      memberComment: arrayUnion({
         userName: user.name,
         comment: inputValue,
         score: ratings,
@@ -709,14 +709,19 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const WINDOW_HEIGHT = 500;
 
-  const barCollectionRef = id ? doc(db, "bars", id) : undefined;
+  const barCollectionRef = id && doc(db, "bars", id);
 
   const getBar = async () => {
     if (barCollectionRef) {
       const barSnapshot = await getDoc(barCollectionRef);
-      setBar(barSnapshot.data() as any);
+      const barData = barSnapshot.data() as IBar | undefined;
+      if (barData) {
+        setBar(barData);
+      }
     }
   };
+
+  console.log(bar?.memberComment);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -741,10 +746,9 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const scoreArray = [
     ...Array(
       Math.round(
-        bar.member_comment
+        bar.memberComment
           .map((item, index) => item.score)
-          .reduce((total, score) => total + score, 0) /
-          bar.member_comment.length
+          .reduce((total, score) => total + score, 0) / bar.memberComment.length
       )
     ),
   ];
@@ -764,14 +768,14 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
   const goToNextComment = () => {
     setCurrentIdx(
-      currentIdx < bar.member_comment.length - 1
+      currentIdx < bar.memberComment.length - 1
         ? currentIdx + 1
-        : bar.member_comment.length - 1
+        : bar.memberComment.length - 1
     );
   };
 
   const isFirstComment = currentIdx === 0;
-  const isLastComment = currentIdx === bar.member_comment.length - 1;
+  const isLastComment = currentIdx === bar.memberComment.length - 1;
 
   return (
     <>
@@ -872,18 +876,16 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               <CommaRight>
                 <FaQuoteRight />
               </CommaRight>
-              <Comment>{bar.member_comment[currentIdx].comment}</Comment>
+              <Comment>{bar.memberComment[currentIdx].comment}</Comment>
               <MemberScores>
-                {[...Array(bar.member_comment[currentIdx].score)].map(
-                  (_, i) => (
-                    <CommentScore key={i}>
-                      <TiStarFullOutline />
-                    </CommentScore>
-                  )
-                )}
+                {[...Array(bar.memberComment[currentIdx].score)].map((_, i) => (
+                  <CommentScore key={i}>
+                    <TiStarFullOutline />
+                  </CommentScore>
+                ))}
               </MemberScores>
-              <UserName>{bar.member_comment[currentIdx].userName}</UserName>
-              <Page>{`${currentIdx + 1} / ${bar.member_comment.length}`}</Page>
+              <UserName>{bar.memberComment[currentIdx].userName}</UserName>
+              <Page>{`${currentIdx + 1} / ${bar.memberComment.length}`}</Page>
               <CommaLeft>
                 <FaQuoteLeft />
               </CommaLeft>
