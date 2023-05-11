@@ -418,13 +418,6 @@ const CloseButton = styled.button`
   }
 `;
 
-interface IMainBar {
-  id: string;
-  name: string;
-  img: string;
-  description: string;
-}
-
 interface IMainEvent {
   bar: string;
   content: string;
@@ -443,15 +436,13 @@ interface IAlertEvent {
 export interface IMainProps {}
 
 const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
-  const [bars, setBars] = useState<IMainBar[]>([]);
   const [events, setEvents] = useState<IMainEvent[]>([]);
   const [showMore, setShowMore] = useState(false);
-  const barsCollectionRef = collection(db, "bars");
   const eventsCollectionRef = collection(db, "events");
   const [showButton, setShowButton] = useState(false);
   // const [showScrollButton, setShowScrollButton] = useState(true);
   // const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
-  const {isLogin} = useContext(AuthContext);
+  const {bars} = useContext(AuthContext);
   const navigate = useNavigate();
 
   // const handleScroll = () => {
@@ -483,13 +474,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   // };
 
   useEffect(() => {
-    const getBars = async () => {
-      const data = await getDocs(barsCollectionRef);
-      setBars(
-        data.docs.map((doc) => ({...(doc.data() as IMainBar), id: doc.id}))
-      );
-    };
-
     const getEvents = async () => {
       const data = await getDocs(eventsCollectionRef);
       setEvents(
@@ -500,7 +484,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       );
     };
 
-    getBars();
     getEvents();
 
     const handleScroll = () => {
@@ -542,13 +525,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       behavior: "smooth",
     });
   };
-
-  if (isLogin) {
-    console.log("登入");
-  } else {
-    console.log("登出");
-    navigate("/");
-  }
 
   return (
     <>

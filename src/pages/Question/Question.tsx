@@ -1,4 +1,4 @@
-import {collection, doc, getDocs, updateDoc} from "firebase/firestore";
+import {doc, updateDoc} from "firebase/firestore";
 import React, {useContext, useEffect, useState} from "react";
 import {MdOutlineLiquor} from "react-icons/md";
 import {SlCheck} from "react-icons/sl";
@@ -70,25 +70,10 @@ const EventButton = styled.button`
   cursor: pointer;
   text-align: left;
 `;
-
-interface IBar {
-  id: string;
-  name: string;
-  img: string;
-  type: string[];
-}
-
 interface IOption {
   text: string;
   hashtag: string;
   group: string;
-}
-
-interface IUser {
-  createdAt: string;
-  displayName: string;
-  email: string;
-  id: string;
 }
 
 const options = [
@@ -115,30 +100,12 @@ const groups = {
 export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
-  const [bars, setBars] = useState<IBar[]>([]);
-  const [users, setUsers] = useState<IUser[] | undefined>();
-  const barsCollectionRef = collection(db, "bars");
-  const usersCollectionRef = collection(db, "users");
   const [showFlash, setShowFlash] = useState(false);
-  const {userUID, isLogin} = useContext(AuthContext);
+  const {userUID, isLogin, bars, user} = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const getBars = async () => {
-      const data = await getDocs(barsCollectionRef);
-      setBars(data.docs.map((doc) => ({...(doc.data() as IBar), id: doc.id})));
-    };
-
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setUsers(
-        data.docs.map((doc) => ({...(doc.data() as IUser), id: doc.id}))
-      );
-    };
-
-    getBars();
-    getUsers();
   }, []);
 
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
@@ -197,10 +164,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       return {name: bar.name, img: bar.img, id: bar.id};
     });
 
-    if (users === undefined) {
-      return <p>Loading...</p>;
-    }
-
     if (matchingBars.length > 0) {
       const userRef = doc(db, "users", userUID);
       await updateDoc(userRef, {
@@ -215,13 +178,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       }, 3500);
     }
   };
-
-  if (isLogin) {
-    console.log("登入");
-  } else {
-    console.log("登出");
-    navigate("/");
-  }
 
   return (
     <>

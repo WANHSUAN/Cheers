@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import React, {useContext, useEffect, useState} from "react";
 import {AiOutlineMinusCircle} from "react-icons/ai";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
@@ -209,13 +209,11 @@ interface IUser {
 export interface IMemberProps {}
 
 const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
-  const {user, userUID, isLogin} = useContext(AuthContext);
+  const {user, userUID} = useContext(AuthContext);
   const [likes, setLikes] = useState<ILikes[] | undefined>(undefined);
   const [users, setUsers] = useState<IUser[] | undefined>();
   const [matchIndex, setMatchIndex] = useState<number>();
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -286,13 +284,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
       setIsDeleting(false);
     }
   };
-
-  if (isLogin) {
-    console.log("登入");
-  } else {
-    console.log("登出");
-    navigate("/");
-  }
 
   return (
     <>

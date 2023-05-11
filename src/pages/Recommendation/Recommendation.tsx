@@ -1,6 +1,6 @@
 import {collection, getDocs} from "firebase/firestore";
 import React, {useContext, useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
@@ -67,8 +67,7 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
   >(undefined);
   const recommendationsRef = collection(db, "users");
   const [matchIndex, setMatchIndex] = useState<number | null>(null);
-  const {isLogin, userUID} = useContext(AuthContext);
-  const navigate = useNavigate();
+  const {userUID} = useContext(AuthContext);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -100,13 +99,6 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
 
   if (recommendations === undefined || matchIndex === null) {
     return <p>Loading...</p>;
-  }
-
-  if (isLogin) {
-    console.log("登入");
-  } else {
-    console.log("登出");
-    navigate("/");
   }
 
   return (

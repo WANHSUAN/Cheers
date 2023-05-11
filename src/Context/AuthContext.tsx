@@ -11,11 +11,20 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   setDoc,
 } from "firebase/firestore";
 import {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {db} from "../utils/firebase";
+
+export interface Bar {
+  id: string;
+  name: string;
+  img: string;
+  description: string;
+  type: string[];
+}
 
 export interface User {
   name: string;
@@ -31,6 +40,7 @@ interface AuthContextType {
   userUID: string;
   signIn: (auth: Auth, provider: GoogleAuthProvider) => Promise<void>;
   logOut: (auth: Auth) => Promise<void>;
+  bars: Bar[];
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -45,6 +55,7 @@ export const AuthContext = createContext<AuthContextType>({
   userUID: "",
   signIn: async () => {},
   logOut: async () => {},
+  bars: [],
 });
 const initialUserData: User = {
   name: "",
@@ -59,6 +70,9 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   const [user, setUser] = useState<User>(initialUserData);
   const [loading, setLoading] = useState<boolean>(true);
   const [userUID, setUserUID] = useState<string>("");
+  const [bars, setBars] = useState<Bar[]>([]);
+  const barsCollectionRef = collection(db, "bars");
+
   const navigate = useNavigate();
 
   async function getUsers(userUID: string) {
@@ -69,36 +83,29 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
 
   useEffect(() => {
     const auth = getAuth();
+
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         const getUser = await getUsers(user.uid);
+        const data = {
+          name: getUser?.name || user.displayName || "",
+          email: getUser?.email || user.email || "",
+          userImg: getUser?.photoURL || user.photoURL || "",
+          userUID: getUser?.userUID || user.uid || "",
+        };
+        setUser(data);
         setUserUID(user.uid);
-        if (getUser) {
-          setIsLogin(true);
-          console.log("有此使用者");
-
-          const data: User = {
-            name: getUser.name || user.displayName || "",
-            email: getUser.email || user.email || "",
-            userImg: getUser.photoURL || user.photoURL || "",
-            userUID: getUser.userUID || user.uid || "",
-          };
-          setUser(data);
-          setUserUID(user.uid);
-        } else {
-          console.log("沒有此使用者");
-          setIsLogin(true);
-
-          const data: User = {
-            name: user.displayName || "",
-            email: user.email || "",
-            userImg: user.photoURL || "",
-            userUID: user.uid || "",
-          };
-          setUser(data);
-        }
+        setIsLogin(true);
+        console.log(getUser ? "有此使用者" : "沒有此使用者");
+        const barsData = await getDocs(barsCollectionRef);
+        const newData = barsData.docs.map((doc) => {
+          const bar = doc.data() as Bar;
+          return {...bar, id: doc.id};
+        });
+        setBars(newData);
       } else {
         setIsLogin(false);
+        navigate("/");
         console.log("登出");
       }
     });
@@ -154,6 +161,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         user,
         loading,
         userUID,
+        bars,
         signIn,
         logOut,
       }}
