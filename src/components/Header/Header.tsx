@@ -14,6 +14,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {HashLink} from "react-router-hash-link";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
+import side from "./side.png";
 import "./styles.css";
 
 const searchClient = algoliasearch(
@@ -54,10 +55,96 @@ const MenuSection = styled.div`
   padding-top: 5px;
 `;
 
+const MenuToggle = styled.div`
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+`;
+
+const HamBox = styled.div<HamBoxProps>`
+  position: relative;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.3s ease;
+  ${({isToggle}) =>
+    isToggle &&
+    `
+  background: #2a2a2f;
+  `}
+
+  &:hover {
+    background: #2a2a2f;
+    color: #d19b18;
+  }
+`;
+
+const TopLine = styled.span<LineProps>`
+  margin: 0 auto;
+  position: absolute;
+  top: 1em;
+  display: block;
+  width: 14px;
+  height: 2px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  left: 0;
+  right: 0;
+  transform: rotate(0deg);
+  transition: all 0.4s;
+  ${({isToggle}) =>
+    isToggle &&
+    `top: 0.875em;
+  transform: rotate(135deg);
+  background: #fff;
+  `}
+`;
+
+const BottomLine = styled.span<LineProps>`
+  margin: 0 auto;
+  position: absolute;
+  bottom: 1em;
+  display: block;
+  width: 14px;
+  height: 2px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  left: 0;
+  right: 0;
+  transform: rotate(0deg);
+  transition: all 0.4s;
+  ${({isToggle}) =>
+    isToggle &&
+    `bottom: 0.875em;
+  transform: rotate(225deg);
+  background: #fff;
+  `}
+`;
+
 const Title = styled(Link)`
   font-size: 35px;
   color: #fff;
   text-decoration: none;
+`;
+
+const NavOverlay = styled.div<NavOverlayProps>`
+  position: fixed;
+  background: url(${side}) no-repeat center center;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  color: #fff;
+  z-index: -1;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  padding: 4em;
+  transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
+  top: ${({isToggle}) => (isToggle ? "0" : "-100%")};
+  transition-delay: ${({isToggle}) => (isToggle ? "0s" : "0s")};
 `;
 
 const SearchSection = styled.div`
@@ -254,17 +341,28 @@ const EventContent = styled.p`
   text-align: left;
 `;
 
+interface NavOverlayProps {
+  isToggle: boolean;
+}
+
+interface HamBoxProps {
+  isToggle: boolean;
+}
+
+interface LineProps {
+  isToggle: boolean;
+}
+
 type HandleSideMenuType = () => void;
 
 const Header = () => {
+  const auth = getAuth();
+  const {logOut} = useContext(AuthContext);
+  const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
   const [isOpen, setIsOpen] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
 
-  const auth = getAuth();
-  const {logOut} = useContext(AuthContext);
-
-  const navigate = useNavigate();
-  const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
     prompt: "select_account",
   });
@@ -287,19 +385,11 @@ const Header = () => {
     <Wrapper>
       <Nav>
         <MenuSection>
-          <div className="menu-toggle" onClick={() => setIsToggle(!isToggle)}>
-            <div className={isToggle ? "hamBox hamBoxOpen" : "hamBox"}>
-              <span className={isToggle ? "lineTop spin" : "lineTop"}></span>
-              <span
-                className={isToggle ? "lineBottom spin" : "lineBottom"}
-              ></span>
-              <div
-                className="nav-overlay"
-                style={{
-                  top: isToggle ? "0" : "-100%",
-                  transitionDelay: isToggle ? "0s" : "0s",
-                }}
-              >
+          <MenuToggle onClick={() => setIsToggle(!isToggle)}>
+            <HamBox isToggle={isToggle}>
+              <TopLine isToggle={isToggle} />
+              <BottomLine isToggle={isToggle} />
+              <NavOverlay isToggle={isToggle}>
                 <SideMenuList>
                   <MenuItem>
                     <StyledLink onClick={handleSideMenu} to={"/member"}>
@@ -326,10 +416,11 @@ const Header = () => {
                     </StyledLink>
                   </MenuItem>
                 </SideMenuList>
-              </div>
-            </div>
+              </NavOverlay>
+            </HamBox>
+
             <Menu>MENU</Menu>
-          </div>
+          </MenuToggle>
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
         <SearchSection>

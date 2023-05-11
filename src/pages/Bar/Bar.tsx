@@ -13,7 +13,7 @@ import {FiExternalLink} from "react-icons/fi";
 import {SlCheck} from "react-icons/sl";
 import {TiStarFullOutline} from "react-icons/ti";
 import {useParams} from "react-router-dom";
-import styled from "styled-components/macro";
+import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
 import BarMap from "../Bar/BarMap";
@@ -356,8 +356,6 @@ const BarRecContent = styled.div`
   width: 45%;
 `;
 
-const BarRecContentItem = styled.div``;
-
 const BarRecContentTitle = styled.h2`
   color: #fff;
   padding: 30px 0;
@@ -408,8 +406,6 @@ const ScoreForm = styled.form`
   position: relative;
 `;
 
-const LabelSectionInput = styled.label``;
-
 const MemberImg = styled.img`
   position: absolute;
   top: -17%;
@@ -429,11 +425,59 @@ const SubmitSection = styled.div`
   justify-content: space-between;
 `;
 
-const LabelSection = styled.label``;
-
 const StarSection = styled.div`
   font-size: 25px;
 `;
+
+const StarCollection = styled.div``;
+
+const CommentAlert = styled.div``;
+
+const MainContainer = styled.button`
+  display: flex;
+  background-color: transparent;
+  border: none;
+`;
+
+const CommentButton = styled.a`
+  position: relative;
+  z-index: 0;
+  width: 130px;
+  height: 40px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffffbd;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    height: 3px;
+    border-radius: 2px;
+    background: #ffffffbd;
+    transition: all 0.5s ease;
+    top: 0;
+    left: 54px;
+    width: calc(100% - 56px * 2 - 16px);
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    height: 3px;
+    border-radius: 2px;
+    background: #ffffffbd;
+    transition: all 0.5s ease;
+    top: 0;
+    right: 54px;
+    width: 8px;
+  }
+`;
+
+const CommentButtonLine = styled.div``;
+
+const CommentButtonText = styled.div``;
 
 const InputTextArea = styled.textarea`
   width: 600px;
@@ -450,6 +494,115 @@ const InputTextArea = styled.textarea`
   }
 `;
 
+const dropInFadeOut = keyframes`
+0% {
+    opacity: 0;
+    visibility: visible;
+    transform: translate3d(0, -200%, 0);
+  }
+  12% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    visibility: visible;
+    transform: translate3d(0, 0, 0);
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    visibility: hidden;
+    transform: translate3d(25%, 0, 0);
+  }
+
+
+`;
+
+const Flash = styled.div`
+  display: block;
+  position: fixed;
+  top: 100px;
+  right: 36%;
+  width: 550px;
+  height: 100px;
+  padding: 20px 25px 20px 85px;
+  font-size: 18px;
+  font-weight: 400;
+  color: ${(props) => props.color};
+  background-color: #fff;
+  border: 2px solid ${(props) => props.color};
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  align-items: center;
+  animation: ${dropInFadeOut} 3.5s 0.4s cubic-bezier(0.32, 1.75, 0.65, 0.91);
+`;
+
+const FlashAlert = styled.div`
+  display: block;
+  position: fixed;
+  top: 100px;
+  right: 36%;
+  width: 550px;
+  height: 100px;
+  padding: 20px 25px 20px 85px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fba78d;
+  background-color: #fff;
+  border: 2px solid #fba78d;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  align-items: center;
+  animation: ${dropInFadeOut} 3.5s 0.4s cubic-bezier(0.32, 1.75, 0.65, 0.91);
+`;
+
+const FlashIcon = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1.8em;
+  height: 100%;
+  padding: 0 0.4em;
+  background-color: ${(props) => props.color};
+  color: #fff;
+  font-size: 36px;
+  font-weight: 300;
+  transform: translate(0, -50%);
+`;
+
+const FlashIconAlert = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1.8em;
+  height: 100%;
+  padding: 0 0.4em;
+  background-color: #fba78d;
+  color: #fff;
+  font-size: 36px;
+  font-weight: 300;
+  transform: translate(0, -50%);
+`;
+
+const Icon = styled.div`
+  position: absolute;
+  top: 55%;
+  left: 15%;
+  transform: translate(0, -50%);
+`;
+
+const CommentText = styled.div`
+  display: flex;
+  height: 60px;
+  padding-left: 5px;
+  align-items: center;
+`;
 interface IBar {
   id: string;
   name: string;
@@ -507,7 +660,7 @@ const StarRating = (props: StarRatingProps) => {
     setSelection(val);
   };
   return (
-    <div
+    <StarCollection
       onMouseOut={hoverOver}
       onClick={(e) => {
         setIsHoverDisabled(true);
@@ -531,7 +684,7 @@ const StarRating = (props: StarRatingProps) => {
           marked={selection ? selection >= i + 1 : rating >= i + 1}
         />
       ))}
-    </div>
+    </StarCollection>
   );
 };
 
@@ -576,25 +729,21 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
 
   return (
     <ScoreForm>
-      <LabelSectionInput>
-        <MemberImg src={user.userImg} />
-        <InputTextArea
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          maxLength={100}
-          placeholder="Leave a message..."
-        ></InputTextArea>
-      </LabelSectionInput>
+      <MemberImg src={user.userImg} />
+      <InputTextArea
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        maxLength={100}
+        placeholder="Leave a message..."
+      ></InputTextArea>
       <SubmitSection>
-        <LabelSection>
-          <StarSection>
-            <StarRating
-              key={key}
-              rating={ratings}
-              onRatingChange={(rating) => setRatings(rating)}
-            />
-          </StarSection>
-        </LabelSection>
+        <StarSection>
+          <StarRating
+            key={key}
+            rating={ratings}
+            onRatingChange={(rating) => setRatings(rating)}
+          />
+        </StarSection>
         <div>
           <button className="mainContainer" type="submit" onClick={handleClick}>
             <a href="#" className="commentButton">
@@ -604,28 +753,26 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
             </a>
           </button>
           {showFlash && (
-            <div className="flash animate--drop-in-fade-out">
-              <div className="flash__icon">
-                <div className="icon">
+            <Flash color="#d19b18">
+              <FlashIcon color="#d19b18">
+                <Icon>
                   <SlCheck />
-                </div>
-              </div>
-              <div className="commentText">
+                </Icon>
+              </FlashIcon>
+              <CommentText>
                 Your comment was successfully published!
-              </div>
-            </div>
+              </CommentText>
+            </Flash>
           )}
           {showAlert && (
-            <div className="flash__alert animate--drop-in-fade-out">
-              <div className="flash__icon__alert">
-                <div className="icon">
+            <Flash color="#fba78d">
+              <FlashIcon color="#fba78d">
+                <Icon>
                   <SlCheck />
-                </div>
-              </div>
-              <div className="commentText">
-                Please fill out the complete content!
-              </div>
-            </div>
+                </Icon>
+              </FlashIcon>
+              <CommentText>Please fill out the complete content!</CommentText>
+            </Flash>
           )}
         </div>
       </SubmitSection>
@@ -682,14 +829,14 @@ const CollectionButton = (name: any) => {
   return (
     <>
       {showFlash && (
-        <div className="flash animate--drop-in-fade-out">
-          <div className="flash__icon">
-            <div className="icon">
+        <Flash>
+          <FlashIcon>
+            <Icon>
               <SlCheck />
-            </div>
-          </div>
-          <div className="commentText">Add this bar to Your Page!</div>
-        </div>
+            </Icon>
+          </FlashIcon>
+          <CommentText>Add this bar to Your Page!</CommentText>
+        </Flash>
       )}
       <Like onClick={handleHeartButtonClick}>
         {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
@@ -845,22 +992,20 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <BarRecName>{bar.menu[0].name}</BarRecName>
           </BarTitleContent>
           <BarRecContent>
-            <BarRecContentItem>
-              <BarRecContentTitle>Concept</BarRecContentTitle>
-              <BarRecContentText>{bar.menu[0].concept}</BarRecContentText>
-              <BarRecContentTitle>Garnish</BarRecContentTitle>
-              <BarRecContentText>
-                {bar.menu[0].garnish.map((gar: string) => (
-                  <BarRecGarnishItem key={gar}>{gar}</BarRecGarnishItem>
-                ))}
-              </BarRecContentText>
-              <BarRecContentTitle>Ingredients</BarRecContentTitle>
-              <BarRecContentText>
-                {bar.menu[0].ingredients.map((gar: string) => (
-                  <BarRecIngredientsItem key={gar}>{gar}</BarRecIngredientsItem>
-                ))}
-              </BarRecContentText>
-            </BarRecContentItem>
+            <BarRecContentTitle>Concept</BarRecContentTitle>
+            <BarRecContentText>{bar.menu[0].concept}</BarRecContentText>
+            <BarRecContentTitle>Garnish</BarRecContentTitle>
+            <BarRecContentText>
+              {bar.menu[0].garnish.map((gar: string) => (
+                <BarRecGarnishItem key={gar}>{gar}</BarRecGarnishItem>
+              ))}
+            </BarRecContentText>
+            <BarRecContentTitle>Ingredients</BarRecContentTitle>
+            <BarRecContentText>
+              {bar.menu[0].ingredients.map((gar: string) => (
+                <BarRecIngredientsItem key={gar}>{gar}</BarRecIngredientsItem>
+              ))}
+            </BarRecContentText>
           </BarRecContent>
         </BarRecContentSection>
       </BarRec>
