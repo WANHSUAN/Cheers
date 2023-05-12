@@ -25,8 +25,6 @@ const FirstSection = styled.div`
   background-position: center;
 `;
 
-const SloganSection = styled.div``;
-
 const fadeInPosition = keyframes`
   from {
     opacity: 0;
@@ -242,23 +240,21 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
   return (
     <Wrapper>
       <FirstSection>
-        <SloganSection>
-          <SloganContentAnimation />
-          <SecondSloganContentAnimation />
-          {showButton ? (
-            <Link to="section2" smooth={true} onClick={scrollToSection2}>
-              <div className="encircle bounce animated">
-                <div className="arrow"></div>
-              </div>
-            </Link>
-          ) : (
-            <Link to="section2" smooth={true} onClick={scrollToSection2}>
-              <div className="encircle bounce animated fade-out">
-                <div className="arrow"></div>
-              </div>
-            </Link>
-          )}
-        </SloganSection>
+        <SloganContentAnimation />
+        <SecondSloganContentAnimation />
+        {showButton ? (
+          <Link to="section2" smooth={true} onClick={scrollToSection2}>
+            <div className="encircle bounce animated">
+              <div className="arrow"></div>
+            </div>
+          </Link>
+        ) : (
+          <Link to="section2" smooth={true} onClick={scrollToSection2}>
+            <div className="encircle bounce animated fade-out">
+              <div className="arrow"></div>
+            </div>
+          </Link>
+        )}
       </FirstSection>
       <SecondSection id="section2">
         <LoginTextSection>

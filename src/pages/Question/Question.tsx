@@ -1,13 +1,14 @@
 import {doc, updateDoc} from "firebase/firestore";
 import React, {useContext, useEffect, useState} from "react";
 import {MdOutlineLiquor} from "react-icons/md";
-import {SlCheck} from "react-icons/sl";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
+import {CommentText} from "../../components/Alert";
 import {db} from "../../utils/firebase";
 import "../Bar/Bar.css";
 import "../Calendar/Calendar.css";
+import {Alert} from "./../../components/Alert";
 import "./Question.css";
 
 const Wrapper = styled.div`
@@ -70,6 +71,13 @@ const EventButton = styled.button`
   cursor: pointer;
   text-align: left;
 `;
+
+interface IBar {
+  id: string;
+  name: string;
+  img: string;
+  type: string[];
+}
 interface IOption {
   text: string;
   hashtag: string;
@@ -101,7 +109,8 @@ export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const [showFlash, setShowFlash] = useState(false);
-  const {userUID, isLogin, bars, user} = useContext(AuthContext);
+  const [finalBars, setFinalBars] = useState<IBar[]>([]);
+  const {userUID, bars} = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -109,9 +118,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   }, []);
 
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
-
-  console.log(selectedOptions);
-
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const option = options.find((option) => option.text === value)!;
@@ -120,47 +126,44 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       (o) => o.text === option.text
     );
 
+    let newSelectedOptions: IOption[] = [];
+
     if (existingOptionIndex > -1) {
-      // 從 selectedOptions 中刪除選項
-      setSelectedOptions((prev) =>
-        prev.filter((o, index) => index !== existingOptionIndex)
-      );
+      newSelectedOptions = [...selectedOptions];
+      newSelectedOptions.splice(existingOptionIndex, 1);
     } else {
-      // 將選項加入 selectedOptions
-      setSelectedOptions((prev) => [...prev, option]);
+      const selectedGroupOptions = selectedOptions.filter(
+        (o) => o.group === option.group
+      );
+      if (selectedGroupOptions.length > 0) {
+        newSelectedOptions = selectedOptions.filter(
+          (o) => o.group !== option.group
+        );
+      } else {
+        newSelectedOptions = [...selectedOptions];
+      }
+      newSelectedOptions.push(option);
     }
+    setSelectedOptions(newSelectedOptions);
 
-    console.log(selectedOptions);
-
-    const selectedGroupOptions = selectedOptions.filter(
-      (o) => o.group === option.group
-    );
-
-    console.log(selectedGroupOptions);
-    const selectedGroupOptionHashtags = selectedGroupOptions.map(
+    const selectedGroupOptionHashtags = newSelectedOptions.map(
       (o) => o.hashtag
     );
-    console.log(selectedGroupOptionHashtags);
-
     const selectedBars = bars?.filter((bar) =>
       selectedGroupOptionHashtags.every((hashtag) =>
         bar?.type?.includes(hashtag)
       )
     );
-
-    console.log(selectedBars);
-    // setBars(selectedBars);
+    setFinalBars(selectedBars);
   };
 
   const handleButtonClick = async () => {
     const selectedHashtags = selectedOptions.map((option) => option.hashtag);
-    const selectedBars = bars
-      ? bars.filter((bar) =>
-          selectedHashtags.every((hashtag) => bar.type.includes(hashtag))
-        )
-      : [];
+    const updatedBars = bars.filter((bar) =>
+      selectedHashtags.every((hashtag) => bar.type.includes(hashtag))
+    );
 
-    const matchingBars = selectedBars.map((bar) => {
+    const matchingBars = updatedBars.map((bar) => {
       return {name: bar.name, img: bar.img, id: bar.id};
     });
 
@@ -176,6 +179,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       setTimeout(() => {
         setShowFlash(false);
       }, 3500);
+      setSelectedOptions([]);
     }
   };
 
@@ -221,9 +225,9 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
                   <SelectItem key={option.hashtag}>
                     <label className="rad-label">
                       <input
-                        type="checkbox"
+                        type="radio"
                         className="rad-input"
-                        name="rad"
+                        name={option.group} // 設定相同的 name 屬性
                         value={option.text}
                         checked={selectedOptions.some(
                           (o) => o.text === option.text
@@ -240,14 +244,9 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
         </TestSection>
         <Submit>
           {showFlash && (
-            <div className="flash animate--drop-in-fade-out">
-              <div className="flash__icon">
-                <div className="icon">
-                  <SlCheck />
-                </div>
-              </div>
-              <div className="commentText">No matching Bar!</div>
-            </div>
+            <Alert color="#fba78d">
+              <CommentText>No matching Bar!</CommentText>
+            </Alert>
           )}
           <EventButton onClick={handleButtonClick}>
             <div className="btn">

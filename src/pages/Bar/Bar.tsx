@@ -10,13 +10,15 @@ import React, {MouseEventHandler, useContext, useEffect, useState} from "react";
 import {BsSuitHeart, BsSuitHeartFill} from "react-icons/bs";
 import {FaQuoteLeft, FaQuoteRight} from "react-icons/fa";
 import {FiExternalLink} from "react-icons/fi";
-import {SlCheck} from "react-icons/sl";
 import {TiStarFullOutline} from "react-icons/ti";
 import {useParams} from "react-router-dom";
-import styled, {keyframes} from "styled-components/macro";
+import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
+import {CommentText} from "../../components/Alert";
 import {db} from "../../utils/firebase";
 import BarMap from "../Bar/BarMap";
+import {Alert} from "./../../components/Alert";
+
 import "./Bar.css";
 import {Star} from "./Star";
 
@@ -493,116 +495,6 @@ const InputTextArea = styled.textarea`
     outline-color: #d19b18;
   }
 `;
-
-const dropInFadeOut = keyframes`
-0% {
-    opacity: 0;
-    visibility: visible;
-    transform: translate3d(0, -200%, 0);
-  }
-  12% {
-    transform: translate3d(0, 0, 0);
-  }
-  20% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 1;
-    visibility: visible;
-    transform: translate3d(0, 0, 0);
-  }
-  80% {
-    opacity: 0;
-  }
-  100% {
-    visibility: hidden;
-    transform: translate3d(25%, 0, 0);
-  }
-
-
-`;
-
-const Flash = styled.div`
-  display: block;
-  position: fixed;
-  top: 100px;
-  right: 36%;
-  width: 550px;
-  height: 100px;
-  padding: 20px 25px 20px 85px;
-  font-size: 18px;
-  font-weight: 400;
-  color: ${(props) => props.color};
-  background-color: #fff;
-  border: 2px solid ${(props) => props.color};
-  border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
-  opacity: 0;
-  align-items: center;
-  animation: ${dropInFadeOut} 3.5s 0.4s cubic-bezier(0.32, 1.75, 0.65, 0.91);
-`;
-
-const FlashAlert = styled.div`
-  display: block;
-  position: fixed;
-  top: 100px;
-  right: 36%;
-  width: 550px;
-  height: 100px;
-  padding: 20px 25px 20px 85px;
-  font-size: 18px;
-  font-weight: 400;
-  color: #fba78d;
-  background-color: #fff;
-  border: 2px solid #fba78d;
-  border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.8);
-  opacity: 0;
-  align-items: center;
-  animation: ${dropInFadeOut} 3.5s 0.4s cubic-bezier(0.32, 1.75, 0.65, 0.91);
-`;
-
-const FlashIcon = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 1.8em;
-  height: 100%;
-  padding: 0 0.4em;
-  background-color: ${(props) => props.color};
-  color: #fff;
-  font-size: 36px;
-  font-weight: 300;
-  transform: translate(0, -50%);
-`;
-
-const FlashIconAlert = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 1.8em;
-  height: 100%;
-  padding: 0 0.4em;
-  background-color: #fba78d;
-  color: #fff;
-  font-size: 36px;
-  font-weight: 300;
-  transform: translate(0, -50%);
-`;
-
-const Icon = styled.div`
-  position: absolute;
-  top: 55%;
-  left: 15%;
-  transform: translate(0, -50%);
-`;
-
-const CommentText = styled.div`
-  display: flex;
-  height: 60px;
-  padding-left: 5px;
-  align-items: center;
-`;
 interface IBar {
   id: string;
   name: string;
@@ -753,26 +645,16 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
             </a>
           </button>
           {showFlash && (
-            <Flash color="#d19b18">
-              <FlashIcon color="#d19b18">
-                <Icon>
-                  <SlCheck />
-                </Icon>
-              </FlashIcon>
+            <Alert color="#d19b18">
               <CommentText>
                 Your comment was successfully published!
               </CommentText>
-            </Flash>
+            </Alert>
           )}
           {showAlert && (
-            <Flash color="#fba78d">
-              <FlashIcon color="#fba78d">
-                <Icon>
-                  <SlCheck />
-                </Icon>
-              </FlashIcon>
+            <Alert color="#fba78d">
               <CommentText>Please fill out the complete content!</CommentText>
-            </Flash>
+            </Alert>
           )}
         </div>
       </SubmitSection>
@@ -829,14 +711,9 @@ const CollectionButton = (name: any) => {
   return (
     <>
       {showFlash && (
-        <Flash>
-          <FlashIcon>
-            <Icon>
-              <SlCheck />
-            </Icon>
-          </FlashIcon>
+        <Alert color="#d19b18">
           <CommentText>Add this bar to Your Page!</CommentText>
-        </Flash>
+        </Alert>
       )}
       <Like onClick={handleHeartButtonClick}>
         {isLike ? <BsSuitHeartFill /> : <BsSuitHeart />}
