@@ -1,7 +1,7 @@
 import {collection, getDocs} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {HashLink} from "react-router-hash-link";
-import styled from "styled-components/macro";
+import styled, {keyframes} from "styled-components/macro";
 import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
@@ -14,8 +14,62 @@ const HashTagSection = styled.div`
   margin: 300px auto 500px;
 `;
 
+const Lights = keyframes`
+  0% {
+    color: hsl(42, 79%, 46%);
+    text-shadow: 0 0 1em hsla(27, 85%, 45%, 0.2),
+      0 0 0.125em hsla(10, 77%, 52%, 0.3),
+      -1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
+      1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+  }
+
+  30% {
+    color: hsl(42, 79%, 46%);
+    text-shadow: 0 0 1em hsla(27, 85%, 45%, 0.5),
+      0 0 0.125em hsla(10, 77%, 52%, 0.3),
+      -0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
+      0.5em 0.125em 0.25em hsla(212, 66%, 63%, 0.4);
+  }
+
+  40% {
+    color: hsl(42, 79%, 46%);
+    text-shadow: 0 0 1em hsla(27, 85%, 45%, 0.5),
+      0 0 0.125em hsla(10, 77%, 52%, 0.5),
+      -0.25em -0.125em 0.125em hsla(40, 100%, 60%, 0.2),
+      0.25em 0.125em 0.125em hsla(212, 66%, 63%, 0.4);
+  }
+
+  70% {
+    color: hsl(42, 79%, 46%);
+    text-shadow: 0 0 1em hsla(27, 85%, 50%, 0.5),
+      0 0 0.125em hsla(10, 77%, 52%, 0.5),
+      0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
+      -0.5em 0.125em 0.25em hsla(212, 66%, 63%, 0.4);
+  }
+
+  100% {
+    color: hsl(42, 79%, 46%);
+    text-shadow: 0 0 1em hsla(27, 85%, 50%, 0.3),
+      0 0 0.125em hsla(10, 77%, 52%, 0.3),
+      1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
+      -1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+  }
+
+`;
+
 const HashtagType = styled(HashLink)`
   text-decoration: none;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 35px;
+  font-weight: 300;
+  justify-content: center;
+  animation: ${Lights} 5s 750ms linear infinite;
+
+  &:hover {
+    transform: translateY(-10px);
+    transition: ease 0.5s;
+  }
 `;
 
 const StyledHashtagType = styled.p`
@@ -53,12 +107,11 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
 
   return (
     <Wrapper>
-      <HashTagSection>
+      {/* <HashTagSection>
         {hashtags.map((hashtag, index) => {
           return (
             <StyledHashtagType key={index}>
               <HashtagType
-                className="hashtag"
                 key={index}
                 smooth
                 to={`/category#${hashtag.type}`}
@@ -69,7 +122,7 @@ const HashtagPage: React.FC<IHashtagProps> = (props: IHashtagProps) => {
             </StyledHashtagType>
           );
         })}
-      </HashTagSection>
+      </HashTagSection> */}
     </Wrapper>
   );
 };

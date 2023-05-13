@@ -11,6 +11,470 @@ import main from "../Question/main.png";
 import Hashtag from "./Hashtag";
 import "./styles.css";
 
+const Icons = styled.i`
+  opacity: 0.2;
+  font-size: calc(0.3rem + 1vw);
+  color: transparent;
+  transition: opacity 0.3s 0.1s ease;
+  -webkit-text-stroke: 3px rgba(0, 0, 0, 0.5);
+`;
+
+const LabelText = styled.span``;
+
+const LabelCheck = styled.span`
+  display: inline-block;
+  border-radius: 50%;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  vertical-align: middle;
+  width: 33px;
+  height: 33px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border 0.3s ease;
+
+  &:hover {
+    border: 3px solid rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const Icon = keyframes`
+from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }`;
+
+const Check = keyframes`
+  0% {
+    width: 1.5em;
+    height: 1.5em;
+    border-width: 3px;
+  }
+  10% {
+    width: 1.5em;
+    height: 1.5em;
+    opacity: 0.1;
+    background: rgba(0, 0, 0, 0.2);
+    border-width: 8px;
+  }
+  12% {
+    width: 1.5em;
+    height: 1.5em;
+    opacity: 0.4;
+    background: rgba(0, 0, 0, 0.1);
+    border-width: 0;
+  }
+  50% {
+    width: 2em;
+    height: 2em;
+    background: #00d47877;
+    border: 0;
+    opacity: 0.6;
+  }
+  100% {
+    width: 2em;
+    height: 2em;
+    background: #00d47877;
+    border: 0;
+    opacity: 1;
+  }`;
+
+const EventCheckbox = styled.input`
+  display: none;
+
+  &:checked + ${LabelText} ${LabelCheck} {
+    animation: ${Check} 0.5s cubic-bezier(0.895, 0.03, 0.685, 0.22) forwards;
+
+    ${Icons} {
+      opacity: 1;
+      transform: scale(0);
+      color: white;
+      -webkit-text-stroke: 0;
+      animation: ${Icon} 0.3s cubic-bezier(1, 0.008, 0.565, 1.65) 0.1s 1
+        forwards;
+    }
+  }
+`;
+
+const EventLabel = styled.label``;
+
+const EventCenter = styled.div`
+  width: 40px;
+`;
+
+const IconLink = styled.link``;
+
+const SpecialBar = styled.span`
+  color: black;
+  font-weight: 700;
+`;
+
+const More = styled.button`
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  font-size: 1rem;
+  position: relative;
+  margin-top: 60px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #fff;
+
+  &:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+    color: #d19b18;
+
+    &:after {
+      border-color: #d19b18;
+    }
+
+    &:before {
+      background-color: #fff;
+    }
+  }
+
+  &:after {
+    transition: 0.3s all ease;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    border: 2px solid #fff;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background: #d19b18;
+    z-index: -1;
+  }
+
+  &:hover {
+    &:after {
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+  }
+`;
+
+const Section2 = styled.div``;
+
+const BarLink = styled.div`
+  &:hover {
+    cursor: pointer;
+    transform: scale(2);
+    transition: transform 0.5s ease;
+  }
+`;
+
+const LinkImage = styled.image`
+  filter: brightness(0.9);
+
+  &:hover {
+    border: 1px solid #fff;
+  }
+`;
+
+const Rotate = keyframes`
+to {
+    transform: rotate(360deg);
+  }
+`;
+
+const LinkText = styled.text`
+  animation: ${Rotate} normal infinite 20s linear;
+  transform-origin: 50% 50%;
+`;
+
+const LinkSvg = styled.svg`
+  width: 60%;
+  height: 200px;
+  transform-box: fill-box;
+  fill: #d19b18;
+  stroke: #d19b18;
+  stroke-width: 0.05em;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+`;
+
+const Flow = keyframes`
+0% {
+  transform: translate(-50%, -75%) rotate(0deg);
+}
+100% {
+  transform: translate(-50%, -75%) rotate(360deg);
+}`;
+
+const Liquid = styled.div`
+  position: absolute;
+  top: -50px;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  background: #d19a18;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
+  transition: 0.5s;
+
+  &::after {
+    content: "";
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    background: #000;
+
+    border-radius: 40%;
+    background: rgba(20, 20, 20, 0.5);
+    animation: ${Flow} 10s linear infinite;
+  }
+
+  &::before {
+    content: "";
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    background: #000;
+
+    border-radius: 45%;
+    background: rgba(20, 20, 20, 1);
+    animation: ${Flow} 5s linear infinite;
+  }
+`;
+
+const TestSelect = styled.span`
+  position: relative;
+  color: #fff;
+  font-size: 20px;
+  z-index: 1;
+`;
+
+const Blink = keyframes`
+0%,
+  22%,
+  36%,
+  75% {
+    color: #e4d4b1;
+    text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #e4d4b1,
+      -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+      0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  }
+  28%,
+  33% {
+    color: #e2b03a;
+    text-shadow: none;
+  }
+  82%,
+  97% {
+    color: #d19b18;
+    text-shadow: none;
+  }`;
+
+const Shine = keyframes`
+  0% {
+    color: #7f5c0b;
+    text-shadow: none;
+  }
+  100% {
+    color: #e4d4b1;
+    text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #e4d4b1,
+      -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+      0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  }`;
+
+const FastFlicker = styled.span`
+  width: 450px;
+  animation: ${Shine} 2s forwards, ${Blink} 10s 1s infinite;
+`;
+
+const FlickerItem = styled.span`
+  width: 280px;
+  animation: ${Shine} 2s forwards, ${Blink} 3s 2s infinite;
+`;
+
+const Flicker = keyframes`from {
+    opacity: 1;
+  }
+
+  4% {
+    opacity: 0.9;
+  }
+
+  6% {
+    opacity: 0.85;
+  }
+
+  8% {
+    opacity: 0.95;
+  }
+
+  10% {
+    opacity: 0.9;
+  }
+
+  11% {
+    opacity: 0.922;
+  }
+
+  12% {
+    opacity: 0.9;
+  }
+
+  14% {
+    opacity: 0.95;
+  }
+
+  16% {
+    opacity: 0.98;
+  }
+
+  17% {
+    opacity: 0.9;
+  }
+
+  19% {
+    opacity: 0.93;
+  }
+
+  20% {
+    opacity: 0.99;
+  }
+
+  24% {
+    opacity: 1;
+  }
+
+  26% {
+    opacity: 0.94;
+  }
+
+  28% {
+    opacity: 0.98;
+  }
+
+  37% {
+    opacity: 0.93;
+  }
+
+  38% {
+    opacity: 0.5;
+  }
+
+  39% {
+    opacity: 0.96;
+  }
+
+  42% {
+    opacity: 1;
+  }
+
+  44% {
+    opacity: 0.97;
+  }
+
+  46% {
+    opacity: 0.94;
+  }
+
+  56% {
+    opacity: 0.9;
+  }
+
+  58% {
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0.99;
+  }
+
+  68% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0.9;
+  }
+
+  72% {
+    opacity: 0.95;
+  }
+
+  93% {
+    opacity: 0.93;
+  }
+
+  95% {
+    opacity: 0.95;
+  }
+
+  97% {
+    opacity: 0.93;
+  }
+
+  to {
+    opacity: 1;
+  }`;
+
+const SignSecond = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(
+    ellipse 50% 35% at 50% 50%,
+    #7f5c0b,
+    transparent
+  );
+  font-size: 4rem;
+  color: #e4d4b1;
+  text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
+    -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+    0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  animation: ${Shine} 2s forwards, ${Flicker} 3s infinite;
+`;
+
+const Sign = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(
+    ellipse 50% 35% at 50% 50%,
+    #7f5c0b,
+    transparent
+  );
+  font-size: 4rem;
+  color: #e4d4b1;
+  margin-bottom: 40px;
+  text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
+    -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+    0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  animation: ${Shine} 2s forwards, ${Flicker} 3s infinite;
+`;
+
 const Wrapper = styled.div`
   text-align: center;
   width: 1100px;
@@ -132,6 +596,10 @@ const Test = styled(Link)`
     background-color: #fff;
     color: #d19b18;
     transition: ease 0.5s;
+
+    ${Liquid} {
+      top: -100px;
+    }
   }
 `;
 
@@ -217,6 +685,7 @@ const AllBarSubTitle = styled.p`
   color: #d19b18;
   font-size: 2rem;
   margin-bottom: 20px;
+  scroll-margin-top: -96vh;
 `;
 
 const AllBarTitle = styled.h2`
@@ -553,22 +1022,22 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             </ScrollDown>
           </WrapperInner>
         </ArrowWrapper>
-        <div id="section2"></div>
+        <Section2 id="section2"></Section2>
 
         <Title>
-          <div className="sign">
-            <span className="flicker">We've</span>
-            <span className="flicker">prepared</span>
-            <span className="flicker">various</span>
-          </div>
-          <div className="signSecond">
-            <span className="fast-flicker">Types of BARS</span>
-            <span className="flicker">for You!</span>
-          </div>
+          <Sign>
+            <FlickerItem>We've</FlickerItem>
+            <FlickerItem>prepared</FlickerItem>
+            <FlickerItem>various</FlickerItem>
+          </Sign>
+          <SignSecond>
+            <FastFlicker>Types of BARS</FastFlicker>
+            <FlickerItem>for You!</FlickerItem>
+          </SignSecond>
         </Title>
-        <Test to={"/question"} className="selectBar">
-          <span>Select Your Type!</span>
-          <div className="liquid"></div>
+        <Test to={"/question"}>
+          <TestSelect>Select Your Type!</TestSelect>
+          <Liquid></Liquid>
         </Test>
 
         {showButton && (
@@ -576,9 +1045,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         )}
         <Hashtag />
         <AllBarTitleSection>
-          <AllBarSubTitle id="allbars" style={{scrollMarginTop: "-96vh"}}>
-            ALL BARS LIST
-          </AllBarSubTitle>
+          <AllBarSubTitle id="allbars">ALL BARS LIST</AllBarSubTitle>
           <AllBarTitle>
             The adventure <br />
             starts now
@@ -588,13 +1055,12 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           {slicedData.map((item) => (
             <BarSection to={`/bars/${item.id}`} key={item.id}>
               <BarTitle>
-                <div className="link">
-                  <svg
+                <BarLink>
+                  <LinkSvg
                     viewBox="0 0 200 200"
                     width="100"
                     height="100"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="link__svg"
                     aria-labelledby="link1-title link1-desc"
                   >
                     <defs>
@@ -602,8 +1068,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                         <path d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
                       </clipPath>
                     </defs>
-                    <image
-                      className="link__image"
+                    <LinkImage
                       xlinkHref={item.img[2]}
                       clipPath="url(#circle-clip)"
                       height="100%"
@@ -612,38 +1077,32 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                     />
                     <path
                       id="link-circle"
-                      className="link__path"
                       d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0"
                       stroke="none"
                       fill="none"
                     />
-                    <text className="link__text" textLength="480" dy="-8px">
+                    <LinkText textLength="480" dy="-8px">
                       <textPath href="#link-circle" stroke="none">
                         {`${item.name.toUpperCase()}   ${item.name.toUpperCase()}`}
                       </textPath>
-                    </text>
-                  </svg>
-                </div>
+                    </LinkText>
+                  </LinkSvg>
+                </BarLink>
               </BarTitle>
             </BarSection>
           ))}
-          {!showMore && (
-            <button className="more" onClick={handleShowMore}>
-              More
-            </button>
-          )}
+          {!showMore && <More onClick={handleShowMore}>More</More>}
           {showMore && (
             <>
               {bars.slice(8).map((bar) => (
                 <BarSection to={`/bars/${bar.id}`} key={bar.id}>
                   <BarTitle>
-                    <div className="link">
-                      <svg
+                    <BarLink>
+                      <LinkSvg
                         viewBox="0 0 200 200"
                         width="100"
                         height="100"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="link__svg"
                         aria-labelledby="link1-title link1-desc"
                       >
                         <defs>
@@ -651,8 +1110,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                             <path d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
                           </clipPath>
                         </defs>
-                        <image
-                          className="link__image"
+                        <LinkImage
                           xlinkHref={bar.img[2]}
                           clipPath="url(#circle-clip)"
                           height="100%"
@@ -661,18 +1119,17 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
                         />
                         <path
                           id="link-circle"
-                          className="link__path"
                           d="M 20, 100 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0"
                           stroke="none"
                           fill="none"
                         />
-                        <text className="link__text" textLength="480" dy="-8px">
+                        <LinkText textLength="480" dy="-8px">
                           <textPath href="#link-circle" stroke="none">
                             {bar.name.toUpperCase()} {bar.name.toUpperCase()}
                           </textPath>
-                        </text>
-                      </svg>
-                    </div>
+                        </LinkText>
+                      </LinkSvg>
+                    </BarLink>
                   </BarTitle>
                 </BarSection>
               ))}
@@ -711,13 +1168,13 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
   const [isChecked, setIsChecked] = useState(false);
   const [showBackground, setShowBackground] = useState(true);
 
-  function shouldShowAlert() {
+  const shouldShowAlert = () => {
     const cookies = document.cookie.split("; ");
     const hideAlertCookie = cookies.find((cookie) =>
       cookie.startsWith("hideAlert=")
     );
     return !hideAlertCookie || hideAlertCookie.split("=")[1] !== "true";
-  }
+  };
 
   if (!shouldShowAlert()) {
     return null;
@@ -734,17 +1191,17 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
     return eventDate.toDateString() === isToday;
   });
 
-  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(!isChecked);
     document.cookie = `hideAlert=true; expires=${new Date(
       Date.now() + 86400000
     ).toUTCString()};`;
-  }
+  };
 
-  function handleCloseClick() {
+  const handleCloseClick = () => {
     setShowAlert(false);
     setShowBackground(false);
-  }
+  };
 
   return (
     <>
@@ -755,11 +1212,7 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
             return hasEvent[index] ? (
               <AlertSection key={index}>
                 <AlertMessage>
-                  今日{" "}
-                  <span style={{color: "black", fontWeight: "700"}}>
-                    {event.bar}
-                  </span>{" "}
-                  有特別活動！
+                  今日 <SpecialBar>{event.bar}</SpecialBar> 有特別活動！
                   <br />
                   邀請您來共襄盛舉～
                 </AlertMessage>
@@ -770,25 +1223,24 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
                       checked={ischecked}
                       onChange={handleOnChange}
                     > */}
-                    <link
+                    <IconLink
                       rel="stylesheet"
                       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
                     />
-                    <div className="center">
-                      <label className="label">
-                        <input
-                          className="label__checkbox"
+                    <EventCenter>
+                      <EventLabel>
+                        <EventCheckbox
                           type="checkbox"
                           checked={isChecked}
                           onChange={handleOnChange}
                         />
-                        <span className="label__text">
-                          <span className="label__check">
-                            <i className="fa fa-check icon"></i>
-                          </span>
-                        </span>
-                      </label>
-                    </div>
+                        <LabelText>
+                          <LabelCheck>
+                            <Icons className="fa fa-check"></Icons>
+                          </LabelCheck>
+                        </LabelText>
+                      </EventLabel>
+                    </EventCenter>
                     {/* </CheckboxInput> */}
                     <CheckboxLabel>今日不再顯示</CheckboxLabel>
                   </CheckboxWrapper>

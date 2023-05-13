@@ -205,9 +205,8 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
 };
 
 const fetchData = async (address: string) => {
-  const apiKey = "AIzaSyDJMxLEPP0PzG_jdJtBCusb90JAw_SK06c";
   const response = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
   );
   const data = await response.json();
   const {lat, lng} = data.results[0].geometry.location;

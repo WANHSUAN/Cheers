@@ -12,7 +12,14 @@ import {Link} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
-import "./Member.css";
+
+const Like = styled.strong`
+  color: #d19b18;
+`;
+
+const WelcomeTitle = styled.strong`
+  color: #fff;
+`;
 
 const PageImg = styled.img`
   width: 100vw;
@@ -263,6 +270,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
   }
 
   const handleDeleteLikeClick = async (likeDocId: string) => {
+    // TODO
     let confirmDelete = window.confirm("確定要刪除嗎？");
 
     if (confirmDelete === true) {
@@ -295,7 +303,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
       <Wrapper>
         <>
           <MemberTitle>
-            <strong style={{color: "#fff"}}>Welcome,</strong> {user.name}!
+            <WelcomeTitle>Welcome,</WelcomeTitle> {user.name}!
           </MemberTitle>
           <MemberSection>
             <MemberImg src={user.userImg} />
@@ -309,7 +317,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
           ) : (
             <>
               <LikeTitle>
-                The Bars you <strong style={{color: "#D19B18"}}>LIKE</strong>
+                The Bars you <Like>LIKE</Like>
               </LikeTitle>
               <RecommendationSection>
                 {isDeleting && <p>Deleting...</p>}
@@ -339,8 +347,7 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
             </>
           )}
           <RecommendationTitle>
-            We <strong style={{color: "#D19B18"}}>RECOMMEND</strong> the bars
-            for you
+            We <Like>RECOMMEND</Like> the bars for you
           </RecommendationTitle>
           <RecommendationSection>
             {matchIndex !== undefined && (
