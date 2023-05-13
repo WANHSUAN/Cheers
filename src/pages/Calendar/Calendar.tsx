@@ -4,8 +4,8 @@ import {SlArrowLeft, SlArrowRight} from "react-icons/sl";
 import {TiDeleteOutline} from "react-icons/ti";
 import {Link} from "react-router-dom";
 import styled from "styled-components/macro";
+import {BtnText, Button} from "../../components/Button/Button";
 import {db} from "../../utils/firebase";
-import "../Calendar/Calendar.css";
 
 const CalendarWrapper = styled.div`
   width: 800px;
@@ -308,7 +308,7 @@ const CalendarHeader = ({
   );
 };
 
-const CalendarWeekdays = () => {
+export const CalendarWeekdays = () => {
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
@@ -418,7 +418,12 @@ const CalendarDays = ({
                       <EventContent>{EventContentWithLineBreaks}</EventContent>
                       <StyledEventButton>
                         <EventButton to={`/events/${event.id}`}>
-                          <div className="btn">
+                          <Button fontSize="18px" marginLeft="0px">
+                            <BtnText fontSize="18px" marginLeft="0px">
+                              Go to the Bar Event!
+                            </BtnText>
+                          </Button>
+                          {/* <div className="btn">
                             <span className="btn__circle"></span>
                             <span className="btn__white-circle">
                               <svg
@@ -432,47 +437,13 @@ const CalendarDays = ({
                             <span className="btn__text">
                               Go to the Bar Event!
                             </span>
-                          </div>
+                          </div> */}
                         </EventButton>
                       </StyledEventButton>
                     </InnerDiv>
                   </OuterDiv>
                 ) : null}
               </div>
-
-              {/* {isOuterDivVisible && (
-                <OuterDiv>
-                  <InnerDiv>
-                    <Delete onClick={handleDeleteClick}>
-                      <TiDeleteOutline />
-                    </Delete>
-                    <EventTitle>Today's Event</EventTitle>
-                    <EventName>{event.bar}</EventName>
-                    <EventContent>{EventContentWithLineBreaks}</EventContent>
-                    <StyledEventButton>
-                      <EventButton to={`/events/${event.id}`}> */}
-              {/* <main className="content" data-form-type="card"> */}
-              {/* <div className="btn">
-                          <span className="btn__circle"></span>
-                          <span className="btn__white-circle">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              id="icon-arrow-right"
-                              viewBox="0 0 21 12"
-                            >
-                              <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
-                            </svg>
-                          </span>
-                          <span className="btn__text">
-                            Go to the Bar Event!
-                          </span>
-                        </div> */}
-              {/* </main> */}
-              {/* </EventButton>
-                    </StyledEventButton>
-                  </InnerDiv>
-                </OuterDiv> */}
-              {/* )} */}
             </EventSection>
           );
         }

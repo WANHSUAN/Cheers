@@ -14,10 +14,9 @@ import {TiStarFullOutline} from "react-icons/ti";
 import {useParams} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
-import {CommentText} from "../../components/Alert";
+import {Alert, CommentText} from "../../components/Alert/Alert";
 import {db} from "../../utils/firebase";
 import BarMap from "../Bar/BarMap";
-import {Alert} from "./../../components/Alert";
 
 import "./Bar.css";
 import {Star} from "./Star";
@@ -537,7 +536,7 @@ interface StarRatingProps {
   onRatingChange: (rating: number) => void;
 }
 
-const StarRating = (props: StarRatingProps) => {
+export const StarRating = (props: StarRatingProps) => {
   const [rating, setRating] = useState<number>(
     typeof props.rating === "number" ? props.rating : 0
   );
@@ -744,8 +743,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
       }
     }
   };
-
-  console.log(bar?.memberComment);
 
   useEffect(() => {
     window.scrollTo(0, 0);

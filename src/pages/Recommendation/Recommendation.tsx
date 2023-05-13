@@ -5,6 +5,12 @@ import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
 
+const Circle = styled.div`
+  width: 120px;
+  height: 180px;
+  transform: rotate(deg) translateX(200px) rotate(deg);
+`;
+
 const Wrapper = styled.div`
   width: 700px;
   margin: 0 auto;
@@ -23,6 +29,7 @@ const RecSection = styled.div`
 const RecItem = styled(Link)`
   text-decoration: none;
   margin-bottom: 30px;
+  display: ${(props) => (props.hidden ? "none" : "block")};
 
   &:hover {
     transition: ease 0.5s;
@@ -46,8 +53,6 @@ const RecImg = styled.img`
     box-shadow: 3px 3px 10px #ffffff7c;
   }
 `;
-
-const ReLink = styled.div``;
 
 interface IRecommendation {
   matchingBars: [];
@@ -109,30 +114,19 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
             .slice(0, 8)
             .map((recommendation: IRecommendation, index: any) => {
               return (
-                <>
-                  <div
-                    key={index}
-                    style={{
-                      width: "120px",
-                      height: "180px",
-                      transform: `rotate(${
-                        index * 60
-                      }deg) translateX(200px) rotate(${-index * 60}deg)`,
-                    }}
-                  ></div>
+                <React.Fragment key={index}>
+                  <Circle key={index} />
                   <RecItem
                     to={`/bars/${recommendation.id}`}
-                    style={{display: index === 7 ? "none" : "block"}}
+                    hidden={index === 7}
                   >
                     <RecName>{recommendation.name}</RecName>
-                    <ReLink>
-                      <RecImg
-                        src={recommendation.img[1]}
-                        alt={recommendation.name}
-                      />
-                    </ReLink>
+                    <RecImg
+                      src={recommendation.img[1]}
+                      alt={recommendation.name}
+                    />
                   </RecItem>
-                </>
+                </React.Fragment>
               );
             })}
         </RecSection>

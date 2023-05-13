@@ -4,11 +4,10 @@ import {MdOutlineLiquor} from "react-icons/md";
 import {useNavigate} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
-import {CommentText} from "../../components/Alert";
+import {Alert, CommentText} from "../../components/Alert/Alert";
+import {BtnText, Button} from "../../components/Button/Button";
 import {db} from "../../utils/firebase";
 import "../Bar/Bar.css";
-import "../Calendar/Calendar.css";
-import {Alert} from "./../../components/Alert";
 import "./Question.css";
 
 const Wrapper = styled.div`
@@ -40,18 +39,64 @@ const SelectItem = styled.div`
   text-align: left;
 `;
 
+const RadLabel = styled.label`
+  display: flex;
+  align-items: center;
+  border-radius: 100px;
+  padding: 30px 25px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:focus-within {
+    background: hsla(0, 0%, 80%, 0.14);
+  }
+`;
+
+const RadInput = styled.input`
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  z-index: -1;
+`;
+
+const RadDesign = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 100px;
+  background: linear-gradient(
+    to right bottom,
+    hsla(40, 67%, 79%, 0.808),
+    #d19b18
+  );
+  position: relative;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+
+    background: hsl(0, 0%, 90%);
+    transform: scale(1.1);
+    transition: 0.3s;
+  }
+`;
+
+const RadText = styled.div`
+  color: hsl(0, 0%, 60%);
+  margin-left: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 900;
+  transition: 0.3s;
+`;
+
 const SelectTime = styled.p`
   font-size: 40px;
   color: #d19b18;
   margin: 20px 0;
-`;
-
-const Checkbox = styled.input`
-  margin-right: 10px;
-`;
-
-const SelectContent = styled.div`
-  font-size: 30px;
 `;
 
 const Submit = styled.div`
@@ -191,28 +236,6 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
         </TestTitleSection>
 
         <TestSection>
-          {/* {Object.entries(groups).map(([key, label]) => (
-            <SelectItemSection key={key}>
-              <SelectTime>{label}</SelectTime>
-              {options
-                .filter((option) => option.group === key)
-                .map((option) => (
-                  <SelectItem key={option.hashtag}>
-                    <SelectContent>
-                      <Checkbox
-                        type="checkbox"
-                        value={option.text}
-                        checked={selectedOptions.some(
-                          (o) => o.text === option.text
-                        )}
-                        onChange={handleOptionChange}
-                      />
-                      {option.hashtag}
-                    </SelectContent>
-                  </SelectItem>
-                ))}
-            </SelectItemSection>
-          ))} */}
           {Object.entries(groups).map(([key, label]) => (
             <SelectItemSection key={key}>
               <SelectTime>
@@ -223,11 +246,11 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
                 .filter((option) => option.group === key)
                 .map((option) => (
                   <SelectItem key={option.hashtag}>
-                    <label className="rad-label">
+                    <RadLabel>
                       <input
                         type="radio"
                         className="rad-input"
-                        name={option.group} // 設定相同的 name 屬性
+                        name={option.group}
                         value={option.text}
                         checked={selectedOptions.some(
                           (o) => o.text === option.text
@@ -235,8 +258,8 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
                         onChange={handleOptionChange}
                       />
                       <div className="rad-design"></div>
-                      <div className="rad-text"> {option.hashtag}</div>
-                    </label>
+                      <RadText> {option.hashtag}</RadText>
+                    </RadLabel>
                   </SelectItem>
                 ))}
             </SelectItemSection>
@@ -249,24 +272,11 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
             </Alert>
           )}
           <EventButton onClick={handleButtonClick}>
-            <div className="btn">
-              <span className="btn__circle"></span>
-              <span className="btn__white-circle">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  id="icon-arrow-right"
-                  viewBox="0 0 21 12"
-                >
-                  <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
-                </svg>
-              </span>
-              <span
-                className="btn__text"
-                style={{fontSize: "40px", marginLeft: "25px"}}
-              >
-                Go to the Bar Event!
-              </span>
-            </div>
+            <Button fontSize="40px" marginLeft="25px">
+              <BtnText fontSize="40px" marginLeft="25px">
+                Find the bars you like!
+              </BtnText>
+            </Button>
           </EventButton>
         </Submit>
       </Wrapper>

@@ -6,9 +6,9 @@ import {AuthContext} from "../../Context/AuthContext";
 import {collection, getDocs, Timestamp} from "firebase/firestore";
 import {db} from "../../utils/firebase";
 import Calendar from "../Calendar/Calendar";
+import MainMap from "../Main/MainMap";
 import main from "../Question/main.png";
 import Hashtag from "./Hashtag";
-import MainMap from "./MainMap";
 import "./styles.css";
 
 const Wrapper = styled.div`

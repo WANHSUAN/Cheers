@@ -57,6 +57,7 @@
   },
   "devDependencies": {
     "@types/react-router-hash-link": "^2.4.6",
-    "@types/react-scroll": "^1.8.6"
+    "@types/react-scroll": "^1.8.6",
+    "enzyme": "^3.11.0"
   }
 }
