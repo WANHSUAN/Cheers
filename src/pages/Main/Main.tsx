@@ -440,23 +440,6 @@ const Flicker = keyframes`from {
     opacity: 1;
   }`;
 
-const SignSecond = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: radial-gradient(
-    ellipse 50% 35% at 50% 50%,
-    #7f5c0b,
-    transparent
-  );
-  font-size: 4rem;
-  color: #e4d4b1;
-  text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
-    -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
-    0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
-  animation: ${Shine} 2s forwards, ${Flicker} 3s infinite;
-`;
-
 const Sign = styled.div`
   display: flex;
   justify-content: center;
@@ -469,6 +452,23 @@ const Sign = styled.div`
   font-size: 4rem;
   color: #e4d4b1;
   margin-bottom: 40px;
+  text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
+    -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
+    0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
+  animation: ${Shine} 2s forwards, ${Flicker} 3s infinite;
+`;
+
+const SignSecond = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: radial-gradient(
+    ellipse 50% 35% at 50% 50%,
+    #7f5c0b,
+    transparent
+  );
+  font-size: 4rem;
+  color: #e4d4b1;
   text-shadow: 0 0 0.6rem #e4d4b1, 0 0 1.5rem #d19b18,
     -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
     0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
@@ -1017,12 +1017,12 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         <ArrowWrapper>
           <WrapperInner>
             <ScrollDown>
-              <ArrowDown></ArrowDown>
+              <ArrowDown />
               <ScrollTitle>Scroll down</ScrollTitle>
             </ScrollDown>
           </WrapperInner>
         </ArrowWrapper>
-        <Section2 id="section2"></Section2>
+        <Section2 id="section2" />
 
         <Title>
           <Sign>
@@ -1037,7 +1037,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </Title>
         <Test to={"/question"}>
           <TestSelect>Select Your Type!</TestSelect>
-          <Liquid></Liquid>
+          <Liquid />
         </Test>
 
         {showButton && (
@@ -1166,7 +1166,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 const Alert = ({events}: {events: IAlertEvent[]}) => {
   const [showAlert, setShowAlert] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
-  const [showBackground, setShowBackground] = useState(true);
 
   const shouldShowAlert = () => {
     const cookies = document.cookie.split("; ");
@@ -1176,20 +1175,18 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
     return !hideAlertCookie || hideAlertCookie.split("=")[1] !== "true";
   };
 
-  if (!shouldShowAlert()) {
-    return null;
-  }
-
-  if (events.length === 0) {
-    return null;
-  }
-
   const isToday = new Date().toDateString();
 
   const hasEvent = events.map((event) => {
     const eventDate = new Date(event.time.seconds * 1000);
     return eventDate.toDateString() === isToday;
   });
+
+  useEffect(() => {
+    if (!hasEvent.includes(true)) {
+      setShowAlert(false);
+    }
+  }, [hasEvent]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(!isChecked);
@@ -1200,12 +1197,19 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
 
   const handleCloseClick = () => {
     setShowAlert(false);
-    setShowBackground(false);
   };
+
+  if (!shouldShowAlert()) {
+    return null;
+  }
+
+  if (events.length === 0) {
+    return null;
+  }
 
   return (
     <>
-      {showBackground && <Background />}
+      {showAlert && <Background />}
       <AlertWrapper>
         {showAlert &&
           events.map((event, index) => {
