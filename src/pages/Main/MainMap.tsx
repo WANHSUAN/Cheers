@@ -2,6 +2,7 @@ import {collection, getDocs} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import styled from "styled-components/macro";
 import {db} from "../../utils/firebase";
+import Liquor from "../Main/Liquor.png";
 import "./styles.css";
 
 const Wrapper = styled.div`
@@ -283,10 +284,10 @@ const Address = (props: IAddressProps) => {
       infoWindow.open(map);
     };
 
-    // const icons = {
-    //   url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
-    //   scaledSize: new window.google.maps.Size(50, 50)
-    // };
+    const icons = {
+      url: Liquor,
+      scaledSize: new window.google.maps.Size(40, 40),
+    };
 
     map.setOptions({
       styles: [
@@ -371,11 +372,10 @@ const Address = (props: IAddressProps) => {
       ],
     });
     myLatLng.forEach((location, index) => {
-      // barType.map((bar: string) => console.log(bar));
       const marker = new window.google.maps.Marker({
         position: location,
         map,
-        // icon: icons,
+        icon: icons,
       });
 
       marker.addListener("click", () => {

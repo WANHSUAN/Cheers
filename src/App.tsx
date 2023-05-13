@@ -1,11 +1,13 @@
 import {Outlet} from "react-router-dom";
 import styled, {createGlobalStyle} from "styled-components";
+import {normalize} from "styled-normalize";
 import "../src/css/globalStyle.css";
 import {AuthContextProvider} from "./Context/AuthContext";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 
 const GlobalStyle = createGlobalStyle`
+${normalize}
   * {
     box-sizing: border-box;
     margin: 0;

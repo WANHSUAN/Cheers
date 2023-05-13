@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {db} from "../../utils/firebase";
+import RedWine from "../Bar/Liquor.png";
 
 const Wrapper = styled.div`
   display: flex;
@@ -156,8 +157,8 @@ const Address = (props: IAddressProps) => {
     });
 
     const icons = {
-      url: "https://developers.google.com/maps/documentation/javascript/examples/full/images/library_maps.png",
-      scaledSize: new window.google.maps.Size(50, 50),
+      url: RedWine,
+      scaledSize: new window.google.maps.Size(70, 70),
     };
 
     map.setOptions({
@@ -247,7 +248,7 @@ const Address = (props: IAddressProps) => {
       new window.google.maps.Marker({
         position: location,
         map,
-        // icon: icons,
+        icon: icons,
       });
     });
 

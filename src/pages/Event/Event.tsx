@@ -3,6 +3,7 @@ import {useContext, useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
+import {BtnText, Button} from "../../components/Button/Button";
 import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
@@ -132,19 +133,11 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
         </OuterDiv>
         <StyledEventButton>
           <EventButton to={`/bars/${event.id}`} key={event.id}>
-            <div className="btn">
-              <span className="btn__circle"></span>
-              <span className="btn__white-circle">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  id="icon-arrow-right"
-                  viewBox="0 0 21 12"
-                >
-                  <path d="M17.104 5.072l-4.138-4.014L14.056 0l6 5.82-6 5.82-1.09-1.057 4.138-4.014H0V5.072h17.104z"></path>
-                </svg>
-              </span>
-              <span className="btn__text">Go to the Bar Event!</span>
-            </div>
+            <Button fontSize="20px" marginLeft="0px">
+              <BtnText fontSize="20px" marginLeft="0px">
+                Go to the Bar Event!
+              </BtnText>
+            </Button>
           </EventButton>
         </StyledEventButton>
       </EventSection>

@@ -202,6 +202,8 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     setFinalBars(selectedBars);
   };
 
+  console.log(finalBars);
+
   const handleButtonClick = async () => {
     const selectedHashtags = selectedOptions.map((option) => option.hashtag);
     const updatedBars = bars.filter((bar) =>

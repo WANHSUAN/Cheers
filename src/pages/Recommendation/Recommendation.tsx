@@ -5,25 +5,20 @@ import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
 
-const Circle = styled.div`
-  width: 120px;
-  height: 180px;
-  transform: rotate(deg) translateX(200px) rotate(deg);
-`;
-
 const Wrapper = styled.div`
-  width: 700px;
+  width: 900px;
   margin: 0 auto;
   padding-top: 200px;
 `;
 
 const RecSection = styled.div`
-  width: 700px;
+  width: 900px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   text-align: center;
   margin: 50px 0;
+  gap: 50px;
 `;
 
 const RecItem = styled(Link)`
@@ -40,12 +35,12 @@ const RecItem = styled(Link)`
 const RecName = styled.h3`
   color: #fff;
   margin-bottom: 10px;
-  width: 150px;
+  width: 200px;
 `;
 
 const RecImg = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   border: 1px solid #ffffff7c;
 
@@ -111,14 +106,13 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
       {matchIndex !== null && (
         <RecSection>
           {recommendations[matchIndex].matchingBars
-            .slice(0, 8)
+            .slice(0, 9)
             .map((recommendation: IRecommendation, index: any) => {
               return (
                 <React.Fragment key={index}>
-                  <Circle key={index} />
                   <RecItem
                     to={`/bars/${recommendation.id}`}
-                    hidden={index === 7}
+                    hidden={index === 8}
                   >
                     <RecName>{recommendation.name}</RecName>
                     <RecImg

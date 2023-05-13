@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
-import "../src/css/normalize.css";
 import App from "./App";
 import Bar from "./pages/Bar/Bar";
 import Category from "./pages/Category/Category";
