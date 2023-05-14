@@ -1190,20 +1190,16 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(!isChecked);
+  };
+
+  const handleCloseClick = () => {
+    setShowAlert(false);
     document.cookie = `hideAlert=true; expires=${new Date(
       Date.now() + 86400000
     ).toUTCString()};`;
   };
 
-  const handleCloseClick = () => {
-    setShowAlert(false);
-  };
-
-  if (!shouldShowAlert()) {
-    return null;
-  }
-
-  if (events.length === 0) {
+  if (!shouldShowAlert() || events.length === 0) {
     return null;
   }
 
@@ -1222,11 +1218,6 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
                 </AlertMessage>
                 <AlertCheck>
                   <CheckboxWrapper>
-                    {/* <CheckboxInput */}
-                    {/* type="checkbox"
-                      checked={ischecked}
-                      onChange={handleOnChange}
-                    > */}
                     <IconLink
                       rel="stylesheet"
                       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -1245,7 +1236,6 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
                         </LabelText>
                       </EventLabel>
                     </EventCenter>
-                    {/* </CheckboxInput> */}
                     <CheckboxLabel>今日不再顯示</CheckboxLabel>
                   </CheckboxWrapper>
                   <ButtonSection>

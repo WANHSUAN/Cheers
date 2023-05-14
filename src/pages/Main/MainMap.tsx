@@ -121,6 +121,10 @@ interface IBar {
   img: string;
 }
 
+interface IFilterConditions {
+  [key: string]: string;
+}
+
 export interface IMainProps {}
 
 const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
@@ -140,46 +144,26 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
       }));
       setBars(barsData);
 
-      let filteredBars;
-      switch (buttonType) {
-        case "afternoon":
-          filteredBars = barsData.filter((bar) =>
-            bar.type.includes("afternoon")
-          );
-          break;
-        case "night":
-          filteredBars = barsData.filter((bar) => bar.type.includes("night"));
-          break;
-        case "alone":
-          filteredBars = barsData.filter((bar) => bar.type.includes("alone"));
-          break;
-        case "together":
-          filteredBars = barsData.filter((bar) =>
-            bar.type.includes("together")
-          );
-          break;
-        case "classic":
-          filteredBars = barsData.filter((bar) => bar.type.includes("classic"));
-          break;
-        case "special":
-          filteredBars = barsData.filter((bar) => bar.type.includes("special"));
-          break;
-        case "simple":
-          filteredBars = barsData.filter((bar) => bar.type.includes("simple"));
-          break;
-        case "vision":
-          filteredBars = barsData.filter((bar) => bar.type.includes("vision"));
-          break;
-        case "couple":
-          filteredBars = barsData.filter((bar) => bar.type.includes("couple"));
-          break;
-        case "friend":
-          filteredBars = barsData.filter((bar) => bar.type.includes("friend"));
-          break;
-        default:
-          filteredBars = barsData;
-          break;
-      }
+      const filterConditions: IFilterConditions = {
+        afternoon: "afternoon",
+        night: "night",
+        alone: "alone",
+        together: "together",
+        classic: "classic",
+        special: "special",
+        simple: "simple",
+        vision: "vision",
+        couple: "couple",
+        friend: "friend",
+      };
+
+      const filteredBars =
+        buttonType in filterConditions
+          ? barsData.filter((bar) =>
+              bar.type.includes(filterConditions[buttonType])
+            )
+          : barsData;
+
       setFilteredBars(filteredBars);
 
       const address = filteredBars.map((bar) => bar.address);
@@ -416,108 +400,35 @@ const Address = (props: IAddressProps) => {
     setSelectedButton(buttonId);
   };
 
+  const categories = [
+    {label: "#All Bars", type: ""},
+    {label: "#Afternoon", type: "afternoon"},
+    {label: "#Night", type: "night"},
+    {label: "#Alone", type: "alone"},
+    {label: "#Together", type: "together"},
+    {label: "#Classic", type: "classic"},
+    {label: "#Special", type: "special"},
+    {label: "#Simple", type: "simple"},
+    {label: "#Vision", type: "vision"},
+    {label: "#Couple", type: "couple"},
+    {label: "#Friend", type: "friend"},
+  ];
+
   return (
     <Wrapper>
       <ButtonSection>
-        <CategoryButton
-          selected={selectedButton === 1}
-          onClick={() => {
-            props.setButtonType("");
-            handleButtonClick(1);
-          }}
-        >
-          #All Bars
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 2}
-          onClick={() => {
-            props.setButtonType("afternoon");
-            handleButtonClick(2);
-          }}
-        >
-          #Afternoon
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 3}
-          onClick={() => {
-            props.setButtonType("night");
-            handleButtonClick(3);
-          }}
-        >
-          #night
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 4}
-          onClick={() => {
-            props.setButtonType("alone");
-            handleButtonClick(4);
-          }}
-        >
-          #alone
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 5}
-          onClick={() => {
-            props.setButtonType("together");
-            handleButtonClick(5);
-          }}
-        >
-          #together
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 6}
-          onClick={() => {
-            props.setButtonType("classic");
-            handleButtonClick(6);
-          }}
-        >
-          #classic
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 7}
-          onClick={() => {
-            props.setButtonType("special");
-            handleButtonClick(7);
-          }}
-        >
-          #special
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 8}
-          onClick={() => {
-            props.setButtonType("simple");
-            handleButtonClick(8);
-          }}
-        >
-          #simple
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 9}
-          onClick={() => {
-            props.setButtonType("vision");
-            handleButtonClick(9);
-          }}
-        >
-          #vision
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 10}
-          onClick={() => {
-            props.setButtonType("couple");
-            handleButtonClick(10);
-          }}
-        >
-          #couple
-        </CategoryButton>
-        <CategoryButton
-          selected={selectedButton === 11}
-          onClick={() => {
-            props.setButtonType("friend");
-            handleButtonClick(11);
-          }}
-        >
-          #friend
-        </CategoryButton>
+        {categories.map((category, index) => (
+          <CategoryButton
+            key={index}
+            selected={selectedButton === index + 1}
+            onClick={() => {
+              props.setButtonType(category.type);
+              handleButtonClick(index + 1);
+            }}
+          >
+            {category.label}
+          </CategoryButton>
+        ))}
       </ButtonSection>
       <GoogleMap>
         <Map id="map" />

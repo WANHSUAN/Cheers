@@ -96,7 +96,6 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         setUser(data);
         setUserUID(user.uid);
         setIsLogin(true);
-        console.log(getUser ? "有此使用者" : "沒有此使用者");
         const barsData = await getDocs(barsCollectionRef);
         const newData = barsData.docs.map((doc) => {
           const bar = doc.data() as IBar;
@@ -106,7 +105,6 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
       } else {
         setIsLogin(false);
         navigate("/");
-        console.log("登出");
       }
     });
   }, []);
@@ -115,11 +113,9 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     const docRef = doc(db, "users", `${data.userUID}`);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      console.log("帳戶已存在");
       navigate("/main");
       return;
     } else {
-      console.log("帳戶不存在");
       const userRef = collection(db, "users");
       await setDoc(doc(userRef, data.userUID), data);
       navigate("/question");
