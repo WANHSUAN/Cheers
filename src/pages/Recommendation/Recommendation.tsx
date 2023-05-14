@@ -1,14 +1,24 @@
 import {collection, getDocs} from "firebase/firestore";
 import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import styled from "styled-components/macro";
+import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
   width: 900px;
   margin: 0 auto;
-  padding-top: 200px;
+  padding-top: 160px;
+`;
+
+const RecommendationTitle = styled.h1`
+  color: #fff;
+  text-align: center;
+  margin-bottom: 160px;
+`;
+
+const Strong = styled.strong`
+  color: #d19b18;
 `;
 
 const RecSection = styled.div`
@@ -21,10 +31,28 @@ const RecSection = styled.div`
   gap: 50px;
 `;
 
+const Flow = keyframes`
+from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-20px);
+  }
+`;
+
 const RecItem = styled(Link)`
   text-decoration: none;
   margin-bottom: 30px;
   display: ${(props) => (props.hidden ? "none" : "block")};
+  animation: ${Flow} 1s alternate infinite;
+
+  &:nth-child(odd) {
+    animation-delay: 0.2s;
+  }
+
+  &:nth-child(even) {
+    animation-delay: 0.4s;
+  }
 
   &:hover {
     transition: ease 0.5s;
@@ -35,17 +63,19 @@ const RecItem = styled(Link)`
 const RecName = styled.h3`
   color: #fff;
   margin-bottom: 10px;
-  width: 200px;
+  width: 250px;
 `;
 
 const RecImg = styled.img`
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  border: 1px solid #ffffff7c;
+  border: 2px solid #ffffff7c;
+  box-shadow: 3px 3px 10px #ffffff7c;
 
   &:hover {
-    box-shadow: 3px 3px 10px #ffffff7c;
+    transition: ease 1s;
+    box-shadow: 5px 5px 5px #ffffff7c;
   }
 `;
 
@@ -103,16 +133,19 @@ const RecommendationPage: React.FC<IRecommendationProps> = (
 
   return (
     <Wrapper>
+      <RecommendationTitle>
+        We recommend <Strong>THESE BARS</Strong> to you!
+      </RecommendationTitle>
       {matchIndex !== null && (
         <RecSection>
           {recommendations[matchIndex].matchingBars
-            .slice(0, 9)
+            .slice(0, 7)
             .map((recommendation: IRecommendation, index: any) => {
               return (
                 <React.Fragment key={index}>
                   <RecItem
                     to={`/bars/${recommendation.id}`}
-                    hidden={index === 8}
+                    hidden={index === 6}
                   >
                     <RecName>{recommendation.name}</RecName>
                     <RecImg

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 // import {Link} from "react-scroll";
@@ -591,6 +591,7 @@ const Test = styled(Link)`
   cursor: pointer;
   overflow: hidden;
   animation: ${Jump} 1s infinite;
+  text-decoration: none;
 
   &:hover {
     background-color: #fff;
@@ -912,7 +913,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   // const [showScrollButton, setShowScrollButton] = useState(true);
   // const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
   const {bars} = useContext(AuthContext);
-  const navigate = useNavigate();
 
   // const handleScroll = () => {
   //   // 檢查當前位置是否已到達指定部分

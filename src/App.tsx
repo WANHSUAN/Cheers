@@ -19,6 +19,10 @@ ${normalize}
     background-color: #000;
     letter-spacing: 3px;
   }
+
+  h1 {
+    margin: 0;
+  }
 `;
 
 const Wrapper = styled.div`

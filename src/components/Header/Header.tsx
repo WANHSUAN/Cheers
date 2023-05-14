@@ -1,6 +1,6 @@
 import algoliasearch from "algoliasearch/lite";
 import {GoogleAuthProvider, getAuth} from "firebase/auth";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import {
   CurrentRefinements,
   Highlight,
@@ -38,6 +38,16 @@ const Nav = styled.div`
   padding: 0 30px;
 `;
 
+const NavCenter = styled.div`
+  width: 100vw;
+  height: 60px;
+  background-color: #000;
+  padding: 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Menu = styled.p`
   color: #fff;
   margin: 5px 0;
@@ -61,7 +71,7 @@ const MenuToggle = styled.div`
   gap: 10px;
 `;
 
-const HamBox = styled.div<HamBoxProps>`
+const HamBox = styled.div<ToggleProps>`
   position: relative;
   width: 30px;
   height: 30px;
@@ -80,7 +90,7 @@ const HamBox = styled.div<HamBoxProps>`
   }
 `;
 
-const TopLine = styled.span<LineProps>`
+const TopLine = styled.span<ToggleProps>`
   margin: 0 auto;
   position: absolute;
   top: 1em;
@@ -101,7 +111,7 @@ const TopLine = styled.span<LineProps>`
   `}
 `;
 
-const BottomLine = styled.span<LineProps>`
+const BottomLine = styled.span<ToggleProps>`
   margin: 0 auto;
   position: absolute;
   bottom: 1em;
@@ -128,7 +138,7 @@ const Title = styled(Link)`
   text-decoration: none;
 `;
 
-const NavOverlay = styled.div<NavOverlayProps>`
+const NavOverlay = styled.div<ToggleProps>`
   position: fixed;
   background: url(${side}) no-repeat center center;
   background-size: cover;
@@ -341,27 +351,39 @@ const EventContent = styled.p`
   text-align: left;
 `;
 
-interface NavOverlayProps {
+interface ToggleProps {
   isToggle: boolean;
 }
 
-interface HamBoxProps {
-  isToggle: boolean;
-}
-
-interface LineProps {
-  isToggle: boolean;
+interface SearchProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type HandleSideMenuType = () => void;
 
 const Header = () => {
   const auth = getAuth();
-  const {logOut} = useContext(AuthContext);
+  const {logOut, isLogin} = useContext(AuthContext);
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   const [isOpen, setIsOpen] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: any) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    } else {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    }
+  }, [isOpen]);
 
   provider.setCustomParameters({
     prompt: "select_account",
@@ -377,9 +399,19 @@ const Header = () => {
     setIsToggle(!isToggle);
   };
 
-  const OpenSearch = () => {
-    setIsOpen(!isOpen);
-  };
+  // const OpenSearch = () => {
+  //   console.log("open!");
+  //   setIsOpen(!isOpen);
+  // };
+
+  if (!isLogin)
+    return (
+      <Wrapper>
+        <NavCenter>
+          <Title to={"./main"}>CHEERS</Title>
+        </NavCenter>
+      </Wrapper>
+    );
 
   return (
     <Wrapper>
@@ -424,18 +456,22 @@ const Header = () => {
         </MenuSection>
         <Title to={"./main"}>CHEERS</Title>
         <SearchSection>
-          <SearchItem onClick={OpenSearch}>SEARCH</SearchItem>
-          {isOpen && <Search />}
+          <div ref={ref}>
+            <SearchItem onClick={() => setIsOpen(!isOpen)}>SEARCH</SearchItem>
+            {isOpen && <Search isOpen={isOpen} setIsOpen={setIsOpen} />}
+          </div>
         </SearchSection>
       </Nav>
     </Wrapper>
   );
 };
 
-const MySearchComponent = () => {
+const MySearchComponent = ({isOpen, setIsOpen}: SearchProps) => {
   const [showBars, setShowBars] = useState(false);
   const [showEvents, setShowEvents] = useState(false);
-  const [searchBoxVisible, setSearchBoxVisible] = useState(true);
+  // const [searchBoxVisible, setSearchBoxVisible] = useState(true);
+
+  // console.log(searchBoxVisible);
 
   const BarsTemplate = ({
     hit,
@@ -450,7 +486,7 @@ const MySearchComponent = () => {
     };
   }) => {
     return (
-      <StyledSearchBarSection onClick={() => setSearchBoxVisible(false)}>
+      <StyledSearchBarSection onClick={() => setIsOpen(false)}>
         <SearchBarSection to={`/bars/${hit.objectID}`}>
           <BarName>
             <Highlight
@@ -489,7 +525,7 @@ const MySearchComponent = () => {
     hit: {objectID: string; bar: string; content: string; __position: number};
   }) => {
     return (
-      <StyledSearchEventSection onClick={() => setSearchBoxVisible(false)}>
+      <StyledSearchEventSection onClick={() => setIsOpen(false)}>
         <SearchEventSection to={`/events/${hit.objectID}`}>
           <EventBar>
             <Highlight attribute="bar" hit={hit} nonHighlightedTagName="span" />
@@ -509,20 +545,20 @@ const MySearchComponent = () => {
   const handleBarsClick = () => {
     setShowBars(true);
     setShowEvents(false);
-    setSearchBoxVisible(true);
+    setIsOpen(true);
   };
 
   const handleEventsClick = () => {
     setShowBars(false);
     setShowEvents(true);
-    setSearchBoxVisible(true);
+    setIsOpen(true);
   };
   return (
     <>
       <InstantSearchContainer>
         <InstantSearch searchClient={searchClient} indexName="bars">
           <CurrentRefinements />
-          {searchBoxVisible && (
+          {isOpen && (
             <>
               <SearchBox
                 placeholder="Search"
@@ -551,10 +587,10 @@ const MySearchComponent = () => {
   );
 };
 
-const Search = () => {
+const Search = ({isOpen, setIsOpen}: SearchProps) => {
   return (
     <SearchWrapper>
-      <MySearchComponent />
+      <MySearchComponent isOpen={isOpen} setIsOpen={setIsOpen} />
     </SearchWrapper>
   );
 };

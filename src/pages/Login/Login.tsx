@@ -1,10 +1,5 @@
 import {GoogleAuthProvider, getAuth} from "firebase/auth";
 import React, {useContext, useEffect, useState} from "react";
-import {
-  SlSocialFacebook,
-  SlSocialGoogle,
-  SlSocialTwitter,
-} from "react-icons/sl";
 import {Link} from "react-scroll";
 import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
@@ -117,8 +112,6 @@ const SecondSection = styled.div`
 
 const LoginTextSection = styled.div`
   width: 50%;
-  justify-content: center;
-  align-items: center;
 `;
 
 const LoginImgSection = styled.div`
@@ -147,6 +140,29 @@ const LoginContent = styled.div`
   gap: 30px;
   margin: 15% auto;
   justify-content: center;
+`;
+
+const GoogleLogin = styled.button`
+  height: 60px;
+  border: 1px solid #ffffffbd;
+  border-radius: 35px;
+  font-size: 30px;
+  padding: 13px 20px;
+  cursor: pointer;
+  background-color: #ffffff7c;
+  display: flex;
+  color: #fff;
+  justify-content: space-around;
+
+  &:hover {
+    color: #d19b18;
+    background-color: #fff;
+    transition: ease 0.5s;
+  }
+`;
+
+const GoogleText = styled.p`
+  text-align: center;
 `;
 
 const UserName = styled.input`
@@ -212,26 +228,6 @@ const NativeSignUp = styled.button`
   &:hover {
     color: #d19b18;
     background-color: #fff;
-    transition: ease 0.5s;
-  }
-`;
-
-const OtherButtonSection = styled.div`
-  display: flex;
-`;
-
-const LoginButton = styled.button`
-  width: 50px;
-  height: 50px;
-  font-size: 35px;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0);
-  color: #ffffff7c;
-
-  &:hover {
-    color: #fff;
     transition: ease 0.5s;
   }
 `;
@@ -310,23 +306,15 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
           <LoginContent>
             <LoginTitle>Let's Start Exploring!</LoginTitle>
             <SubTitle>Please fill in your basic info</SubTitle>
-            <UserName placeholder="Username" />
+            <GoogleLogin onClick={() => signIn(auth, provider)}>
+              <GoogleText>continue with Google</GoogleText>
+            </GoogleLogin>
+            <UserName placeholder="Name" />
             <PassWord placeholder="Password" />
             <NativeButtonSection>
               <NativeLogin>Log In</NativeLogin>
               <NativeSignUp>Sign Up</NativeSignUp>
             </NativeButtonSection>
-            <OtherButtonSection>
-              <LoginButton onClick={() => signIn(auth, provider)}>
-                <SlSocialGoogle />
-              </LoginButton>
-              <LoginButton>
-                <SlSocialFacebook />
-              </LoginButton>
-              <LoginButton>
-                <SlSocialTwitter />
-              </LoginButton>
-            </OtherButtonSection>
           </LoginContent>
         </LoginTextSection>
         <LoginImgSection />

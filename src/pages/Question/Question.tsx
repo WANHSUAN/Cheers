@@ -97,6 +97,12 @@ const SelectTime = styled.p`
   font-size: 40px;
   color: #d19b18;
   margin: 20px 0;
+
+  svg {
+    width: 1.2em;
+    height: 1.2em;
+    margin-right: 20px;
+  }
 `;
 
 const Submit = styled.div`
@@ -202,9 +208,11 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     setFinalBars(selectedBars);
   };
 
-  console.log(finalBars);
-
   const handleButtonClick = async () => {
+    if (selectedOptions.length === 0) {
+      setShowFlash(true);
+      return;
+    }
     const selectedHashtags = selectedOptions.map((option) => option.hashtag);
     const updatedBars = bars.filter((bar) =>
       selectedHashtags.every((hashtag) => bar.type.includes(hashtag))

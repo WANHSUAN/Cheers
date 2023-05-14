@@ -44,7 +44,7 @@ const CommentScore = styled.li`
 const BarTitle = styled.h1`
   font-size: 50px;
   color: #d19b18;
-  padding-bottom: 10px;
+  padding: 20px 0;
 `;
 
 const Like = styled.span`
@@ -99,23 +99,23 @@ const BarContent = styled.div`
 `;
 
 const ScrollButton = styled.button`
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   position: fixed;
   bottom: 110px;
   right: 50px;
-  z-index: 3;
+  z-index: 1;
   border: none;
-  font-size: 18px;
-  background-color: #fff;
-  color: #d19b18;
+  font-size: 1.5rem;
+  background-color: #d19b18;
+  color: #fff;
   border-radius: 50%;
   padding: 10px;
   cursor: pointer;
 
   &:hover {
-    background-color: #d19b18;
-    color: #fff;
+    background-color: #fff;
+    color: #d19b18;
 
     transition: ease 0.5s;
   }
@@ -334,7 +334,9 @@ const BarRecTitle = styled.h2`
   margin: 450px 0 200px;
 `;
 
-const BarTitleContent = styled.div``;
+const BarTitleContent = styled.div`
+  text-align: center;
+`;
 
 const BarRecImg = styled.img`
   width: 400px;
@@ -348,9 +350,9 @@ const BarRecName = styled.div`
   height: 300px;
   color: #fff;
   font-size: 60px;
-  display: flex;
+  /* display: flex; */
   align-items: center;
-  margin-top: 50px;
+  margin-top: 150px;
 `;
 
 const BarRecContent = styled.div`
