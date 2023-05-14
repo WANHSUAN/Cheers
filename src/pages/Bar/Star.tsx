@@ -1,9 +1,9 @@
-export interface StarProps {
+export interface IStarProps {
   marked: boolean;
   starId: number;
 }
 
-export const Star = ({marked, starId}: StarProps) => {
+export const Star = ({marked, starId}: IStarProps) => {
   return (
     <span
       star-id={starId}

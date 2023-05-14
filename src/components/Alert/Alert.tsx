@@ -2,7 +2,7 @@ import {ReactNode} from "react";
 import {SlCheck} from "react-icons/sl";
 import styled, {keyframes} from "styled-components/macro";
 
-interface AlertProps {
+interface IAlertProps {
   color: string;
   children?: ReactNode;
 }
@@ -81,7 +81,7 @@ export const CommentText = styled.div`
   align-items: center;
 `;
 
-export const Alert = ({color, children}: AlertProps) => {
+export const Alert = ({color, children}: IAlertProps) => {
   return (
     <Flash color={color}>
       <FlashIcon color={color}>

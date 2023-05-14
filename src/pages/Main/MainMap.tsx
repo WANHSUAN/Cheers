@@ -32,7 +32,7 @@ const ButtonSection = styled.div`
   justify-content: space-around;
 `;
 
-const CategoryButton = styled.button<CategoryButtonProps>`
+const CategoryButton = styled.button<ICategoryButtonProps>`
   width: 100px;
   height: 30px;
   color: ${(props) => (props.selected ? "#D19B18" : "#fff")};
@@ -103,10 +103,10 @@ const useScript = (src: string) => {
   return [state.loaded, state.error];
 };
 
-interface CategoryButtonProps {
+interface ICategoryButtonProps {
   selected: boolean;
 }
-interface LatLng {
+interface ILatLng {
   lat: number;
   lng: number;
 }
@@ -124,7 +124,7 @@ interface IBar {
 export interface IMainProps {}
 
 const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
-  const [latLngArr, setLatLngArr] = useState<LatLng[]>([]);
+  const [latLngArr, setLatLngArr] = useState<ILatLng[]>([]);
   const [bars, setBars] = useState<IBar[]>([]);
   const [isLoading, setIsLoading] = useState(true); // 新增 isLoading 狀態
   const [filteredBars, setFilteredBars] = useState(bars);
@@ -213,7 +213,7 @@ const fetchData = async (address: string) => {
   return {lat, lng};
 };
 interface IAddressProps {
-  latLng: LatLng[];
+  latLng: ILatLng[];
   bars: IBar[];
   setButtonType: (param1: string) => void;
 }

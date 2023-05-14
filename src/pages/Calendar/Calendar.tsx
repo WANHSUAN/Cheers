@@ -330,7 +330,8 @@ const CalendarDays = ({
   events: IEvent[];
 }) => {
   const [seconds, setSeconds] = useState(0);
-  const [isOuterDivVisible, setIsOuterDivVisible] = useState(true);
+  const [isEventVisible, setIsEventVisible] = useState(false);
+  const [targetEvent, setTargetEvent] = useState<IEvent | undefined>(undefined);
 
   if (events.length === 0) {
     return <p>Loading...</p>;
@@ -375,7 +376,17 @@ const CalendarDays = ({
       const targetDate = new Date(date);
       targetDate.setHours(0, 0, 0, 0); // 將時間設定為 0
       const targetSeconds = Math.floor(targetDate.getTime() / 1000);
+      const newEvents = events.filter(
+        (event) =>
+          targetSeconds + 86400 > event.time.seconds &&
+          targetSeconds < event.time.seconds
+      );
+      if (newEvents.length === 0) {
+        return;
+      }
+      setTargetEvent(newEvents[0]);
       setSeconds(targetSeconds);
+      setIsEventVisible(!isEventVisible);
     };
 
     days.push(
@@ -386,7 +397,7 @@ const CalendarDays = ({
         ${hasEvent ? "calendar__day--event" : ""}
         ${isToday ? "calendar__day--today" : ""} 
         `}
-        onClick={handleClick}
+        onClick={() => handleClick()}
       >
         {i}
       </CalendarDay>
@@ -394,45 +405,37 @@ const CalendarDays = ({
   }
 
   const handleDeleteClick = () => {
-    setIsOuterDivVisible(false);
+    setIsEventVisible(!isEventVisible);
   };
 
   return (
     <>
       <CalendarDaysSection>{days}</CalendarDaysSection>
-      {events.map((event, index) => {
-        const EventContentWithLineBreaks = event.content.replace(/。/g, "。\n");
-        const daySeconds = event.time.seconds;
-        if (seconds < daySeconds && daySeconds <= seconds + 86400) {
-          return (
-            <EventSection key={index}>
-              <div>
-                {isOuterDivVisible ? (
-                  <OuterDiv>
-                    <InnerDiv>
-                      <Delete onClick={handleDeleteClick}>
-                        <TiDeleteOutline />
-                      </Delete>
-                      <EventTitle>Today's Event</EventTitle>
-                      <EventName>{event.bar}</EventName>
-                      <EventContent>{EventContentWithLineBreaks}</EventContent>
-                      <StyledEventButton>
-                        <EventButton to={`/events/${event.id}`}>
-                          <Button fontSize="18px" marginLeft="0px">
-                            <BtnText fontSize="18px" marginLeft="0px">
-                              Go to the Bar Event!
-                            </BtnText>
-                          </Button>
-                        </EventButton>
-                      </StyledEventButton>
-                    </InnerDiv>
-                  </OuterDiv>
-                ) : null}
-              </div>
-            </EventSection>
-          );
-        }
-      })}
+      {isEventVisible && targetEvent && (
+        <EventSection>
+          <OuterDiv>
+            <InnerDiv>
+              <Delete onClick={handleDeleteClick}>
+                <TiDeleteOutline />
+              </Delete>
+              <EventTitle>Today's Event</EventTitle>
+              <EventName>{targetEvent?.bar}</EventName>
+              <EventContent>
+                {targetEvent?.content.replace(/。/g, "。\n")}
+              </EventContent>
+              <StyledEventButton>
+                <EventButton to={`/events/${targetEvent?.id}`}>
+                  <Button fontSize="18px" marginLeft="0px">
+                    <BtnText fontSize="18px" marginLeft="0px">
+                      Go to the Bar Event!
+                    </BtnText>
+                  </Button>
+                </EventButton>
+              </StyledEventButton>
+            </InnerDiv>
+          </OuterDiv>
+        </EventSection>
+      )}
     </>
   );
 };

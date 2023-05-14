@@ -71,7 +71,7 @@ const MenuToggle = styled.div`
   gap: 10px;
 `;
 
-const HamBox = styled.div<ToggleProps>`
+const HamBox = styled.div<IToggleProps>`
   position: relative;
   width: 30px;
   height: 30px;
@@ -90,7 +90,7 @@ const HamBox = styled.div<ToggleProps>`
   }
 `;
 
-const TopLine = styled.span<ToggleProps>`
+const TopLine = styled.span<IToggleProps>`
   margin: 0 auto;
   position: absolute;
   top: 1em;
@@ -111,7 +111,7 @@ const TopLine = styled.span<ToggleProps>`
   `}
 `;
 
-const BottomLine = styled.span<ToggleProps>`
+const BottomLine = styled.span<IToggleProps>`
   margin: 0 auto;
   position: absolute;
   bottom: 1em;
@@ -138,7 +138,7 @@ const Title = styled(Link)`
   text-decoration: none;
 `;
 
-const NavOverlay = styled.div<ToggleProps>`
+const NavOverlay = styled.div<IToggleProps>`
   position: fixed;
   background: url(${side}) no-repeat center center;
   background-size: cover;
@@ -351,11 +351,11 @@ const EventContent = styled.p`
   text-align: left;
 `;
 
-interface ToggleProps {
+interface IToggleProps {
   isToggle: boolean;
 }
 
-interface SearchProps {
+interface ISearchProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -398,11 +398,6 @@ const Header = () => {
   const handleSideMenu: HandleSideMenuType = () => {
     setIsToggle(!isToggle);
   };
-
-  // const OpenSearch = () => {
-  //   console.log("open!");
-  //   setIsOpen(!isOpen);
-  // };
 
   if (!isLogin)
     return (
@@ -466,12 +461,9 @@ const Header = () => {
   );
 };
 
-const MySearchComponent = ({isOpen, setIsOpen}: SearchProps) => {
+const MySearchComponent = ({isOpen, setIsOpen}: ISearchProps) => {
   const [showBars, setShowBars] = useState(false);
   const [showEvents, setShowEvents] = useState(false);
-  // const [searchBoxVisible, setSearchBoxVisible] = useState(true);
-
-  // console.log(searchBoxVisible);
 
   const BarsTemplate = ({
     hit,
@@ -587,7 +579,7 @@ const MySearchComponent = ({isOpen, setIsOpen}: SearchProps) => {
   );
 };
 
-const Search = ({isOpen, setIsOpen}: SearchProps) => {
+const Search = ({isOpen, setIsOpen}: ISearchProps) => {
   return (
     <SearchWrapper>
       <MySearchComponent isOpen={isOpen} setIsOpen={setIsOpen} />

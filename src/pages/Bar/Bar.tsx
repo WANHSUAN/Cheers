@@ -533,12 +533,12 @@ interface IMenu {
   ingredients: string[];
 }
 
-interface StarRatingProps {
+interface IStarRatingProps {
   rating: number;
   onRatingChange: (rating: number) => void;
 }
 
-export const StarRating = (props: StarRatingProps) => {
+export const StarRating = (props: IStarRatingProps) => {
   const [rating, setRating] = useState<number>(
     typeof props.rating === "number" ? props.rating : 0
   );

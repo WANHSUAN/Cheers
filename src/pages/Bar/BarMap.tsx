@@ -74,7 +74,7 @@ const useScript = (src: string) => {
   }, [src]);
   return [state.loaded, state.error];
 };
-interface LatLng {
+interface ILatLng {
   lat: number;
   lng: number;
 }
@@ -115,7 +115,7 @@ interface IAddressToLatLngProps {
 }
 
 const AddressToLatLng = (props: IAddressToLatLngProps) => {
-  const [latLng, setLatLng] = useState<LatLng>({lat: 0, lng: 0});
+  const [latLng, setLatLng] = useState<ILatLng>({lat: 0, lng: 0});
 
   useEffect(() => {
     const fetchData = async () => {

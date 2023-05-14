@@ -1,7 +1,7 @@
 import {ReactNode} from "react";
 import styled from "styled-components/macro";
 
-interface ButtonProps {
+interface IButtonProps {
   fontSize: string;
   marginLeft: string;
   children?: ReactNode;
@@ -38,7 +38,7 @@ const BtnWhiteCircle = styled.span`
   }
 `;
 
-export const BtnText = styled.span<ButtonProps>`
+export const BtnText = styled.span<IButtonProps>`
   position: absolute;
   font-size: ${(props) => props.fontSize};
   top: 50%;
@@ -73,7 +73,7 @@ const Btn = styled.div`
   }
 `;
 
-export const Button = ({fontSize, marginLeft, children}: ButtonProps) => {
+export const Button = ({fontSize, marginLeft, children}: IButtonProps) => {
   return (
     <Btn>
       <BtnCircle />

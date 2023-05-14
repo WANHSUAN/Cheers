@@ -18,7 +18,7 @@ import {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {db} from "../utils/firebase";
 
-export interface Bar {
+export interface IBar {
   id: string;
   name: string;
   img: string;
@@ -26,24 +26,24 @@ export interface Bar {
   type: string[];
 }
 
-export interface User {
+export interface IUser {
   name: string;
   email: string;
   userImg: string;
   userUID: string;
 }
 
-interface AuthContextType {
+interface IAuthContextType {
   isLogin: boolean;
-  user: User;
+  user: IUser;
   loading: boolean;
   userUID: string;
   signIn: (auth: Auth, provider: GoogleAuthProvider) => Promise<void>;
   logOut: (auth: Auth) => Promise<void>;
-  bars: Bar[];
+  bars: IBar[];
 }
 
-export const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<IAuthContextType>({
   isLogin: false,
   user: {
     name: "",
@@ -57,7 +57,7 @@ export const AuthContext = createContext<AuthContextType>({
   logOut: async () => {},
   bars: [],
 });
-const initialUserData: User = {
+const initialUserData: IUser = {
   name: "",
   email: "",
   userImg: "",
@@ -67,10 +67,10 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [user, setUser] = useState<User>(initialUserData);
+  const [user, setUser] = useState<IUser>(initialUserData);
   const [loading, setLoading] = useState<boolean>(true);
   const [userUID, setUserUID] = useState<string>("");
-  const [bars, setBars] = useState<Bar[]>([]);
+  const [bars, setBars] = useState<IBar[]>([]);
   const barsCollectionRef = collection(db, "bars");
 
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         console.log(getUser ? "有此使用者" : "沒有此使用者");
         const barsData = await getDocs(barsCollectionRef);
         const newData = barsData.docs.map((doc) => {
-          const bar = doc.data() as Bar;
+          const bar = doc.data() as IBar;
           return {...bar, id: doc.id};
         });
         setBars(newData);
@@ -132,7 +132,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   ) => {
     const res = await signInWithPopup(auth, provider);
     const user = res.user;
-    const data: User = {
+    const data: IUser = {
       name: user.displayName || "",
       email: user.email || "",
       userImg: user.photoURL || "",
