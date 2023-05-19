@@ -254,7 +254,7 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
 
   const [showButton, setShowButton] = useState(true);
   const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
-  const [email, setEmail] = useState("test@gmail.com");
+  const [email, setEmail] = useState("test7@gmail.com");
   const [password, setPassWord] = useState("testpassword");
   const [isSignInState, setIsSignInState] = useState(true);
 
