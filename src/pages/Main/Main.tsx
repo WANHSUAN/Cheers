@@ -1,9 +1,8 @@
+import {Timestamp, collection, getDocs} from "firebase/firestore";
 import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
-// import {Link} from "react-scroll";
-import {collection, getDocs, Timestamp} from "firebase/firestore";
 import {db} from "../../utils/firebase";
 import Calendar from "../Calendar/Calendar";
 import MainMap from "../Main/MainMap";
@@ -832,12 +831,6 @@ const CheckboxWrapper = styled.label`
   margin: 30px;
 `;
 
-// const CheckboxInput = styled.input`
-//   vertical-align: middle;
-//   width: 30px;
-//   height: 30px;
-// `;
-
 const CheckboxLabel = styled.span`
   font-size: 30px;
   margin-left: 10px;
@@ -910,39 +903,10 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [showMore, setShowMore] = useState(false);
   const eventsCollectionRef = collection(db, "events");
   const [showButton, setShowButton] = useState(false);
-  // const [showScrollButton, setShowScrollButton] = useState(true);
-  // const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
   const {bars} = useContext(AuthContext);
 
-  // const handleScroll = () => {
-  //   // 檢查當前位置是否已到達指定部分
-  //   const section2 = document.getElementById("section2");
-  //   if (!section2) return; // 如果 section2 不存在，不做任何處理
-  //   if (
-  //     section2 &&
-  //     section2.getBoundingClientRect().top <= window.innerHeight
-  //   ) {
-  //     setShowScrollButton(false); // 隱藏按鈕
-  //   } else if (section2 && window.scrollY < section2.offsetTop) {
-  //     setShowScrollButton(true); // 顯示按鈕
-  //   }
-  //   if (window.scrollY === 0) {
-  //     setShowScrollButton(true); // 畫面到頂部時顯示按鈕
-  //   }
-  // };
-
-  // const scrollToSection2 = () => {
-  //   // 捲動到指定部分
-  //   const section2 = document.getElementById("section2");
-  //   if (section2) {
-  //     window.scrollTo({
-  //       top: section2.offsetTop,
-  //       behavior: "smooth",
-  //     });
-  //   }
-  // };
-
   useEffect(() => {
+    window.scrollTo(0, 0);
     const getEvents = async () => {
       const data = await getDocs(eventsCollectionRef);
       setEvents(
@@ -964,18 +928,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-
-    // window.addEventListener("scroll", handleScroll);
-
-    // 獲取 section2 元素
-    // const section2El = document.getElementById("section2");
-    // if (!section2El) return; // 如果 section2 不存在，不做任何處理
-    // setSection2(section2El);
-
-    // return () => {
-    //   // 在元件解除掛載前，取消事件監聽器
-    //   window.removeEventListener("scroll", handleScroll);
-    // };
   }, []);
 
   if (bars.length === 0) {
@@ -1007,13 +959,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           </Slogan>
           <MainImg src={main} />
         </ImageContainer>
-        {/* {showButton && (
-          <Link to="section2" smooth={true} onClick={scrollToSection2}>
-            <div className="encircle bounce animated">
-              <div className="arrow"></div>
-            </div>
-          </Link>
-        )} */}
         <ArrowWrapper>
           <WrapperInner>
             <ScrollDown>

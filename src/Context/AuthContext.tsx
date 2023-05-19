@@ -1,8 +1,10 @@
 import {
   Auth,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
@@ -41,6 +43,8 @@ interface IAuthContextType {
   signIn: (auth: Auth, provider: GoogleAuthProvider) => Promise<void>;
   logOut: (auth: Auth) => Promise<void>;
   bars: IBar[];
+  nativeSignIn: (auth: Auth, email: string, password: string) => Promise<void>;
+  nativeSignUp: (auth: Auth, email: string, password: string) => Promise<void>;
 }
 
 export const AuthContext = createContext<IAuthContextType>({
@@ -56,6 +60,8 @@ export const AuthContext = createContext<IAuthContextType>({
   signIn: async () => {},
   logOut: async () => {},
   bars: [],
+  nativeSignIn: async (auth: Auth, email: string, password: string) => {},
+  nativeSignUp: async (auth: Auth, email: string, password: string) => {},
 });
 const initialUserData: IUser = {
   name: "",
@@ -147,7 +153,54 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     setUserUID("");
     setIsLogin(false);
     setLoading(false);
-    navigate(`/`, {replace: true});
+    navigate("/", {replace: true});
+  };
+
+  const nativeSignIn = async (auth: Auth, email: string, password: string) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential: any) => {
+        const user = userCredential.user;
+        console.log(user);
+        if (user) {
+          getUsers(user);
+
+          navigate("/main");
+          return;
+        } else {
+          navigate("/question");
+        }
+      })
+      .catch((error) => {
+        console.log("native login error:", error);
+        const errorCode = error.code;
+        console.log(errorCode);
+        // showNativeAuthErrorMessage(errorCode);
+      });
+    console.log(user.userImg);
+  };
+
+  const nativeSignUp = async (auth: Auth, email: string, password: string) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential: any) => {
+        const user = userCredential.user;
+        const img = "https://cdn-icons-png.flaticon.com/512/5111/5111178.png";
+        const data: any = {
+          name: user.email.split("@")[0] || "",
+          email: user.email || "",
+          userImg: img,
+          userUID: user.uid || "",
+        };
+        setUserDoc(data);
+        setUser(data);
+        setUserUID(data.userUID);
+        setIsLogin(true);
+      })
+      .catch((error) => {
+        console.log("native signup error:", error);
+        const errorCode = error.code;
+        console.log(errorCode);
+        // showNativeAuthErrorMessage(errorCode);
+      });
   };
 
   return (
@@ -160,6 +213,8 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         bars,
         signIn,
         logOut,
+        nativeSignIn,
+        nativeSignUp,
       }}
     >
       {children}

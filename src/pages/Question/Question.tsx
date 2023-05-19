@@ -52,37 +52,6 @@ const RadLabel = styled.label`
   }
 `;
 
-const RadInput = styled.input`
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  z-index: -1;
-`;
-
-const RadDesign = styled.div`
-  width: 28px;
-  height: 28px;
-  border-radius: 100px;
-  background: linear-gradient(
-    to right bottom,
-    hsla(40, 67%, 79%, 0.808),
-    #d19b18
-  );
-  position: relative;
-
-  &::before {
-    content: "";
-    display: inline-block;
-    width: inherit;
-    height: inherit;
-    border-radius: inherit;
-
-    background: hsl(0, 0%, 90%);
-    transform: scale(1.1);
-    transition: 0.3s;
-  }
-`;
-
 const RadText = styled.div`
   color: hsl(0, 0%, 60%);
   margin-left: 14px;

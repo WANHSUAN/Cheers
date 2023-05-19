@@ -15,46 +15,6 @@ const Wrapper = styled.div`
   width: 1000px;
   margin: 0 auto 80px;
 `;
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  padding: 4% 2%;
-  box-sizing: border-box;
-  height: 50vh;
-  overflow: auto;
-`;
-
-const Box = styled.div`
-  flex: 1;
-  overflow: hidden;
-  transition: 0.5s;
-  margin: 0 2%;
-  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
-  line-height: 0;
-
-  &:hover {
-    flex: 1 1 50%;
-  }
-  &:hover > img {
-    width: 300%;
-    height: 300%;
-  }
-`;
-
-const BoxImg = styled.img`
-  width: 200%;
-  height: calc(100% - 10vh);
-  object-fit: cover;
-  transition: 0.5s;
-`;
-
-const BoxSpan = styled.span`
-  font-size: 20px;
-  display: block;
-  text-align: center;
-  height: 30px;
-  line-height: 2.6;
-`;
 
 const CategorySection = styled(Link)`
   text-decoration: none;
@@ -168,40 +128,11 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
         }
       />
       <Wrapper>
-        {/* <Container>
-          <Box>
-            <BoxImg src="https://source.unsplash.com/1000x800" />
-            <BoxSpan>CSS</BoxSpan>
-          </Box>
-          <Box>
-            <BoxImg src="https://source.unsplash.com/1000x802" />
-            <BoxSpan>Image</BoxSpan>
-          </Box>
-          <Box>
-            <BoxImg src="https://source.unsplash.com/1000x804" />
-            <BoxSpan>Hover</BoxSpan>
-          </Box>
-          <Box>
-            <BoxImg src="https://source.unsplash.com/1000x806" />
-            <BoxSpan>Effect</BoxSpan>
-          </Box>
-        </Container> */}
         {hashtags.map((hashtag, index) => (
           <div key={index} id={hashtag.type} style={{scrollMarginTop: "30vh"}}>
             <CategoryTitle style={{color: hashtag.colorCode}}>
               #{hashtag.type}
             </CategoryTitle>
-
-            {/* <Container>
-              {hashtag.bars.map((type, index) => (
-                <CategorySection key={index} to={`/bars/${type.id}`}>
-                  <Box>
-                    <BoxImg src={type.img} />
-                    <BoxSpan>{type.name}</BoxSpan>
-                  </Box>
-                </CategorySection>
-              ))}
-            </Container> */}
 
             <CategoryCollection>
               {hashtag.bars.map((type, index) => (

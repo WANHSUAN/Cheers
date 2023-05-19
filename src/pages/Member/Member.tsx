@@ -269,28 +269,26 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     return <p>Loading...</p>;
   }
 
+  console.log(user.userImg);
+  console.log(user);
+
   const handleDeleteLikeClick = async (likeDocId: string) => {
-    // TODO
-    let confirmDelete = window.confirm("確定要刪除嗎？");
+    setIsDeleting(true);
+    const likesRef = collection(db, "users", userUID, "likes");
+    const q = query(likesRef, where("barId", "==", likeDocId));
 
-    if (confirmDelete === true) {
-      setIsDeleting(true);
-      const likesRef = collection(db, "users", userUID, "likes");
-      const q = query(likesRef, where("barId", "==", likeDocId));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      likeDocId = doc.id;
+    });
 
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        likeDocId = doc.id;
-      });
-
-      if (likeDocId) {
-        const likeRef = doc(db, "users", userUID, "likes", likeDocId);
-        await deleteDoc(likeRef);
-        const updatedLikes = likes?.filter((like) => like.id !== likeDocId);
-        setLikes(updatedLikes);
-      }
-      setIsDeleting(false);
+    if (likeDocId) {
+      const likeRef = doc(db, "users", userUID, "likes", likeDocId);
+      await deleteDoc(likeRef);
+      const updatedLikes = likes?.filter((like) => like.id !== likeDocId);
+      setLikes(updatedLikes);
     }
+    setIsDeleting(false);
   };
 
   return (
@@ -328,13 +326,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
                       <RecommendationName to={`/bars/${like.id}`}>
                         {like.barName}
                       </RecommendationName>
-                      {/* <LikeScoreSection>
-                     {[...Array(parseInt(like.score.toString()))].map(
-                       (_, i) => (
-                         <LikeScore key={i.toString()}>{"\u2605"}</LikeScore>
-                       )
-                     )}
-                   </LikeScoreSection> */}
                       <LikeDeleteButton
                         onClick={() => handleDeleteLikeClick(like.id)}
                       >

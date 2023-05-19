@@ -350,7 +350,6 @@ const BarRecName = styled.div`
   height: 300px;
   color: #fff;
   font-size: 60px;
-  /* display: flex; */
   align-items: center;
   margin-top: 150px;
 `;
@@ -433,54 +432,6 @@ const StarSection = styled.div`
 `;
 
 const StarCollection = styled.div``;
-
-const CommentAlert = styled.div``;
-
-const MainContainer = styled.button`
-  display: flex;
-  background-color: transparent;
-  border: none;
-`;
-
-const CommentButton = styled.a`
-  position: relative;
-  z-index: 0;
-  width: 130px;
-  height: 40px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffffffbd;
-  letter-spacing: 2px;
-  transition: all 0.3s ease;
-
-  &::before {
-    content: "";
-    position: absolute;
-    height: 3px;
-    border-radius: 2px;
-    background: #ffffffbd;
-    transition: all 0.5s ease;
-    top: 0;
-    left: 54px;
-    width: calc(100% - 56px * 2 - 16px);
-  }
-  &::after {
-    content: "";
-    position: absolute;
-    height: 3px;
-    border-radius: 2px;
-    background: #ffffffbd;
-    transition: all 0.5s ease;
-    top: 0;
-    right: 54px;
-    width: 8px;
-  }
-`;
-
-const CommentButtonLine = styled.div``;
-
-const CommentButtonText = styled.div``;
 
 const InputTextArea = styled.textarea`
   width: 600px;
@@ -733,7 +684,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
   const [showButton, setShowButton] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
   const WINDOW_HEIGHT = 500;
-
   const barCollectionRef = id && doc(db, "bars", id);
 
   const getBar = async () => {
@@ -912,6 +862,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               </CommaLeft>
             </CommentItem>
           </CommentBox>
+
           <RightArrow
             onClick={isLastComment ? undefined : goToNextComment}
             style={isLastComment ? {cursor: "not-allowed"} : {}}

@@ -193,25 +193,38 @@ const PassWord = styled.input`
   }
 `;
 
-const NativeButtonSection = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const NativeLogin = styled.button`
-  width: 49%;
-  height: 50px;
-  font-size: 20px;
+  width: 100%;
+  height: 60px;
+  font-size: 25px;
   border: 1px solid #ffffff7c;
   border-radius: 25px;
   cursor: pointer;
   background-color: #ffffff7c;
   letter-spacing: 2px;
+  color: #fff;
 
   &:hover {
     color: #d19b18;
     background-color: #fff;
     transition: ease 0.5s;
+  }
+`;
+
+const NativeQuestion = styled.p`
+  color: #000;
+  font-size: 20px;
+`;
+
+const SignUp = styled.button`
+  text-decoration: underline;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #fff;
+    transition: 0.2s ease;
   }
 `;
 
@@ -236,11 +249,14 @@ export interface ILoginPageProps {}
 
 const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const auth = getAuth();
-  const {signIn} = useContext(AuthContext);
+  const {signIn, nativeSignIn, nativeSignUp} = useContext(AuthContext);
   const provider = new GoogleAuthProvider();
 
   const [showButton, setShowButton] = useState(true);
   const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassWord] = useState("testpassword");
+  const [isSignInState, setIsSignInState] = useState(true);
 
   const handleScroll = () => {
     const section2 = document.getElementById("section2");
@@ -306,15 +322,67 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
           <LoginContent>
             <LoginTitle>Let's Start Exploring!</LoginTitle>
             <SubTitle>Please fill in your basic info</SubTitle>
-            <GoogleLogin onClick={() => signIn(auth, provider)}>
-              <GoogleText>continue with Google</GoogleText>
-            </GoogleLogin>
-            <UserName placeholder="Name" />
-            <PassWord placeholder="Password" />
-            <NativeButtonSection>
-              <NativeLogin>Log In</NativeLogin>
-              <NativeSignUp>Sign Up</NativeSignUp>
-            </NativeButtonSection>
+            {isSignInState ? (
+              <>
+                <GoogleLogin onClick={() => signIn(auth, provider)}>
+                  <GoogleText>continue with Google</GoogleText>
+                </GoogleLogin>
+                <UserName
+                  placeholder="name"
+                  name="email"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <PassWord
+                  placeholder="Password"
+                  name="password"
+                  type="text"
+                  value={password}
+                  onChange={(e) => setPassWord(e.target.value)}
+                  required
+                />
+                <NativeLogin
+                  onClick={() => nativeSignIn(auth, email, password)}
+                >
+                  Log In
+                </NativeLogin>
+                <NativeQuestion>
+                  New Here?
+                  <SignUp onClick={() => setIsSignInState(false)}>
+                    Sign Up
+                  </SignUp>
+                </NativeQuestion>
+              </>
+            ) : (
+              <>
+                <UserName
+                  placeholder="name"
+                  name="email"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <PassWord
+                  placeholder="Password"
+                  name="password"
+                  type="text"
+                  value={password}
+                  onChange={(e) => setPassWord(e.target.value)}
+                  required
+                />
+                <NativeSignUp
+                  onClick={() => {
+                    nativeSignUp(auth, email, password);
+                    setIsSignInState(true);
+                  }}
+                >
+                  Sign Up
+                </NativeSignUp>
+              </>
+            )}
           </LoginContent>
         </LoginTextSection>
         <LoginImgSection />
