@@ -408,18 +408,6 @@ const ScoreForm = styled.form`
   position: relative;
 `;
 
-const MemberImg = styled.img`
-  position: absolute;
-  top: -17%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 2px solid #ffffff7c;
-  background-color: #000;
-`;
-
 const SubmitSection = styled.div`
   width: 600px;
   margin: 15px auto;
@@ -573,7 +561,6 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
 
   return (
     <ScoreForm>
-      <MemberImg src={user.userImg} />
       <InputTextArea
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

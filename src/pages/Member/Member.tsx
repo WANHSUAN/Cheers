@@ -269,9 +269,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     return <p>Loading...</p>;
   }
 
-  console.log(user.userImg);
-  console.log(user);
-
   const handleDeleteLikeClick = async (likeDocId: string) => {
     setIsDeleting(true);
     const likesRef = collection(db, "users", userUID, "likes");
@@ -304,7 +301,6 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
             <WelcomeTitle>Welcome,</WelcomeTitle> {user.name}!
           </MemberTitle>
           <MemberSection>
-            <MemberImg src={user.userImg} />
             <MemberInfo>
               <MemberName>{user.name}</MemberName>
               <MemberEmail>{user.email}</MemberEmail>

@@ -176,18 +176,15 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         console.log(errorCode);
         // showNativeAuthErrorMessage(errorCode);
       });
-    console.log(user.userImg);
   };
 
   const nativeSignUp = async (auth: Auth, email: string, password: string) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential: any) => {
         const user = userCredential.user;
-        const img = "https://cdn-icons-png.flaticon.com/512/5111/5111178.png";
         const data: any = {
           name: user.email.split("@")[0] || "",
           email: user.email || "",
-          userImg: img,
           userUID: user.uid || "",
         };
         setUserDoc(data);
