@@ -25,5 +25,5 @@ Bar Page
 https://drive.google.com/file/d/1SjrCDf5f6DYVUCX-OQCjrOm5beQJmQyr/view?usp=share_link
 
 
-## 🔗 My Page
+## 🔗 About Me
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sharon-lin-81a436258/)
