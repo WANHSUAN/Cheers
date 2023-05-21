@@ -6,9 +6,9 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import React, {useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {AiOutlineMinusCircle} from "react-icons/ai";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
@@ -212,15 +212,13 @@ interface IUser {
   img: string;
   userUID: string;
 }
-
-export interface IMemberProps {}
-
-const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
+const MemberPage = () => {
   const {user, userUID} = useContext(AuthContext);
-  const [likes, setLikes] = useState<ILikes[] | undefined>(undefined);
+  const [likes, setLikes] = useState<ILikes[]>([]);
   const [users, setUsers] = useState<IUser[] | undefined>();
-  const [matchIndex, setMatchIndex] = useState<number>();
+  const [matchIndex, setMatchIndex] = useState<number | undefined>(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -288,15 +286,15 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
     setIsDeleting(false);
   };
 
-  return (
-    <>
-      <PageImg
-        src={
-          "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-        }
-      />
-      <Wrapper>
-        <>
+  if (matchIndex) {
+    return (
+      <>
+        <PageImg
+          src={
+            "https://images.unsplash.com/photo-1575444758702-4a6b9222336e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+          }
+        />
+        <Wrapper>
           <MemberTitle>
             <WelcomeTitle>Welcome,</WelcomeTitle> {user.name}!
           </MemberTitle>
@@ -306,55 +304,54 @@ const MemberPage: React.FC<IMemberProps> = (props: IMemberProps, element) => {
               <MemberEmail>{user.email}</MemberEmail>
             </MemberInfo>
           </MemberSection>
-          {likes === undefined ? (
-            <p>Loading...</p>
-          ) : (
-            <>
-              <LikeTitle>
-                The Bars you <Like>LIKE</Like>
-              </LikeTitle>
-              <RecommendationSection>
-                {isDeleting && <p>Deleting...</p>}
-                <ImgList>
-                  {likes.map((like, index) => (
-                    <RecommendationItem key={index}>
-                      <StyledRecommendationImg src={like.barImg} />
-                      <RecommendationName to={`/bars/${like.id}`}>
-                        {like.barName}
-                      </RecommendationName>
-                      <LikeDeleteButton
-                        onClick={() => handleDeleteLikeClick(like.id)}
-                      >
-                        <AiOutlineMinusCircle />
-                      </LikeDeleteButton>
-                    </RecommendationItem>
-                  ))}
-                </ImgList>
-              </RecommendationSection>
-            </>
-          )}
+          <>
+            {likes === undefined ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                <LikeTitle>
+                  The Bars you <Like>LIKE</Like>
+                </LikeTitle>
+                <RecommendationSection>
+                  {isDeleting && <p>Deleting...</p>}
+                  <ImgList>
+                    {likes.map((like, index) => (
+                      <RecommendationItem key={index}>
+                        <StyledRecommendationImg src={like.barImg} />
+                        <RecommendationName to={`/bars/${like.id}`}>
+                          {like.barName}
+                        </RecommendationName>
+                        <LikeDeleteButton
+                          onClick={() => handleDeleteLikeClick(like.id)}
+                        >
+                          <AiOutlineMinusCircle />
+                        </LikeDeleteButton>
+                      </RecommendationItem>
+                    ))}
+                  </ImgList>
+                </RecommendationSection>
+              </>
+            )}
+          </>
           <RecommendationTitle>
             We <Like>RECOMMEND</Like> the bars for you
           </RecommendationTitle>
           <RecommendationSection>
-            {matchIndex !== undefined && (
-              <ImgList>
-                {users[matchIndex].matchingBars.map(
-                  (matchingBar, index: any) => (
-                    <RecommendationItem key={index}>
-                      <StyledRecommendationImg src={matchingBar.img[1]} />
-                      <RecommendationName to={`/bars/${matchingBar.id}`}>
-                        {matchingBar.name}
-                      </RecommendationName>
-                    </RecommendationItem>
-                  )
-                )}
-              </ImgList>
-            )}
+            <ImgList>
+              {users[matchIndex].matchingBars.map((matchingBar, index: any) => (
+                <RecommendationItem key={index}>
+                  <StyledRecommendationImg src={matchingBar.img[1]} />
+                  <RecommendationName to={`/bars/${matchingBar.id}`}>
+                    {matchingBar.name}
+                  </RecommendationName>
+                </RecommendationItem>
+              ))}
+            </ImgList>
           </RecommendationSection>
-        </>
-      </Wrapper>
-    </>
-  );
+        </Wrapper>
+      </>
+    );
+  }
+  return <>{navigate("/question")}</>;
 };
 export default MemberPage;

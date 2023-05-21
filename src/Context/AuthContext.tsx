@@ -163,7 +163,6 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         console.log(user);
         if (user) {
           getUsers(user);
-
           navigate("/main");
           return;
         } else {
@@ -186,6 +185,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
           name: user.email.split("@")[0] || "",
           email: user.email || "",
           userUID: user.uid || "",
+          matchingBars: [],
         };
         setUserDoc(data);
         setUser(data);
