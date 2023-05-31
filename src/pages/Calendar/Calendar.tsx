@@ -73,12 +73,6 @@ const CalendarDay = styled.div`
   font-size: 1.5rem;
   padding-left: 34%;
 
-  &.calendar__day--today {
-    background-color: #c48370;
-    color: #fff;
-    margin-left: 15px;
-    padding-left: 5px;
-  }
   &.calendar__day--event {
     background-color: #ff8800a0;
     color: #fff;
@@ -93,6 +87,13 @@ const CalendarDay = styled.div`
   }
   &.calendar__day--selected {
     background-color: #e6af70b7;
+    color: #fff;
+    margin-left: 15px;
+    padding-left: 5px;
+  }
+
+  &.calendar__day--today {
+    background-color: #c48370;
     color: #fff;
     margin-left: 15px;
     padding-left: 5px;
@@ -367,7 +368,9 @@ const CalendarDays = ({
     const isToday = date.toDateString() === new Date().toDateString();
     const isSelected = date.toDateString() === selectedDate.toDateString();
     const hasEvent = events.some((event) => {
-      const eventDate = new Date(event.time.seconds * 1000); // 將時間戳記轉換為日期
+      console.log(event.time.seconds * 1000);
+      const eventDate = new Date(event.time.seconds * 1000); // 將 timestamp 轉換為日期
+      console.log(eventDate);
       return eventDate.toDateString() === date.toDateString();
     });
 
@@ -393,9 +396,9 @@ const CalendarDays = ({
       <CalendarDay
         key={`day-${i}`}
         className={`
+        ${isToday ? "calendar__day--today" : ""} 
         ${isSelected ? "calendar__day--selected" : ""}
         ${hasEvent ? "calendar__day--event" : ""}
-        ${isToday ? "calendar__day--today" : ""} 
         `}
         onClick={() => handleClick()}
       >

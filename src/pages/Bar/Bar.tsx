@@ -486,17 +486,15 @@ export const StarRating = (props: IStarRatingProps) => {
 
   const hoverOver = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (isHoverDisabled) return;
-    let val = 0;
     if (e && e.target && (e.target as HTMLElement).getAttribute("star-id"))
-      val = parseInt((e.target as HTMLElement).getAttribute("star-id") ?? "");
-    setSelection(val);
+      setSelection(
+        parseInt((e.target as HTMLElement).getAttribute("star-id") ?? "")
+      );
   };
   return (
     <StarCollection
-      onMouseOut={hoverOver}
       onClick={(e) => {
         setIsHoverDisabled(true);
-
         setRating(
           (prevRating) =>
             parseInt(
@@ -601,7 +599,7 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
   );
 };
 
-const CollectionButton = (name: any) => {
+const CollectionButton = (name: {barId: string; img: string; name: string}) => {
   const {userUID} = useContext(AuthContext);
   const [isLike, setIsLike] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
@@ -754,11 +752,8 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
           <BarTitle>{bar.name}</BarTitle>
           <CollectionButton
             name={bar.name}
-            address={bar.address}
-            link={bar.link}
             img={bar.img[1]}
             barId={bar.barId}
-            score={scoreArray}
           />
           <BarItemSection>
             <BarItemTitle>ADDRESS</BarItemTitle>
@@ -827,7 +822,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         <CommentContent>
           <LeftArrow
             onClick={isFirstComment ? undefined : goToPrevComment}
-            style={isFirstComment ? {cursor: "not-allowed"} : {}}
+            style={isFirstComment ? {visibility: "hidden"} : {}}
           />
           <CommentBox>
             <CommentItem key={currentIdx}>
@@ -852,7 +847,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
           <RightArrow
             onClick={isLastComment ? undefined : goToNextComment}
-            style={isLastComment ? {cursor: "not-allowed"} : {}}
+            style={isLastComment ? {visibility: "hidden"} : {}}
           />
         </CommentContent>
       </CommentSection>

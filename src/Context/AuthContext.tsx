@@ -63,12 +63,14 @@ export const AuthContext = createContext<IAuthContextType>({
   nativeSignIn: async (auth: Auth, email: string, password: string) => {},
   nativeSignUp: async (auth: Auth, email: string, password: string) => {},
 });
+
 const initialUserData: IUser = {
   name: "",
   email: "",
   userImg: "",
   userUID: "",
 };
+
 export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {

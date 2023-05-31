@@ -372,8 +372,8 @@ const Header = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleOutsideClick = (e: any) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -403,7 +403,7 @@ const Header = () => {
     return (
       <Wrapper>
         <NavCenter>
-          <Title to={"./main"}>CHEERS</Title>
+          <Title to={"./login"}>CHEERS</Title>
         </NavCenter>
       </Wrapper>
     );

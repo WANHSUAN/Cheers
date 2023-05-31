@@ -37,7 +37,7 @@ const Flash = styled.div`
   display: block;
   position: fixed;
   top: 100px;
-  right: 36%;
+  right: 31%;
   width: 550px;
   height: 100px;
   padding: 20px 25px 20px 85px;
