@@ -97,7 +97,13 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
     const getEvent = async () => {
       if (eventCollectionRef) {
         const barSnapshot = await getDoc(eventCollectionRef);
-        setEvent(barSnapshot.data() as any);
+        setEvent({
+          bar: barSnapshot.data()?.bar,
+          content: barSnapshot.data()?.content,
+          time: barSnapshot.data()?.time,
+          id: barSnapshot.data()?.id,
+          img: barSnapshot.data()?.img,
+        });
       }
     };
 
@@ -107,9 +113,7 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   if (event === undefined) {
     return <p>Loading...</p>;
   }
-  const dateObj = new Date(
-    event.time.seconds * 1000 + event.time.nanoseconds / 1000000
-  );
+  const dateObj = new Date(event.time.seconds * 1000);
   const dateStr = dateObj.toLocaleDateString();
 
   return (

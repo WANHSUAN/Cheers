@@ -330,7 +330,6 @@ const CalendarDays = ({
   setSelectedDate: (date: Date) => void;
   events: IEvent[];
 }) => {
-  const [seconds, setSeconds] = useState(0);
   const [isEventVisible, setIsEventVisible] = useState(false);
   const [targetEvent, setTargetEvent] = useState<IEvent | undefined>(undefined);
 
@@ -349,15 +348,13 @@ const CalendarDays = ({
     selectedDate.getMonth() + 1,
     0
   );
+
   const startWeekday = startOfMonth.getDay();
-
   const daysInMonth = endOfMonth.getDate();
-
   const days = [];
   for (let i = 1; i <= startWeekday; i++) {
     days.push(<CalendarDayEmpty key={`empty-${i}`} />);
   }
-
   for (let i = 1; i <= daysInMonth; i++) {
     const date = new Date(
       selectedDate.getFullYear(),
@@ -368,16 +365,14 @@ const CalendarDays = ({
     const isToday = date.toDateString() === new Date().toDateString();
     const isSelected = date.toDateString() === selectedDate.toDateString();
     const hasEvent = events.some((event) => {
-      console.log(event.time.seconds * 1000);
-      const eventDate = new Date(event.time.seconds * 1000); // 將 timestamp 轉換為日期
-      console.log(eventDate);
+      const eventDate = new Date(event.time.seconds * 1000);
       return eventDate.toDateString() === date.toDateString();
     });
 
     const handleClick = () => {
       setSelectedDate(date);
       const targetDate = new Date(date);
-      targetDate.setHours(0, 0, 0, 0); // 將時間設定為 0
+      targetDate.setHours(0, 0, 0, 0);
       const targetSeconds = Math.floor(targetDate.getTime() / 1000);
       const newEvents = events.filter(
         (event) =>
@@ -388,7 +383,6 @@ const CalendarDays = ({
         return;
       }
       setTargetEvent(newEvents[0]);
-      setSeconds(targetSeconds);
       setIsEventVisible(!isEventVisible);
     };
 

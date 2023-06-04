@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-scroll";
 import styled, {keyframes} from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
+import SloganContentAnimation from "../../components/SloganContent/SloganContent";
 import cocktail from "../Login/img/cocktail.png";
 import relax from "../Login/img/relax.png";
 
@@ -69,38 +70,10 @@ const FirstSection = styled.div`
   background-position: center;
 `;
 
-const fadeInPosition = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const SloganContent = styled.div`
-  width: 35%;
-  margin: 7% 0 0 10%;
-  font-size: 50px;
-  color: #ffffffdd;
-  line-height: 80px;
-  text-align: left;
-  opacity: 0;
-  animation: ${fadeInPosition} ease-in-out 2s;
-`;
-
-const SecondSloganContent = styled.div`
-  width: 35%;
-  margin: 8% 0 5% 50%;
-  font-size: 50px;
-  color: #ffffffdd;
-  line-height: 80px;
-  text-align: right;
-  opacity: 0;
-  animation: ${fadeInPosition} ease-in-out 3.5s;
+const SloganSection = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
 `;
 
 const SecondSection = styled.div`
@@ -253,7 +226,6 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
   const provider = new GoogleAuthProvider();
 
   const [showButton, setShowButton] = useState(true);
-  const [section2, setSection2] = useState<HTMLElement | undefined>(undefined);
   const [email, setEmail] = useState("test7@gmail.com");
   const [password, setPassWord] = useState("testpassword");
   const [isSignInState, setIsSignInState] = useState(true);
@@ -291,7 +263,6 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
 
     const section2El = document.getElementById("section2");
     if (!section2El) return;
-    setSection2(section2El);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -301,8 +272,20 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
   return (
     <Wrapper>
       <FirstSection>
-        <SloganContentAnimation />
-        <SecondSloganContentAnimation />
+        <SloganSection>
+          <SloganContentAnimation
+            position="left"
+            delay={2000}
+            content="Have you spent a lot of time searching for a suitable bar?"
+          />
+          <SloganContentAnimation position="right" delay={2000} content="" />
+          <SloganContentAnimation position="left" delay={2000} content="" />
+          <SloganContentAnimation
+            position="right"
+            delay={3500}
+            content="No matter what style you prefer, you can find a good bar here!"
+          />
+        </SloganSection>
         {showButton ? (
           <Link to="section2" smooth={true} onClick={scrollToSection2}>
             <Encircle>
@@ -388,40 +371,6 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
         <LoginImgSection />
       </SecondSection>
     </Wrapper>
-  );
-};
-
-const SloganContentAnimation = () => {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(true);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <SloganContent style={{opacity: visible ? 1 : 0}}>
-      Have you spent a lot of time searching for a suitable bar?
-    </SloganContent>
-  );
-};
-
-const SecondSloganContentAnimation = () => {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(true);
-    }, 3500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <SecondSloganContent style={{opacity: visible ? 1 : 0}}>
-      No matter what style you prefer, you can find a good bar here!
-    </SecondSloganContent>
   );
 };
 

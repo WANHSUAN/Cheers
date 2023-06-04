@@ -28,7 +28,27 @@ declare const window: Window & {
   google: any;
 };
 
+interface ILatLng {
+  lat: number;
+  lng: number;
+}
+interface IBar {
+  id: string;
+  address: string;
+}
+
+export interface IMainProps {}
+
+interface IAddressToLatLngProps {
+  address: string;
+}
+
+interface IAddressProps {
+  latLng: {};
+}
+
 let cachedScripts: string[] = [];
+
 const useScript = (src: string) => {
   const [state, setState] = useState({
     loaded: false,
@@ -39,7 +59,6 @@ const useScript = (src: string) => {
     if (cachedScripts.includes(src)) {
       setState({
         loaded: true,
-
         error: false,
       });
     } else {
@@ -74,16 +93,6 @@ const useScript = (src: string) => {
   }, [src]);
   return [state.loaded, state.error];
 };
-interface ILatLng {
-  lat: number;
-  lng: number;
-}
-interface IBar {
-  id: string;
-  address: string;
-}
-
-export interface IMainProps {}
 
 const BarMap: React.FC<IMainProps> = (props: IMainProps) => {
   const [bars, setBars] = useState<IBar[] | null>(null);
@@ -110,9 +119,6 @@ const BarMap: React.FC<IMainProps> = (props: IMainProps) => {
 
   return <AddressToLatLng address={address} />;
 };
-interface IAddressToLatLngProps {
-  address: string;
-}
 
 const AddressToLatLng = (props: IAddressToLatLngProps) => {
   const [latLng, setLatLng] = useState<ILatLng>({lat: 0, lng: 0});
@@ -134,15 +140,8 @@ const AddressToLatLng = (props: IAddressToLatLngProps) => {
   return <Address latLng={latLng} />;
 };
 
-interface IAddressProps {
-  latLng: {};
-}
-
 const Address = (props: IAddressProps) => {
   const [map, setDataMap] = useState();
-  const [loaded] = useScript(
-    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places&callback=initMap`
-  );
 
   const selectedMap = () => {
     const myLatLng = [props.latLng];
@@ -254,6 +253,10 @@ const Address = (props: IAddressProps) => {
 
     setDataMap(map);
   };
+
+  const [loaded] = useScript(
+    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places`
+  );
 
   useEffect(() => {
     if (loaded) {

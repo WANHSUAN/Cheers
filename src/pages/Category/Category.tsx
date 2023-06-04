@@ -16,13 +16,18 @@ const Wrapper = styled.div`
   margin: 0 auto 80px;
 `;
 
+const Hashtag = styled.div`
+  scroll-margin-top: 30vh;
+`;
+
 const CategorySection = styled(Link)`
   text-decoration: none;
 `;
 
-const CategoryTitle = styled.div`
+const CategoryTitle = styled.div<{colorCode: string}>`
   font-size: 40px;
   margin-top: 60px;
+  color: ${(props) => props.colorCode};
 `;
 
 const CategoryCollection = styled.div`
@@ -129,8 +134,8 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
       />
       <Wrapper>
         {hashtags.map((hashtag, index) => (
-          <div key={index} id={hashtag.type} style={{scrollMarginTop: "30vh"}}>
-            <CategoryTitle style={{color: hashtag.colorCode}}>
+          <Hashtag key={index} id={hashtag.type}>
+            <CategoryTitle colorCode={hashtag.colorCode}>
               #{hashtag.type}
             </CategoryTitle>
 
@@ -144,7 +149,7 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
                 </CategorySection>
               ))}
             </CategoryCollection>
-          </div>
+          </Hashtag>
         ))}
         {showButton && (
           <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>

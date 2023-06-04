@@ -474,44 +474,49 @@ interface IMenu {
 
 interface IStarRatingProps {
   rating: number;
-  onRatingChange: (rating: number) => void;
+  setRating: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const StarRating = (props: IStarRatingProps) => {
-  const [rating, setRating] = useState<number>(
-    typeof props.rating === "number" ? props.rating : 0
-  );
-  const [selection, setSelection] = useState(0);
-  const [isHoverDisabled, setIsHoverDisabled] = useState(false);
+  const [selection, setSelection] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
-  const hoverOver = (e?: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (isHoverDisabled) return;
-    if (e && e.target && (e.target as HTMLElement).getAttribute("star-id"))
-      setSelection(
-        parseInt((e.target as HTMLElement).getAttribute("star-id") ?? "")
-      );
+  const hoverOver = (index: number) => {
+    setSelection((prev) => {
+      const newSelection = [...prev];
+      const newNewSelection = newSelection.map((select, q) => {
+        if (q <= index) {
+          select = true;
+        }
+        return select;
+      });
+      return newNewSelection;
+    });
   };
+  const hoverOut = () => {
+    setSelection((prev) => {
+      const newSelection = [...prev];
+      newSelection.fill(false);
+      return newSelection;
+    });
+  };
+
   return (
-    <StarCollection
-      onClick={(e) => {
-        setIsHoverDisabled(true);
-        setRating(
-          (prevRating) =>
-            parseInt(
-              (e.target as HTMLElement)?.getAttribute("star-id") ?? ""
-            ) || prevRating
-        );
-        props.onRatingChange(
-          parseInt((e.target as HTMLElement)?.getAttribute("star-id") ?? "0")
-        );
-      }}
-      onMouseOver={hoverOver}
-    >
+    <StarCollection>
       {Array.from({length: 5}, (_, i) => (
         <Star
-          starId={i + 1}
+          onMouseOver={() => hoverOver(i)}
+          onMouseOut={hoverOut}
           key={`star_${i + 1} `}
-          marked={selection ? selection >= i + 1 : rating >= i + 1}
+          marked={props.rating > 0 ? props.rating >= i + 1 : selection[i]}
+          onClick={() => {
+            props.setRating(i + 1);
+          }}
         />
       ))}
     </StarCollection>
@@ -523,14 +528,13 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
   const {user} = useContext(AuthContext);
   const [inputValue, setInputValue] = useState<string>("");
   const [messages, setMessages] = useState<string[]>([]);
-  const [ratings, setRatings] = useState<number>(0);
+  const [rating, setRating] = useState<number>(0);
   const [showFlash, setShowFlash] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [key, setKey] = useState(0);
-
   const handleClick: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
-    if (!inputValue || !ratings) {
+    if (!inputValue || !rating) {
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
@@ -542,12 +546,12 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
       memberComment: arrayUnion({
         userName: user.name,
         comment: inputValue,
-        score: ratings,
+        score: rating,
       }),
     });
     setMessages([`${user.name}: ${inputValue}`, ...messages]);
     setInputValue("");
-    setRatings(0);
+    setRating(0);
     setKey(key + 1);
 
     props.getBar();
@@ -567,11 +571,7 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
       ></InputTextArea>
       <SubmitSection>
         <StarSection>
-          <StarRating
-            key={key}
-            rating={ratings}
-            onRatingChange={(rating) => setRatings(rating)}
-          />
+          <StarRating key={key} rating={rating} setRating={setRating} />
         </StarSection>
         <div>
           <button className="mainContainer" type="submit" onClick={handleClick}>

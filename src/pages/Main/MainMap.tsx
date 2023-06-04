@@ -207,7 +207,7 @@ const Address = (props: IAddressProps) => {
   const [selectedButton, setSelectedButton] = useState(null);
 
   const [loaded] = useScript(
-    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places&callback=initMap`
+    `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&&libraries=places`
   );
 
   const selectedMap = () => {
