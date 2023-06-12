@@ -22,6 +22,10 @@ const SloganContent = styled.div<SloganContentProps>`
   text-align: ${(props) => props.textAlign};
   opacity: ${(props) => (props.visible ? 1 : 0)};
   animation: ${fadeInPosition} ease-in-out ${(props) => props.animationDuration};
+
+  @media (max-width: 1440px) {
+    font-size: 40px;
+  }
 `;
 
 interface SloganContentProps {

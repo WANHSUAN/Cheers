@@ -184,13 +184,13 @@ const SideMenuList = styled.ul`
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 20px;
-  margin: 16% auto;
+  margin: 12% auto;
   gap: 40px;
   text-align: center;
 `;
 
 const MenuItem = styled.li`
-  width: 480px;
+  width: 42%;
   list-style: none;
   font-size: 90px;
   margin: 50px 0;

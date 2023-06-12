@@ -104,6 +104,8 @@ interface IOption {
   group: string;
 }
 
+export interface IQuestionProps {}
+
 const options = [
   {text: "Afternoon", hashtag: "afternoon", group: "time"},
   {text: "Night", hashtag: "night", group: "time"},
@@ -124,8 +126,6 @@ const groups = {
   category: "Do you prefer something special or classic?",
   visual: "Do you prefer simplicity or visual appeal?",
 };
-
-export interface IQuestionProps {}
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   const [showFlash, setShowFlash] = useState(false);

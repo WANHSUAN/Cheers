@@ -212,6 +212,7 @@ interface IUser {
   img: string;
   userUID: string;
 }
+
 const MemberPage = () => {
   const {user, userUID} = useContext(AuthContext);
   const [likes, setLikes] = useState<ILikes[]>([]);

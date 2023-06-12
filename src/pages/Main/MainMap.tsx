@@ -125,13 +125,27 @@ interface IFilterConditions {
   [key: string]: string;
 }
 
+interface IAddressProps {
+  latLng: ILatLng[];
+  bars: IBar[];
+  setButtonType: (param1: string) => void;
+}
+
 export interface IMainProps {}
+
+const fetchData = async (address: string) => {
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+  );
+  const data = await response.json();
+  const {lat, lng} = data.results[0].geometry.location;
+  return {lat, lng};
+};
 
 const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
   const [latLngArr, setLatLngArr] = useState<ILatLng[]>([]);
   const [bars, setBars] = useState<IBar[]>([]);
-  const [isLoading, setIsLoading] = useState(true); // 新增 isLoading 狀態
-  const [filteredBars, setFilteredBars] = useState(bars);
+  const [isLoading, setIsLoading] = useState(true);
   const [buttonType, setButtonType] = useState("");
 
   useEffect(() => {
@@ -164,8 +178,6 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
             )
           : barsData;
 
-      setFilteredBars(filteredBars);
-
       const address = filteredBars.map((bar) => bar.address);
       const latLngPromises = address.map((address) => fetchData(address));
       const latLngArr = await Promise.all(latLngPromises);
@@ -188,22 +200,7 @@ const MainMap: React.FC<IMainProps> = (props: IMainProps) => {
   );
 };
 
-const fetchData = async (address: string) => {
-  const response = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-  );
-  const data = await response.json();
-  const {lat, lng} = data.results[0].geometry.location;
-  return {lat, lng};
-};
-interface IAddressProps {
-  latLng: ILatLng[];
-  bars: IBar[];
-  setButtonType: (param1: string) => void;
-}
-
 const Address = (props: IAddressProps) => {
-  const [map, setDataMap] = useState();
   const [selectedButton, setSelectedButton] = useState(null);
 
   const [loaded] = useScript(
@@ -382,8 +379,6 @@ const Address = (props: IAddressProps) => {
         infoWindow.open(map, marker);
       });
     });
-
-    setDataMap(map);
   };
 
   useEffect(() => {

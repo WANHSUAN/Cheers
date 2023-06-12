@@ -74,6 +74,11 @@ const SloganSection = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
+  height: 90vh;
+
+  @media (max-width: 1440px) {
+    height: 75vh;
+  }
 `;
 
 const SecondSection = styled.div`
@@ -115,7 +120,7 @@ const LoginContent = styled.div`
   justify-content: center;
 `;
 
-const GoogleLogin = styled.button`
+const LoginButton = styled.button`
   height: 60px;
   border: 1px solid #ffffffbd;
   border-radius: 35px;
@@ -134,7 +139,7 @@ const GoogleLogin = styled.button`
   }
 `;
 
-const GoogleText = styled.p`
+const LoginText = styled.p`
   text-align: center;
 `;
 
@@ -163,24 +168,6 @@ const PassWord = styled.input`
   &::placeholder {
     color: #ffffffbd;
     letter-spacing: 2px;
-  }
-`;
-
-const NativeLogin = styled.button`
-  width: 100%;
-  height: 60px;
-  font-size: 25px;
-  border: 1px solid #ffffff7c;
-  border-radius: 25px;
-  cursor: pointer;
-  background-color: #ffffff7c;
-  letter-spacing: 2px;
-  color: #fff;
-
-  &:hover {
-    color: #d19b18;
-    background-color: #fff;
-    transition: ease 0.5s;
   }
 `;
 
@@ -307,9 +294,9 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
             <SubTitle>Please fill in your basic info</SubTitle>
             {isSignInState ? (
               <>
-                <GoogleLogin onClick={() => signIn(auth, provider)}>
-                  <GoogleText>continue with Google</GoogleText>
-                </GoogleLogin>
+                <LoginButton onClick={() => signIn(auth, provider)}>
+                  <LoginText>continue with Google</LoginText>
+                </LoginButton>
                 <UserName
                   placeholder="name"
                   name="email"
@@ -326,11 +313,11 @@ const LoginPage: React.FC<ILoginPageProps> = (props) => {
                   onChange={(e) => setPassWord(e.target.value)}
                   required
                 />
-                <NativeLogin
+                <LoginButton
                   onClick={() => nativeSignIn(auth, email, password)}
                 >
-                  Log In
-                </NativeLogin>
+                  <LoginText>Log In</LoginText>
+                </LoginButton>
                 <NativeQuestion>
                   New Here?
                   <SignUp onClick={() => setIsSignInState(false)}>
