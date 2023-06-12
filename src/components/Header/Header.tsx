@@ -36,6 +36,10 @@ const Nav = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 30px;
+
+  @media (max-width: 414px) {
+    gap: 20px;
+  }
 `;
 
 const NavCenter = styled.div`
@@ -57,12 +61,25 @@ const Menu = styled.p`
     color: #d19b18;
     transition: ease 0.5s;
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+
+  @media (max-width: 414px) {
+    display: none;
+  }
 `;
 
 const MenuSection = styled.div`
   display: flex;
   gap: 20px;
   padding-top: 5px;
+
+  @media (max-width: 414px) {
+    width: 60px;
+    padding-top: 0;
+  }
 `;
 
 const MenuToggle = styled.div`
@@ -136,6 +153,10 @@ const Title = styled(Link)`
   font-size: 35px;
   color: #fff;
   text-decoration: none;
+
+  @media (max-width: 768px) {
+    font-size: 25px;
+  }
 `;
 
 const NavOverlay = styled.div<IToggleProps>`
@@ -176,6 +197,10 @@ const SearchItem = styled.button`
     color: #d19b18;
     transition: ease 0.5s;
   }
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const SideMenuList = styled.ul`
@@ -192,10 +217,23 @@ const SideMenuList = styled.ul`
 const MenuItem = styled.li`
   width: 42%;
   list-style: none;
-  font-size: 90px;
+  font-size: 85px;
   margin: 50px 0;
-  padding: 0 30px;
+  padding: 0 3%;
   position: relative;
+
+  @media (max-width: 1280px) {
+    font-size: 70px;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 60px;
+  }
+
+  @media (max-width: 768px) {
+    width: 50%;
+    font-size: 55px;
+  }
 `;
 
 const StyledLink = styled(HashLink)`

@@ -26,6 +26,25 @@ const SloganContent = styled.div<SloganContentProps>`
   @media (max-width: 1440px) {
     font-size: 40px;
   }
+
+  @media (max-width: 1280px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 28px;
+    line-height: 60px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 25px;
+    line-height: 50px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 20px;
+    line-height: 30px;
+  }
 `;
 
 interface SloganContentProps {

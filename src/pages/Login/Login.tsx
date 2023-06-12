@@ -14,6 +14,12 @@ const Arrow = styled.div`
   height: 30px;
   background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yOTMuNzUxLDQ1NS44NjhjLTIwLjE4MSwyMC4xNzktNTMuMTY1LDE5LjkxMy03My42NzMtMC41OTVsMCwwYy0yMC41MDgtMjAuNTA4LTIwLjc3My01My40OTMtMC41OTQtNzMuNjcyICBsMTg5Ljk5OS0xOTBjMjAuMTc4LTIwLjE3OCw1My4xNjQtMTkuOTEzLDczLjY3MiwwLjU5NWwwLDBjMjAuNTA4LDIwLjUwOSwyMC43NzIsNTMuNDkyLDAuNTk1LDczLjY3MUwyOTMuNzUxLDQ1NS44Njh6Ii8+DQo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMjIwLjI0OSw0NTUuODY4YzIwLjE4LDIwLjE3OSw1My4xNjQsMTkuOTEzLDczLjY3Mi0wLjU5NWwwLDBjMjAuNTA5LTIwLjUwOCwyMC43NzQtNTMuNDkzLDAuNTk2LTczLjY3MiAgbC0xOTAtMTkwYy0yMC4xNzgtMjAuMTc4LTUzLjE2NC0xOS45MTMtNzMuNjcxLDAuNTk1bDAsMGMtMjAuNTA4LDIwLjUwOS0yMC43NzIsNTMuNDkyLTAuNTk1LDczLjY3MUwyMjAuMjQ5LDQ1NS44Njh6Ii8+DQo8L3N2Zz4=);
   background-size: contain;
+
+  @media (max-width: 1024px) {
+    margin-top: 8px;
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const Bounce = keyframes`
@@ -29,7 +35,8 @@ const Bounce = keyframes`
   }
   60% {
     transform: translateY(-10px);
-  }`;
+  }
+  `;
 
 const Encircle = styled.div`
   width: 60px;
@@ -41,6 +48,11 @@ const Encircle = styled.div`
   left: 48%;
   cursor: pointer;
   animation: ${Bounce} 2s infinite;
+
+  @media (max-width: 1024px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const EncircleFadeout = styled.div`
@@ -55,6 +67,11 @@ const EncircleFadeout = styled.div`
   animation: ${Bounce} 2s infinite;
   opacity: 0;
   transition: opacity 0.3s ease-out;
+
+  @media (max-width: 1024px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -68,6 +85,10 @@ const FirstSection = styled.div`
   background-image: url(${relax});
   background-size: cover;
   background-position: center;
+
+  @media (max-width: 1024px) {
+    padding-top: 100px;
+  }
 `;
 
 const SloganSection = styled.div`
@@ -86,10 +107,17 @@ const SecondSection = styled.div`
   background-color: #d19b18;
   display: flex;
   margin: auto;
+
+  @media (max-width: 414px) {
+    flex-direction: column;
+  }
 `;
 
 const LoginTextSection = styled.div`
   width: 50%;
+  @media (max-width: 414px) {
+    width: 100%;
+  }
 `;
 
 const LoginImgSection = styled.div`
@@ -97,27 +125,57 @@ const LoginImgSection = styled.div`
   background-image: url(${cocktail});
   background-size: cover;
   background-position: center;
+
+  @media (max-width: 414px) {
+    display: none;
+  }
 `;
 
 const LoginTitle = styled.p`
   font-size: 50px;
   font-weight: bold;
   color: #fff;
+
+  @media (max-width: 1280px) {
+    font-size: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+    margin-top: 30px;
+  }
 `;
 
 const SubTitle = styled.p`
   margin-bottom: 50px;
   font-size: 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const LoginContent = styled.div`
-  width: 500px;
+  max-width: 500px;
+  width: 85%;
   height: 78vh;
   display: flex;
   flex-direction: column;
   gap: 30px;
   margin: 15% auto;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    gap: 10px;
+  }
 `;
 
 const LoginButton = styled.button`
@@ -137,6 +195,11 @@ const LoginButton = styled.button`
     background-color: #fff;
     transition: ease 0.5s;
   }
+
+  @media (max-width: 768px) {
+    height: 40px;
+    font-size: 15px;
+  }
 `;
 
 const LoginText = styled.p`
@@ -155,6 +218,12 @@ const UserName = styled.input`
     color: #ffffffbd;
     letter-spacing: 2px;
   }
+
+  @media (max-width: 768px) {
+    height: 40px;
+    font-size: 15px;
+    padding: 10px 20px;
+  }
 `;
 
 const PassWord = styled.input`
@@ -169,11 +238,25 @@ const PassWord = styled.input`
     color: #ffffffbd;
     letter-spacing: 2px;
   }
+
+  @media (max-width: 768px) {
+    height: 40px;
+    font-size: 15px;
+    padding: 10px 20px;
+  }
 `;
 
 const NativeQuestion = styled.p`
   color: #000;
   font-size: 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const SignUp = styled.button`
@@ -202,6 +285,12 @@ const NativeSignUp = styled.button`
     color: #d19b18;
     background-color: #fff;
     transition: ease 0.5s;
+  }
+
+  @media (max-width: 768px) {
+    height: 40px;
+    font-size: 15px;
+    padding: 10px 20px;
   }
 `;
 
