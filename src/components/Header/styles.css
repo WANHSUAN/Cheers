@@ -49,14 +49,13 @@
 }
 
 .ais-SearchBox-reset {
-  width: 30px;
+  width: 50px;
+  height: 40px;
   border: none;
   background-color: transparent;
   position: absolute;
   top: 30px;
   right: 90px;
-  width: 50px;
-  height: 40px;
 }
 
 .ais-SearchBox-resetIcon {
@@ -85,4 +84,21 @@
 
 .ais-Hits-item:hover {
   background-color: #706e6bf3;
+}
+
+@media screen and (max-width: 1440px) {
+  .ais-SearchBox-input {
+    width: 300px;
+  }
+
+  .ais-SearchBox-resetIcon {
+    width: 20px;
+    height: 20px;
+    margin-top: 15px;
+  }
+
+  .ais-SearchBox-submitIcon {
+    width: 20px;
+    height: 20px;
+  }
 }

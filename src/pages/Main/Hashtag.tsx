@@ -5,13 +5,19 @@ import styled, {keyframes} from "styled-components/macro";
 import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
-  width: 1100px;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
 `;
 
 const HashTagSection = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 300px auto 500px;
+
+  @media (max-width: 768px) {
+    margin: 100px auto 200px;
+  }
 `;
 
 const Lights = keyframes`
@@ -70,12 +76,30 @@ const HashtagType = styled(HashLink)`
     transform: translateY(-10px);
     transition: ease 0.5s;
   }
+
+  @media (max-width: 1280px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const StyledHashtagType = styled.p`
-  width: 220px;
+  width: 200px;
   font-size: 30px;
-  margin: 30px 0;
+  margin: 30px auto;
+
+  @media (max-width: 1280px) {
+    font-size: 25px;
+    width: 170px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    width: 120px;
+  }
 `;
 
 interface IHashtag {

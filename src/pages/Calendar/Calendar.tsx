@@ -8,7 +8,8 @@ import {BtnText, Button} from "../../components/Button/Button";
 import {db} from "../../utils/firebase";
 
 const CalendarWrapper = styled.div`
-  width: 800px;
+  max-width: 800px;
+  width: 100%;
   margin-left: 50px;
   position: relative;
   border-radius: 5px;
@@ -17,7 +18,8 @@ const CalendarWrapper = styled.div`
 `;
 
 const CalendarSection = styled.div`
-  width: 800px;
+  max-width: 800px;
+  width: 85%;
   height: 720px;
   background-color: #ffffff33;
   border: 1px solid #ffffff7c;
@@ -40,14 +42,12 @@ const CalendarWeekdaysSection = styled.div`
   justify-content: space-around;
   color: #fff;
   padding: 8px;
-  font-size: 4rem;
 `;
 
 const CalendarButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 2rem;
   color: #fff;
   margin: 0 20px;
   padding-top: 15px;
@@ -56,10 +56,19 @@ const CalendarButton = styled.button`
 const CalendarMonth = styled.div`
   font-weight: bold;
   font-size: 4rem;
+
+  @media (max-width: 1024px) {
+    font-size: 2rem;
+  }
 `;
 
 const Arrow = styled.div`
   display: flex;
+  font-size: 2rem;
+
+  @media (max-width: 1024px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const CalendarDay = styled.div`
@@ -112,11 +121,21 @@ const CalendarDaysSection = styled.div`
 const CalendarDayEmpty = styled.div`
   width: 70px;
   height: 70px;
+
+  /* width: 81.95%;
+  height: 100%; */
   display: flex;
   border-radius: 50%;
   background-color: #f5f5f55c;
   cursor: pointer;
-  margin-left: 20px;
+  /* margin-left: 20px; */
+  /* margin-left: 23.42%; */
+  margin-left: 10px;
+
+  @media (max-width: 1024px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 const CalendarDayHeader = styled.div`
@@ -130,6 +149,11 @@ const CalendarDayHeader = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
+
+  @media (max-width: 1024px) {
+    width: 100px;
+    font-size: 1rem;
+  }
 `;
 
 const OuterDiv = styled.div`

@@ -105,6 +105,10 @@ const HamBox = styled.div<IToggleProps>`
     background: #2a2a2f;
     color: #d19b18;
   }
+
+  @media (max-width: 768px) {
+    margin: 0 20px;
+  }
 `;
 
 const TopLine = styled.span<IToggleProps>`
@@ -199,6 +203,7 @@ const SearchItem = styled.button`
   }
 
   @media (max-width: 768px) {
+    width: 70px;
     font-size: 15px;
   }
 `;
@@ -279,6 +284,14 @@ const InstantSearchContainer = styled.div`
     position: relative;
     top: 0;
     right: 11%;
+
+    @media screen {
+      right: 15%;
+    }
+  }
+
+  @media screen {
+    width: 300px;
   }
 `;
 
@@ -292,7 +305,7 @@ const SelectBarsButton = styled.button`
   color: #fff;
   position: absolute;
   top: 90px;
-  right: 250px;
+  right: 200px;
   cursor: pointer;
 
   &:hover {
@@ -304,6 +317,10 @@ const SelectBarsButton = styled.button`
   &:active {
     background-color: #d19b18;
     border: #d19b18;
+  }
+
+  @media (max-width: 1440px) {
+    width: 145px;
   }
 `;
 
@@ -329,6 +346,10 @@ const SelectEventsButton = styled.button`
   &:active {
     background-color: #d19b18;
     border: #d19b18;
+  }
+
+  @media (max-width: 1440px) {
+    width: 145px;
   }
 `;
 

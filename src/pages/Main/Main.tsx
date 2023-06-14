@@ -130,6 +130,13 @@ const More = styled.button`
   cursor: pointer;
   color: #fff;
 
+  @media (max-width: 1280px) {
+    width: 50px;
+    height: 50px;
+    font-size: 0.9rem;
+    line-height: 50px;
+  }
+
   &:active {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
@@ -270,6 +277,10 @@ const TestSelect = styled.span`
   color: #fff;
   font-size: 20px;
   z-index: 1;
+
+  @media (max-width: 1280px) {
+    font-size: 8px;
+  }
 `;
 
 const Blink = keyframes`
@@ -455,6 +466,14 @@ const Sign = styled.div`
     -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
     0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
   animation: ${Shine} 2s forwards, ${Flicker} 3s infinite;
+
+  @media (max-width: 1280px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const SignSecond = styled.div`
@@ -472,11 +491,20 @@ const SignSecond = styled.div`
     -0.2rem 0.1rem 1rem #e2b03a, 0.2rem 0.1rem 1rem #e2b03a,
     0 -0.5rem 2rem #d19b18, 0 0.5rem 3rem #d19b18;
   animation: ${Shine} 2s forwards, ${Flicker} 3s infinite;
+
+  @media (max-width: 1280px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const Wrapper = styled.div`
   text-align: center;
-  width: 1100px;
+  max-width: 1100px;
+  width: 80%;
   margin: 0 auto;
   padding-top: 60px;
   font-size: 16px;
@@ -536,6 +564,14 @@ const ScrollDown = styled.div`
     width: 2px;
     height: 90px;
     background: #d19b18;
+
+    @media (max-width: 768px) {
+      height: 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding-top: 30px;
   }
 `;
 
@@ -557,6 +593,10 @@ const ArrowDown = styled.span`
     behavior: url(-ms-transform.htc);
     transform: rotate(135deg);
   }
+
+  @media (max-width: 768px) {
+    height: 50px;
+  }
 `;
 
 const ScrollTitle = styled.span`
@@ -565,6 +605,10 @@ const ScrollTitle = styled.span`
   color: #d19b18;
   font-size: 2rem;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const Jump = keyframes`
@@ -582,7 +626,6 @@ const Test = styled(Link)`
   right: 50px;
   z-index: 1;
   border: none;
-  font-size: 0.5rem;
   background-color: #d19b18;
   color: #fff;
   border-radius: 50%;
@@ -600,6 +643,24 @@ const Test = styled(Link)`
     ${Liquid} {
       top: -100px;
     }
+  }
+
+  @media (max-width: 1280px) {
+    width: 70px;
+    height: 70px;
+    padding-top: 10px;
+    right: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 60px;
+    height: 60px;
+    font-size: 0.8rem;
+    right: 40px;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -624,6 +685,27 @@ const ScrollButton = styled.button`
 
     transition: ease 0.5s;
   }
+
+  @media (max-width: 1280px) {
+    width: 70px;
+    height: 70px;
+    font-size: 1rem;
+    right: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 60px;
+    height: 60px;
+    font-size: 1rem;
+    right: 40px;
+  }
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    font-size: 0.8rem;
+  }
 `;
 
 const fadeIn = keyframes`
@@ -646,6 +728,15 @@ const Slogan = styled.p`
   letter-spacing: 10px;
   text-align: center;
   animation: ${fadeIn} 1.5s ease-in-out;
+
+  @media (max-width: 1280px) {
+    font-size: 6rem;
+    top: 26.5%;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 4rem;
+  }
 `;
 
 const MainImg = styled.img`
@@ -654,6 +745,11 @@ const MainImg = styled.img`
   margin-top: 270px;
   vertical-align: bottom;
   object-fit: cover;
+
+  @media (max-width: 768px) {
+    margin-top: 155px;
+    height: 300px;
+  }
 `;
 
 const fadeInPosition = keyframes`
@@ -673,8 +769,11 @@ const Title = styled.div`
   padding: 50px;
   text-align: center;
   margin: 300px 0;
-
   animation: ${fadeInPosition} 1s ease-in-out;
+
+  @media (max-width: 768px) {
+    margin: 200px 0;
+  }
 `;
 
 const AllBarTitleSection = styled.div`
@@ -686,20 +785,40 @@ const AllBarSubTitle = styled.p`
   font-size: 2rem;
   margin-bottom: 20px;
   scroll-margin-top: -96vh;
+
+  @media (max-width: 1280px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const AllBarTitle = styled.h2`
   color: #fff;
   font-size: 4rem;
   margin-bottom: 20px;
+
+  @media (max-width: 1280px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const AllBarSection = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
-  margin: 100px 0;
+  margin: 100px 0 0;
   justify-content: center;
+
+  @media (max-width: 1280px) {
+    gap: 20px;
+  }
 `;
 
 const BarSection = styled(Link)`
@@ -721,19 +840,36 @@ const CalendarSubTitle = styled.p`
   color: #d19b18;
   margin: 200px 0 10px 0;
   font-size: 2rem;
+
+  @media (max-width: 1280px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const CalendarTitle = styled.h2`
   color: #fff;
   margin-bottom: 150px;
   font-size: 4rem;
+
+  @media (max-width: 1280px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const CalendarColorSection = styled.div`
-  width: 800px;
+  max-width: 800px;
+  width: 75%;
   display: flex;
   justify-content: right;
-  margin-left: 50px;
+  margin-left: 5%;
 `;
 
 const ColorItem = styled.div`
@@ -748,35 +884,62 @@ const ColorToday = styled.div`
   height: 30px;
   background-color: #c48370;
   border-radius: 50%;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 const ColorEvent = styled.div`
   width: 30px;
   height: 30px;
   background-color: #ff8800a0;
   border-radius: 50%;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 const ColorSelected = styled.div`
   width: 30px;
   height: 30px;
   background-color: #e6af70b7;
   border-radius: 50%;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const ColorName = styled.div`
   color: #fff;
   font-size: 1.5rem;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const MapSubTitle = styled.p`
   font-size: 2rem;
   margin: 200px 0 10px 0;
   color: #d19b18;
+
+  @media (max-width: 1280px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const MapTitle = styled.p`
   font-size: 4rem;
   color: #fff;
+
+  @media (max-width: 1280px) {
+    font-size: 3rem;
+  }
 `;
 
 const AlertWrapper = styled.div`
@@ -986,7 +1149,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </Test>
 
         {showButton && (
-          <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
+          <ScrollButton onClick={handleScrollTop}>Top</ScrollButton>
         )}
         <Hashtag />
         <AllBarTitleSection>
@@ -1036,7 +1199,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
               </BarTitle>
             </BarSection>
           ))}
-          {!showMore && <More onClick={handleShowMore}>More</More>}
+
           {showMore && (
             <>
               {bars.slice(8).map((bar) => (
@@ -1081,6 +1244,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             </>
           )}
         </AllBarSection>
+        {!showMore && <More onClick={handleShowMore}>More</More>}
         <CalendarSection>
           <CalendarSubTitle>BAR EVENTS</CalendarSubTitle>
           <CalendarTitle>It's time to join the Bar Event!</CalendarTitle>

@@ -33,7 +33,7 @@ const ButtonSection = styled.div`
 `;
 
 const CategoryButton = styled.button<ICategoryButtonProps>`
-  width: 100px;
+  width: 120px;
   height: 30px;
   color: ${(props) => (props.selected ? "#D19B18" : "#fff")};
   background-color: rgba(255, 255, 255, 0);
@@ -49,6 +49,10 @@ const CategoryButton = styled.button<ICategoryButtonProps>`
     transform: translateX(-10px);
     transition: ease 0.5s;
     cursor: pointer;
+  }
+
+  @media (max-width: 1280px) {
+    font-size: 1.3rem;
   }
 `;
 
