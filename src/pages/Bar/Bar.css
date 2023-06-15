@@ -162,3 +162,11 @@
   background-color: transparent;
   border: none;
 }
+
+@media screen and (max-width: 414px) {
+  .commentButton {
+    width: 100px;
+    height: 30px;
+    font-size: 10px;
+  }
+}

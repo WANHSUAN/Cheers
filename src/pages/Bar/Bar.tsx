@@ -15,25 +15,36 @@ import {useParams} from "react-router-dom";
 import styled from "styled-components/macro";
 import {AuthContext} from "../../Context/AuthContext";
 import {Alert, CommentText} from "../../components/Alert/Alert";
+import Scroll from "../../components/Scroll/Scroll";
 import {db} from "../../utils/firebase";
 import BarMap from "../Bar/BarMap";
-
 import "./Bar.css";
 import {Star} from "./Star";
 
 const Wrapper = styled.div`
   text-align: center;
-  width: 1000px;
+  max-width: 1000px;
+  width: 80%;
   margin: 0 auto;
 `;
 
 const BarInfoSection = styled.div`
   padding-top: 120px;
   display: flex;
+
+  @media (max-width: 640px) {
+    padding-top: 60px;
+    flex-direction: column;
+    text-align: center;
+  }
 `;
 
 const Score = styled.div`
   display: flex;
+
+  @media (max-width: 640px) {
+    justify-content: center;
+  }
 `;
 
 const CommentScore = styled.li`
@@ -45,12 +56,20 @@ const BarTitle = styled.h1`
   font-size: 50px;
   color: #d19b18;
   padding: 20px 0;
+
+  @media (max-width: 1024px) {
+    font-size: 40px;
+  }
 `;
 
 const Like = styled.span`
   font-size: 25px;
   cursor: pointer;
   color: #d19b18;
+
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
 `;
 
 const BarImg = styled.img`
@@ -58,10 +77,21 @@ const BarImg = styled.img`
   border-radius: 0 280px 280px 0;
   border: 1px solid #ffffff7c;
   border-left: 0;
+
+  @media (max-width: 640px) {
+    border: none;
+    width: 100%;
+    border-radius: 0;
+  }
 `;
 
 const BarInfo = styled.div`
   padding-left: 100px;
+
+  @media (max-width: 640px) {
+    padding-left: 0;
+    padding-top: 50px;
+  }
 `;
 
 const BarScore = styled.span`
@@ -78,11 +108,19 @@ const BarItemTitle = styled.p`
   text-underline-offset: 10px;
   font-size: 20px;
   padding-top: 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
 `;
 
 const BarItem = styled.p`
   font-size: 23px;
   padding-top: 15px;
+
+  @media (max-width: 1024px) {
+    font-size: 18px;
+  }
 `;
 
 const BarLink = styled.a`
@@ -91,33 +129,22 @@ const BarLink = styled.a`
   font-size: 30px;
   text-decoration: none;
   color: #fff;
+
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
 `;
 
 const BarContent = styled.div`
   height: 500px;
-  margin: 200px 0 300px 0;
-`;
+  margin: 200px 0 300px;
 
-const ScrollButton = styled.button`
-  width: 100px;
-  height: 100px;
-  position: fixed;
-  bottom: 110px;
-  right: 50px;
-  z-index: 1;
-  border: none;
-  font-size: 1.5rem;
-  background-color: #d19b18;
-  color: #fff;
-  border-radius: 50%;
-  padding: 10px;
-  cursor: pointer;
+  @media (max-width: 768px) {
+    margin: 100px 0 600px;
+  }
 
-  &:hover {
-    background-color: #fff;
-    color: #d19b18;
-
-    transition: ease 0.5s;
+  @media (max-width: 414px) {
+    margin: 100px 0 550px;
   }
 `;
 
@@ -129,6 +156,16 @@ const BarIntro = styled.h2`
   line-height: 1;
   margin: 60px 10px;
   letter-spacing: 5px;
+
+  @media (max-width: 1024px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin: 40px 10px;
+    padding: 10px 0;
+  }
 
   &::before,
   &::after {
@@ -158,6 +195,14 @@ const BarHashTagSection = styled.div`
   justify-content: center;
   margin-bottom: 15px;
   font-size: 25px;
+
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const BarHashtagLink = styled.a`
@@ -174,18 +219,32 @@ const BarIntroTextSection = styled.div`
   padding: 50px;
   border-radius: 0 50px 0 50px;
   text-align: left;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const BarText = styled.p`
   width: 90%;
   color: #fff;
   line-height: 30px;
+  font-size: 18px;
   margin: 0 auto;
   white-space: pre-wrap;
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 10px;
+  }
 `;
 
 const CommentSection = styled.div`
-  width: 1000px;
+  max-width: 1000px;
+  width: 80%;
   height: 500px;
   margin: 300px auto 200px;
   text-align: center;
@@ -194,6 +253,14 @@ const CommentSection = styled.div`
 const CommentTitle = styled.h2`
   color: #fff;
   font-size: 30px;
+
+  @media (max-width: 1024px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 20px;
+  }
 `;
 
 const CommentContent = styled.div`
@@ -201,6 +268,10 @@ const CommentContent = styled.div`
   align-items: center;
   margin: 50px 0;
   padding: 50px;
+
+  @media (max-width: 768px) {
+    padding: 0;
+  }
 `;
 
 const LeftArrow = styled.a`
@@ -213,6 +284,11 @@ const LeftArrow = styled.a`
   box-shadow: 0 0 0 lightgray;
   transition: all 200ms ease;
   transform: translate3d(0, -50%, 0) rotate(-135deg);
+
+  @media (max-width: 1024px) {
+    width: 25px;
+    height: 25px;
+  }
 
   &:hover {
     border-color: orange;
@@ -239,6 +315,11 @@ const RightArrow = styled.a`
   transition: all 200ms ease;
   transform: translate3d(0, -50%, 0) rotate(45deg);
 
+  @media (max-width: 1024px) {
+    width: 25px;
+    height: 25px;
+  }
+
   &:hover {
     border-color: orange;
     box-shadow: 5px -5px 0 white;
@@ -260,6 +341,8 @@ const CommentBox = styled.div`
 `;
 
 const CommentItem = styled.div`
+  max-width: 1000px;
+  width: 100%;
   height: 350px;
   color: #fff;
   flex-direction: column;
@@ -277,6 +360,11 @@ const CommaRight = styled.div`
   position: absolute;
   top: -4%;
   right: 10%;
+
+  @media (max-width: 414px) {
+    font-size: 15px;
+    top: -2%;
+  }
 `;
 
 const CommaLeft = styled.div`
@@ -284,18 +372,41 @@ const CommaLeft = styled.div`
   position: absolute;
   bottom: -6%;
   left: 10%;
+
+  @media (max-width: 414px) {
+    font-size: 15px;
+    bottom: -3%;
+  }
 `;
 
 const Comment = styled.li`
   list-style: none;
   font-size: 20px;
-  margin: 30px;
-  width: 720px;
+  margin: 20px 0;
+  max-width: 850px;
+  width: 100%;
   padding: 50px 70px 0;
   height: 100px;
   line-height: 28px;
   white-space: pre-wrap;
   overflow-wrap: break-word;
+
+  @media (max-width: 1280px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 8px;
+    padding: 30px 20px;
+  }
 `;
 
 const MemberScores = styled.div`
@@ -303,35 +414,92 @@ const MemberScores = styled.div`
   justify-content: center;
   font-size: 18px;
   color: #d19b18;
-  margin: 80px 10px 10px 10px;
+  margin: 100px 10px 10px;
+
+  @media (max-width: 1024px) {
+    font-size: 13px;
+    margin: 140px 10px 10px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 13px;
+    margin: 120px 10px 10px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 10px;
+    margin: 140px 10px 5px;
+  }
 `;
 
 const UserName = styled.p`
   font-size: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 8px;
+    margin-bottom: 10px;
+  }
 `;
 
 const Page = styled.p`
   font-size: 15px;
+
+  @media (max-width: 1024px) {
+    font-size: 10px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 7px;
+  }
 `;
 
 const BarRec = styled.div`
   background-color: #d19b18;
   border-radius: 300px 0 0 0;
   padding: 30px;
+
+  @media (max-width: 768px) {
+    border-radius: 350px 350px 0 0;
+    padding: 0;
+  }
 `;
 
 const BarRecContentSection = styled.div`
-  width: 1000px;
+  max-width: 1000px;
+  width: 80%;
   display: flex;
   justify-content: space-between;
   margin: 0 auto;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `;
 
 const BarRecTitle = styled.h2`
   color: #fff;
   font-size: 40px;
-  margin: 450px 0 200px;
+  /* margin: 450px 0 200px; */
+  margin: 0 0 200px;
+
+  @media (max-width: 1024px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 20px;
+    /* margin: 500px 0 200px; */
+  }
 `;
 
 const BarTitleContent = styled.div`
@@ -344,6 +512,17 @@ const BarRecImg = styled.img`
   padding-bottom: 10px;
   border-radius: 50%;
   margin-top: -40%;
+
+  @media (max-width: 1024px) {
+    width: 300px;
+    height: 300px;
+    margin-left: 6%;
+  }
+
+  @media (max-width: 800px) {
+    margin-top: -25%;
+    margin-left: 0;
+  }
 `;
 
 const BarRecName = styled.div`
@@ -352,16 +531,40 @@ const BarRecName = styled.div`
   font-size: 60px;
   align-items: center;
   margin-top: 150px;
+
+  @media (max-width: 1024px) {
+    font-size: 45px;
+    margin-left: 6%;
+  }
+
+  @media (max-width: 800px) {
+    height: 100px;
+    font-size: 35px;
+    margin-top: 80px;
+    margin-left: 0;
+  }
 `;
 
 const BarRecContent = styled.div`
   width: 45%;
+
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 const BarRecContentTitle = styled.h2`
   color: #fff;
   padding: 30px 0;
   font-size: 30px;
+
+  @media (max-width: 1024px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 20px;
+  }
 `;
 
 const BarRecContentText = styled.p`
@@ -369,6 +572,15 @@ const BarRecContentText = styled.p`
   line-height: 30px;
   font-size: 18px;
   margin-bottom: 30px;
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 800px) {
+    width: 100%;
+    font-size: 10px;
+  }
 `;
 
 const BarRecGarnishItem = styled.li`
@@ -380,7 +592,8 @@ const BarRecIngredientsItem = styled.li`
 `;
 
 const MemberScoreSection = styled.div`
-  width: 1000px;
+  max-width: 1000px;
+  width: 80%;
   height: 500px;
   margin: 100px auto;
   text-align: center;
@@ -390,10 +603,19 @@ const MemberScoreTitle = styled.h2`
   color: #fff;
   font-size: 30px;
   margin: 100px 0;
+
+  @media (max-width: 1024px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 20px;
+  }
 `;
 
 const BarSection = styled.div`
-  width: 1000px;
+  max-width: 1000px;
+  width: 80%;
   margin: 0 auto;
   text-align: center;
 `;
@@ -402,6 +624,14 @@ const BarMapTitle = styled.h2`
   color: #fff;
   margin: 110px 0 50px 0;
   font-size: 30px;
+
+  @media (max-width: 1024px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 20px;
+  }
 `;
 
 const ScoreForm = styled.form`
@@ -409,7 +639,8 @@ const ScoreForm = styled.form`
 `;
 
 const SubmitSection = styled.div`
-  width: 600px;
+  max-width: 600px;
+  width: 80%;
   margin: 15px auto;
   display: flex;
   justify-content: space-between;
@@ -417,12 +648,21 @@ const SubmitSection = styled.div`
 
 const StarSection = styled.div`
   font-size: 25px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 10px;
+  }
 `;
 
 const StarCollection = styled.div``;
 
 const InputTextArea = styled.textarea`
-  width: 600px;
+  max-width: 600px;
+  width: 80%;
   height: 250px;
   border: 3px solid #ffffff7c;
   background-color: #000;
@@ -430,6 +670,10 @@ const InputTextArea = styled.textarea`
   padding: 60px 20px;
   font-size: 20px;
   color: #ffffffc1;
+
+  @media (max-width: 414px) {
+    padding: 50px;
+  }
 
   &:focus {
     outline-color: #d19b18;
@@ -539,6 +783,9 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
       setTimeout(() => {
         setShowAlert(false);
       }, 3500);
+      return;
+    } else if (inputValue.length < 30) {
+      alert("請輸入至少 30 個字");
       return;
     }
     const commentRef = doc(db, `bars/${id}`);
@@ -711,13 +958,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
     ),
   ];
 
-  const handleScrollTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   const introductionWithLineBreaks = bar.introduction.replace(/。/g, "。\n");
 
   const goToPrevComment = () => {
@@ -766,7 +1006,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
             <BarItem>{bar.tel}</BarItem>
             <BarItemTitle>WEBSITE</BarItemTitle>
             <BarItem>
-              <BarLink href={bar.link}>
+              <BarLink href={bar.link} target="_blank">
                 <FiExternalLink />
               </BarLink>
             </BarItem>
@@ -774,9 +1014,7 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
         </BarInfo>
       </BarInfoSection>
       <Wrapper>
-        {showButton && (
-          <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
-        )}
+        {showButton && <Scroll />}
         <BarContent>
           <BarIntro>ABOUT US</BarIntro>
           <BarHashTagSection>

@@ -22,6 +22,10 @@ const Map = styled.div`
   border-radius: 10px;
   box-shadow: 5px 5px 5px #d9d9d980;
   border: 2px solid #ffffff7c;
+
+  @media (max-width: 414px) {
+    height: 250px;
+  }
 `;
 
 declare const window: Window & {
