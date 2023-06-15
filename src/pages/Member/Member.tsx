@@ -29,7 +29,8 @@ const PageImg = styled.img`
 `;
 
 const Wrapper = styled.div`
-  width: 1300px;
+  max-width: 1300px;
+  width: 80%;
   margin: 0 auto;
   padding-top: 60px;
 `;
@@ -39,6 +40,10 @@ const MemberTitle = styled.h1`
   padding: 50px 0;
   color: #d19b18;
   font-size: 45px;
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
 `;
 
 const MemberSection = styled.div`
@@ -64,17 +69,29 @@ const MemberName = styled.p`
   color: #fff;
   font-size: 30px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const MemberEmail = styled.p`
   color: #fff;
   font-size: 20px;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 const RecommendationTitle = styled.h2`
   color: #fff;
   font-size: 30px;
   margin: 100px 0 40px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const RecommendationSection = styled.div`
@@ -110,6 +127,14 @@ const RecommendationItem = styled.li`
   float: left;
   position: relative;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 50%;
+  }
+
+  @media (max-width: 414px) {
+    width: 100%;
+  }
 
   &:before {
     transition: all 0.5s ease;
@@ -164,6 +189,10 @@ const LikeTitle = styled.h2`
   color: #fff;
   font-size: 30px;
   margin: 100px 0 40px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const LikeDeleteButton = styled.button`
