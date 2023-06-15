@@ -2,6 +2,7 @@ import {collection, getDocs} from "firebase/firestore";
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import styled from "styled-components/macro";
+import Scroll from "../../components/Scroll/Scroll";
 import {db} from "../../utils/firebase";
 
 const PageImg = styled.img`
@@ -12,7 +13,8 @@ const PageImg = styled.img`
 `;
 
 const Wrapper = styled.div`
-  width: 1000px;
+  max-width: 1000px;
+  width: 80%;
   margin: 0 auto 80px;
 `;
 
@@ -27,12 +29,22 @@ const CategorySection = styled(Link)`
 const CategoryTitle = styled.div<{colorCode: string}>`
   font-size: 40px;
   margin-top: 60px;
+  margin-left: 10px;
   color: ${(props) => props.colorCode};
+
+  @media (max-width: 1024px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const CategoryCollection = styled.div`
   display: flex;
-  width: 1000px;
+  max-width: 1000px;
+  width: 100%;
   overflow: auto;
 `;
 
@@ -47,6 +59,14 @@ const CategoryItem = styled.div`
 const CategoryName = styled.p`
   color: #fff;
   font-size: 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 
 const CategoryImg = styled.img`
@@ -54,28 +74,19 @@ const CategoryImg = styled.img`
   height: 400px;
   object-fit: cover;
   padding: 5px;
-`;
 
-const ScrollButton = styled.button`
-  width: 80px;
-  height: 80px;
-  position: fixed;
-  bottom: 110px;
-  right: 50px;
-  z-index: 999;
-  border: none;
-  font-size: 18px;
-  background-color: #fff;
-  color: #d19b18;
-  border-radius: 50%;
-  padding: 10px;
-  cursor: pointer;
+  @media (max-width: 1024px) {
+    width: 250px;
+    height: 330px;
+  }
 
-  &:hover {
-    background-color: #d19b18;
-    color: #fff;
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 280px;
+  }
 
-    transition: ease 0.5s;
+  @media (max-width: 414px) {
+    height: 200px;
   }
 `;
 
@@ -118,13 +129,6 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
     return <p>Loading...</p>;
   }
 
-  const handleScrollTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   return (
     <>
       <PageImg
@@ -151,9 +155,7 @@ const CategoryPage: React.FC<ICategoryProps> = (props: ICategoryProps) => {
             </CategoryCollection>
           </Hashtag>
         ))}
-        {showButton && (
-          <ScrollButton onClick={handleScrollTop}>Scroll To Top</ScrollButton>
-        )}
+        {showButton && <Scroll />}
       </Wrapper>
     </>
   );
