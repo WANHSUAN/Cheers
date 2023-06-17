@@ -26,6 +26,14 @@ const CalendarSection = styled.div`
   box-shadow: 2px 3px 10px #a27610;
   margin: 0 auto;
   border-radius: 10px;
+
+  @media (max-width: 1024px) {
+    height: 620px;
+  }
+
+  @media (max-width: 580px) {
+    height: 310px;
+  }
 `;
 
 const CalendarSectionHeader = styled.div`
@@ -35,13 +43,16 @@ const CalendarSectionHeader = styled.div`
   padding: 40px;
   border-radius: 8px 8px 0 0;
   color: #fff;
+
+  @media (max-width: 580px) {
+    padding: 20px;
+  }
 `;
 
 const CalendarWeekdaysSection = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   color: #fff;
-  padding: 8px;
 `;
 
 const CalendarButton = styled.button`
@@ -51,6 +62,10 @@ const CalendarButton = styled.button`
   color: #fff;
   margin: 0 20px;
   padding-top: 15px;
+
+  @media (max-width: 580px) {
+    padding-top: 5px;
+  }
 `;
 
 const CalendarMonth = styled.div`
@@ -60,6 +75,10 @@ const CalendarMonth = styled.div`
   @media (max-width: 1024px) {
     font-size: 2rem;
   }
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
+  }
 `;
 
 const Arrow = styled.div`
@@ -68,6 +87,10 @@ const Arrow = styled.div`
 
   @media (max-width: 1024px) {
     font-size: 1.5rem;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
   }
 `;
 
@@ -80,13 +103,25 @@ const CalendarDay = styled.div`
   border-radius: 50%;
   cursor: pointer;
   font-size: 1.5rem;
-  padding-left: 34%;
+  padding-left: 3px;
+  margin: 10px auto;
+
+  @media (max-width: 1024px) {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 580px) {
+    width: 20px;
+    height: 20px;
+    font-size: 0.5rem;
+    margin: 0 auto;
+  }
 
   &.calendar__day--event {
     background-color: #ff8800a0;
     color: #fff;
-    margin-left: 15px;
-    padding-left: 5px;
 
     &:hover {
       background-color: #e39b489f;
@@ -97,15 +132,11 @@ const CalendarDay = styled.div`
   &.calendar__day--selected {
     background-color: #e6af70b7;
     color: #fff;
-    margin-left: 15px;
-    padding-left: 5px;
   }
 
   &.calendar__day--today {
     background-color: #c48370;
     color: #fff;
-    margin-left: 15px;
-    padding-left: 5px;
   }
 `;
 
@@ -116,30 +147,42 @@ const CalendarDaysSection = styled.div`
   padding: 10px;
   border-radius: 0 0 8px 8px;
   color: #fff;
+
+  @media (max-width: 768px) {
+    gap: 15px;
+  }
+
+  @media (max-width: 580px) {
+    gap: 10px;
+  }
 `;
 
 const CalendarDayEmpty = styled.div`
   width: 70px;
   height: 70px;
-
-  /* width: 81.95%;
-  height: 100%; */
   display: flex;
   border-radius: 50%;
   background-color: #f5f5f55c;
   cursor: pointer;
-  /* margin-left: 20px; */
-  /* margin-left: 23.42%; */
-  margin-left: 10px;
+  margin: 10px auto;
 
   @media (max-width: 1024px) {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+    padding-left: 3px;
+  }
+
+  @media (max-width: 580px) {
+    width: 20px;
+    height: 20px;
+    font-size: 0.5rem;
+    margin: 0 auto;
   }
 `;
 
 const CalendarDayHeader = styled.div`
-  width: 140px;
+  max-width: 140px;
+  width: 100%;
   height: 40px;
   display: flex;
   justify-content: center;
@@ -151,8 +194,13 @@ const CalendarDayHeader = styled.div`
   color: #fff;
 
   @media (max-width: 1024px) {
-    width: 100px;
+    padding-left: 15px;
     font-size: 1rem;
+    padding-left: 0;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 0.5rem;
   }
 `;
 

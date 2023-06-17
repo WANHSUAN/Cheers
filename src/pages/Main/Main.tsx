@@ -820,14 +820,18 @@ const CalendarTitle = styled.h2`
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
+
+  @media (max-width: 414px) {
+    margin-bottom: 50px;
+  }
 `;
 
 const CalendarColorSection = styled.div`
-  max-width: 800px;
+  max-width: 678px;
   width: 75%;
   display: flex;
-  justify-content: right;
-  margin-left: 5%;
+  justify-content: space-between;
+  margin: 0 auto;
 `;
 
 const ColorItem = styled.div`
@@ -847,6 +851,11 @@ const ColorToday = styled.div`
     width: 20px;
     height: 20px;
   }
+
+  @media (max-width: 580px) {
+    width: 10px;
+    height: 10px;
+  }
 `;
 const ColorEvent = styled.div`
   width: 30px;
@@ -857,6 +866,11 @@ const ColorEvent = styled.div`
   @media (max-width: 768px) {
     width: 20px;
     height: 20px;
+  }
+
+  @media (max-width: 580px) {
+    width: 10px;
+    height: 10px;
   }
 `;
 const ColorSelected = styled.div`
@@ -869,6 +883,11 @@ const ColorSelected = styled.div`
     width: 20px;
     height: 20px;
   }
+
+  @media (max-width: 580px) {
+    width: 10px;
+    height: 10px;
+  }
 `;
 
 const ColorName = styled.div`
@@ -878,6 +897,11 @@ const ColorName = styled.div`
 
   @media (max-width: 768px) {
     font-size: 1rem;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 0.5rem;
+    padding: 10px;
   }
 `;
 
@@ -889,6 +913,10 @@ const MapSubTitle = styled.p`
   @media (max-width: 1280px) {
     font-size: 1.5rem;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const MapTitle = styled.p`
@@ -897,6 +925,10 @@ const MapTitle = styled.p`
 
   @media (max-width: 1280px) {
     font-size: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
   }
 `;
 
