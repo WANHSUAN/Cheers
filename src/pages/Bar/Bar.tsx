@@ -137,15 +137,7 @@ const BarLink = styled.a`
 
 const BarContent = styled.div`
   height: 500px;
-  margin: 200px 0 300px;
-
-  @media (max-width: 768px) {
-    margin: 100px 0 600px;
-  }
-
-  @media (max-width: 414px) {
-    margin: 100px 0 550px;
-  }
+  margin: 200px 0;
 `;
 
 const BarIntro = styled.h2`
@@ -203,6 +195,10 @@ const BarHashTagSection = styled.div`
   @media (max-width: 768px) {
     font-size: 15px;
   }
+
+  @media (max-width: 414px) {
+    justify-content: left;
+  }
 `;
 
 const BarHashtagLink = styled.a`
@@ -215,10 +211,12 @@ const BarHashTag = styled.p`
 `;
 
 const BarIntroTextSection = styled.div`
+  height: 350px;
   border: 1px solid #d19b18;
   padding: 50px;
   border-radius: 0 50px 0 50px;
   text-align: left;
+  overflow-y: auto;
 
   @media (max-width: 768px) {
     padding: 20px;
@@ -235,10 +233,7 @@ const BarText = styled.p`
 
   @media (max-width: 768px) {
     font-size: 13px;
-  }
-
-  @media (max-width: 414px) {
-    font-size: 10px;
+    line-height: 25px;
   }
 `;
 
@@ -248,6 +243,10 @@ const CommentSection = styled.div`
   height: 500px;
   margin: 300px auto 200px;
   text-align: center;
+
+  @media (max-width: 414px) {
+    margin: 200px auto;
+  }
 `;
 
 const CommentTitle = styled.h2`
@@ -400,11 +399,12 @@ const Comment = styled.li`
   }
 
   @media (max-width: 768px) {
-    font-size: 10px;
+    height: 200px;
+    line-height: 22px;
+    overflow-y: auto;
   }
 
   @media (max-width: 414px) {
-    font-size: 8px;
     padding: 30px 20px;
   }
 `;
@@ -422,13 +422,11 @@ const MemberScores = styled.div`
   }
 
   @media (max-width: 768px) {
-    font-size: 13px;
-    margin: 120px 10px 10px;
+    margin: 10px 10px 10px;
   }
 
   @media (max-width: 414px) {
-    font-size: 10px;
-    margin: 140px 10px 5px;
+    margin: 10px 10px 5px;
   }
 `;
 
@@ -441,12 +439,10 @@ const UserName = styled.p`
   }
 
   @media (max-width: 768px) {
-    font-size: 10px;
     margin-bottom: 20px;
   }
 
   @media (max-width: 414px) {
-    font-size: 8px;
     margin-bottom: 10px;
   }
 `;
@@ -455,11 +451,7 @@ const Page = styled.p`
   font-size: 15px;
 
   @media (max-width: 1024px) {
-    font-size: 10px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 7px;
+    font-size: 12px;
   }
 `;
 
@@ -489,7 +481,6 @@ const BarRecContentSection = styled.div`
 const BarRecTitle = styled.h2`
   color: #fff;
   font-size: 40px;
-  /* margin: 450px 0 200px; */
   margin: 0 0 200px;
 
   @media (max-width: 1024px) {
@@ -498,7 +489,6 @@ const BarRecTitle = styled.h2`
 
   @media (max-width: 800px) {
     font-size: 20px;
-    /* margin: 500px 0 200px; */
   }
 `;
 
@@ -522,6 +512,11 @@ const BarRecImg = styled.img`
   @media (max-width: 800px) {
     margin-top: -25%;
     margin-left: 0;
+  }
+
+  @media (max-width: 414px) {
+    width: 200px;
+    height: 200px;
   }
 `;
 
@@ -561,10 +556,6 @@ const BarRecContentTitle = styled.h2`
   @media (max-width: 1024px) {
     font-size: 25px;
   }
-
-  @media (max-width: 800px) {
-    font-size: 20px;
-  }
 `;
 
 const BarRecContentText = styled.p`
@@ -579,7 +570,6 @@ const BarRecContentText = styled.p`
 
   @media (max-width: 800px) {
     width: 100%;
-    font-size: 10px;
   }
 `;
 
@@ -648,13 +638,10 @@ const SubmitSection = styled.div`
 
 const StarSection = styled.div`
   font-size: 25px;
+  padding-top: 5px;
 
   @media (max-width: 768px) {
     font-size: 20px;
-  }
-
-  @media (max-width: 414px) {
-    font-size: 10px;
   }
 `;
 
@@ -672,7 +659,7 @@ const InputTextArea = styled.textarea`
   color: #ffffffc1;
 
   @media (max-width: 414px) {
-    padding: 50px;
+    padding: 30px;
   }
 
   &:focus {
