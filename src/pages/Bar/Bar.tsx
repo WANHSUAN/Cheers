@@ -167,16 +167,28 @@ const BarIntro = styled.h2`
     width: 40%;
     height: 1px;
     background-color: #d19b18;
+
+    @media (max-width: 414px) {
+      width: 30%;
+    }
   }
 
   &::before {
     top: 20px;
     right: -100px;
+
+    @media (max-width: 414px) {
+      right: -81px;
+    }
   }
 
   &::after {
     top: 20px;
     left: -100px;
+
+    @media (max-width: 414px) {
+      left: -81px;
+    }
   }
 `;
 

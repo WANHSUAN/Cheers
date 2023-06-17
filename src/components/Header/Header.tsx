@@ -217,6 +217,10 @@ const SideMenuList = styled.ul`
   margin: 12% auto;
   gap: 40px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const MenuItem = styled.li`
@@ -228,16 +232,20 @@ const MenuItem = styled.li`
   position: relative;
 
   @media (max-width: 1280px) {
-    font-size: 70px;
-  }
-
-  @media (max-width: 1024px) {
     font-size: 60px;
   }
 
+  @media (max-width: 1024px) {
+    font-size: 45px;
+  }
+
   @media (max-width: 768px) {
-    width: 50%;
-    font-size: 55px;
+    width: 100%;
+    margin: 30px 0;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 35px;
   }
 `;
 
@@ -285,12 +293,20 @@ const InstantSearchContainer = styled.div`
     top: 0;
     right: 11%;
 
-    @media screen {
+    @media (max-width: 768px) {
       right: 15%;
     }
   }
 
-  @media screen {
+  @media (max-width: 768px) {
+    width: 300px;
+  }
+
+  @media (max-width: 414px) {
+    width: 320px;
+  }
+
+  @media (max-width: 360px) {
     width: 300px;
   }
 `;
@@ -305,7 +321,7 @@ const SelectBarsButton = styled.button`
   color: #fff;
   position: absolute;
   top: 90px;
-  right: 200px;
+  right: 250px;
   cursor: pointer;
 
   &:hover {
@@ -319,8 +335,18 @@ const SelectBarsButton = styled.button`
     border: #d19b18;
   }
 
-  @media (max-width: 1440px) {
+  @media (max-width: 768px) {
     width: 145px;
+    right: 200px;
+  }
+
+  @media (max-width: 414px) {
+    width: 160px;
+    right: 210px;
+  }
+  @media (max-width: 360px) {
+    width: 145px;
+    right: 200px;
   }
 `;
 
@@ -348,7 +374,15 @@ const SelectEventsButton = styled.button`
     border: #d19b18;
   }
 
-  @media (max-width: 1440px) {
+  @media (max-width: 768px) {
+    width: 145px;
+  }
+
+  @media (max-width: 414px) {
+    width: 160px;
+  }
+
+  @media (max-width: 360px) {
     width: 145px;
   }
 `;
@@ -367,6 +401,14 @@ const BarName = styled.p`
   color: #d19b18;
   font-size: 30px;
   padding: 0 5px;
+
+  @media (max-width: 768px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 20px;
+  }
 `;
 
 const BarTel = styled.p`
@@ -386,6 +428,10 @@ const BarIntroduction = styled.p`
   font-size: 15px;
   padding: 30px 5px 0 5px;
   text-align: left;
+
+  @media (max-width: 414px) {
+    font-size: 13px;
+  }
 `;
 
 const StyledSearchEventSection = styled.div`
@@ -401,6 +447,14 @@ const EventBar = styled.p`
   font-size: 30px;
   padding: 0 5px;
   text-align: left;
+
+  @media (max-width: 768px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 20px;
+  }
 `;
 
 const EventContent = styled.p`
@@ -408,6 +462,10 @@ const EventContent = styled.p`
   font-size: 15px;
   padding: 20px 5px 0;
   text-align: left;
+
+  @media (max-width: 360px) {
+    font-size: 15px;
+  }
 `;
 
 interface IToggleProps {

@@ -70,8 +70,8 @@
 }
 
 .ais-Hits-list {
-  height: 650px;
-  overflow: auto;
+  height: calc(100vh - 165px);
+  overflow-y: auto;
 }
 
 .ais-Hits-item {
@@ -86,7 +86,7 @@
   background-color: #706e6bf3;
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 768px) {
   .ais-SearchBox-input {
     width: 300px;
   }
@@ -100,5 +100,17 @@
   .ais-SearchBox-submitIcon {
     width: 20px;
     height: 20px;
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .ais-SearchBox-input {
+    width: 330px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .ais-SearchBox-input {
+    width: 300px;
   }
 }
