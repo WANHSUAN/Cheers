@@ -6,9 +6,15 @@ import Liquor from "../Main/Liquor.png";
 import "./styles.css";
 
 const Wrapper = styled.div`
+  max-width: 1000px;
+  width: 100%;
   display: flex;
   justify-content: center;
-  margin: 50px 200px 200px 50px;
+  margin: 50px auto;
+
+  @media (max-width: 414px) {
+    flex-direction: column;
+  }
 `;
 
 const GoogleMap = styled.div`
@@ -17,11 +23,17 @@ const GoogleMap = styled.div`
 `;
 
 const Map = styled.div`
-  height: 500px;
-  width: 1000px;
+  max-width: 1000px;
+  max-height: 500px;
+  width: 100%;
+  height: 100%;
   border-radius: 10px;
   box-shadow: 5px 5px 5px #d9d9d980;
   border: 2px solid #ffffff7c;
+
+  @media (max-width: 414px) {
+    height: 200px;
+  }
 `;
 
 const ButtonSection = styled.div`
@@ -30,10 +42,18 @@ const ButtonSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
+  @media (max-width: 414px) {
+    margin-right: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 `;
 
 const CategoryButton = styled.button<ICategoryButtonProps>`
-  width: 120px;
+  max-width: 120px;
+  width: 100%;
   height: 30px;
   color: ${(props) => (props.selected ? "#D19B18" : "#fff")};
   background-color: rgba(255, 255, 255, 0);
@@ -42,6 +62,19 @@ const CategoryButton = styled.button<ICategoryButtonProps>`
   text-align: right;
   font-size: 1.5rem;
 
+  @media (max-width: 1280px) {
+    font-size: 1.3rem;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    height: 20px;
+  }
+
+  @media (max-width: 600px) {
+    width: 65px;
+  }
+
   &:hover,
   &:focus,
   &:active {
@@ -49,10 +82,6 @@ const CategoryButton = styled.button<ICategoryButtonProps>`
     transform: translateX(-10px);
     transition: ease 0.5s;
     cursor: pointer;
-  }
-
-  @media (max-width: 1280px) {
-    font-size: 1.3rem;
   }
 `;
 

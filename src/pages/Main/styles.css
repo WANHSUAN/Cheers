@@ -37,3 +37,9 @@
   width: 400px;
   height: 300px;
 }
+
+@media screen and (max-width: 768px) {
+  .custom-map-control-button {
+    font-size: 10px;
+  }
+}
