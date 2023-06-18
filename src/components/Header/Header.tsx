@@ -174,7 +174,8 @@ const NavOverlay = styled.div<IToggleProps>`
   top: -100%;
   left: 0;
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
+  height: ${({isToggle}) => (isToggle ? "100vh" : "0")};
   overflow: auto;
   padding: 4em;
   transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -486,6 +487,7 @@ const Header = () => {
   const provider = new GoogleAuthProvider();
   const [isOpen, setIsOpen] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -500,6 +502,16 @@ const Header = () => {
     } else {
       document.removeEventListener("mousedown", handleOutsideClick);
     }
+
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, [isOpen]);
 
   provider.setCustomParameters({
@@ -533,7 +545,7 @@ const Header = () => {
             <HamBox isToggle={isToggle}>
               <TopLine isToggle={isToggle} />
               <BottomLine isToggle={isToggle} />
-              <NavOverlay isToggle={isToggle}>
+              <NavOverlay isToggle={isToggle} style={{height: windowHeight}}>
                 <SideMenuList>
                   <MenuItem>
                     <StyledLink onClick={handleSideMenu} to={"/member"}>
