@@ -229,6 +229,12 @@ const BarIntroTextSection = styled.div`
   border-radius: 0 50px 0 50px;
   text-align: left;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   @media (max-width: 768px) {
     padding: 20px;
@@ -414,6 +420,13 @@ const Comment = styled.li`
     height: 200px;
     line-height: 22px;
     overflow-y: auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   @media (max-width: 414px) {

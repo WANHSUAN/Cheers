@@ -695,6 +695,10 @@ const Slogan = styled.p`
   @media (max-width: 768px) {
     font-size: 4rem;
   }
+
+  @media (max-width: 414px) {
+    font-size: 4rem;
+  }
 `;
 
 const MainImg = styled.img`
