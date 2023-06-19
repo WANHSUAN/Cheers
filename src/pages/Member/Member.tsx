@@ -44,6 +44,10 @@ const MemberTitle = styled.h1`
   @media (max-width: 768px) {
     font-size: 30px;
   }
+
+  @media (max-width: 414px) {
+    font-size: 20px;
+  }
 `;
 
 const MemberSection = styled.div`
@@ -238,7 +242,7 @@ interface IUser {
     }
   ];
   name: string;
-  img: string;
+  userImg: string;
   userUID: string;
 }
 
@@ -329,6 +333,7 @@ const MemberPage = () => {
             <WelcomeTitle>Welcome,</WelcomeTitle> {user.name}!
           </MemberTitle>
           <MemberSection>
+            <MemberImg src={user.userImg} />
             <MemberInfo>
               <MemberName>{user.name}</MemberName>
               <MemberEmail>{user.email}</MemberEmail>

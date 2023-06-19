@@ -138,6 +138,17 @@ const More = styled.button`
     line-height: 50px;
   }
 
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+    font-size: 0.7rem;
+    line-height: 40px;
+  }
+
+  @media (max-width: 414px) {
+    margin-top: 100px;
+  }
+
   &:active {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
@@ -610,6 +621,10 @@ const ScrollTitle = styled.span`
   @media (max-width: 768px) {
     font-size: 1.3rem;
   }
+
+  @media (max-width: 414px) {
+    font-size: 1rem;
+  }
 `;
 
 const Jump = keyframes`
@@ -696,8 +711,12 @@ const Slogan = styled.p`
     font-size: 4rem;
   }
 
+  @media (max-width: 580px) {
+    font-size: 3rem;
+  }
+
   @media (max-width: 414px) {
-    font-size: 4rem;
+    font-size: 2rem;
   }
 `;
 
@@ -711,6 +730,16 @@ const MainImg = styled.img`
   @media (max-width: 768px) {
     margin-top: 155px;
     height: 300px;
+  }
+
+  @media (max-width: 580px) {
+    margin-top: 125px;
+    height: 250px;
+  }
+
+  @media (max-width: 414px) {
+    margin-top: 95px;
+    height: 200px;
   }
 `;
 
@@ -735,6 +764,10 @@ const Title = styled.div`
 
   @media (max-width: 768px) {
     margin: 200px 0;
+  }
+
+  @media (max-width: 660px) {
+    display: none;
   }
 `;
 
@@ -775,16 +808,29 @@ const AllBarSection = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 30px;
-  margin: 100px 0 0;
+  margin-top: 100px;
   justify-content: center;
 
   @media (max-width: 1280px) {
     gap: 20px;
   }
+
+  @media (max-width: 768px) {
+    gap: 10px;
+    margin-top: 50px;
+  }
 `;
 
 const BarSection = styled(Link)`
   text-decoration: none;
+
+  @media (max-width: 768px) {
+    height: 200px;
+  }
+
+  @media (max-width: 414px) {
+    height: 100px;
+  }
 `;
 
 const BarTitle = styled.div`
@@ -794,6 +840,18 @@ const BarTitle = styled.div`
   padding-top: 10px;
   color: #ffffffb9;
   margin: 20px 0;
+
+  @media (max-width: 768px) {
+    width: 180px;
+  }
+
+  @media (max-width: 580px) {
+    width: 150px;
+  }
+
+  @media (max-width: 414px) {
+    width: 130px;
+  }
 `;
 
 const CalendarSection = styled.div``;

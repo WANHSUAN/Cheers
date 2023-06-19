@@ -357,6 +357,23 @@ const CommentBox = styled.div`
   align-items: center;
 `;
 
+const MemberImg = styled.img`
+  position: absolute;
+  top: -17%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #ffffff7c;
+
+  @media (max-width: 768px) {
+    width: 70px;
+    height: 70px;
+    top: -11%;
+  }
+`;
+
 const CommentItem = styled.div`
   max-width: 1000px;
   width: 100%;
@@ -684,7 +701,7 @@ const InputTextArea = styled.textarea`
   color: #ffffffc1;
 
   @media (max-width: 414px) {
-    padding: 30px;
+    padding: 50px 30px 30px;
   }
 
   &:focus {
@@ -714,6 +731,7 @@ interface IOpeningTime {
 
 interface IComment {
   userName: string;
+  MemberImg: string;
   comment: string;
   score: number;
 }
@@ -822,6 +840,7 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
 
   return (
     <ScoreForm>
+      <MemberImg src={user.userImg} />
       <InputTextArea
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
@@ -986,7 +1005,6 @@ const MainPage: React.FC<IMainProps> = (props: IMainProps) => {
 
   const isFirstComment = currentIdx === 0;
   const isLastComment = currentIdx === bar.memberComment.length - 1;
-
   return (
     <>
       <BarInfoSection>

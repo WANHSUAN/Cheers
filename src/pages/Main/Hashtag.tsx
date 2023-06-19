@@ -15,7 +15,7 @@ const HashTagSection = styled.div`
   flex-wrap: wrap;
   margin: 300px auto 500px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1280px) {
     margin: 100px auto 200px;
   }
 `;
@@ -84,6 +84,10 @@ const HashtagType = styled(HashLink)`
   @media (max-width: 768px) {
     font-size: 20px;
   }
+
+  @media (max-width: 414px) {
+    font-size: 15px;
+  }
 `;
 
 const StyledHashtagType = styled.p`
@@ -92,13 +96,19 @@ const StyledHashtagType = styled.p`
   margin: 30px auto;
 
   @media (max-width: 1280px) {
-    font-size: 25px;
-    width: 170px;
+    font-size: 18px;
+    width: 160px;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+    width: 140px;
+    margin: 20px auto;
   }
 
   @media (max-width: 768px) {
-    font-size: 20px;
-    width: 120px;
+    width: 100px;
+    margin: 10px auto;
   }
 `;
 
