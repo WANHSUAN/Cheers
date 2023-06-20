@@ -5,45 +5,88 @@ import styled from "styled-components/macro";
 import {BtnText, Button} from "../../components/Button/Button";
 import {db} from "../../utils/firebase";
 
-const Wrapper = styled.div`
-  padding: 10px;
-  padding-top: 60px;
-`;
-
 const PageImg = styled.img`
+  padding-top: 60px;
   width: 100vw;
   height: 400px;
   object-fit: cover;
+
+  @media (max-width: 768px) {
+    height: 300px;
+  }
+
+  @media (max-width: 414px) {
+    height: 200px;
+  }
+`;
+
+const Wrapper = styled.div`
+  max-width: 1000px;
+  width: 80%;
+  margin: 0 auto;
 `;
 
 const EventTitle = styled.h2`
   color: #d19b18;
   font-size: 40px;
-  margin: 70px 80px 20px 0;
+  margin: 70px 80px 20px 50px;
+
+  @media (max-width: 1024px) {
+    margin-left: 0;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
+`;
+
+const EventTime = styled.div`
+  width: 100px;
+  font-size: 30px;
+  color: #fff;
+  margin: 0 0 50px 50px;
+
+  @media (max-width: 1024px) {
+    margin-left: 0;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const InnerDiv = styled.div`
+  max-width: 900px;
   width: 100%;
-  height: 430px;
+  height: 530px;
   border: 2px solid white;
   padding: 70px;
   margin-top: -25px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+
+  @media (max-width: 1024px) {
+    height: 450px;
+    padding: 50px;
+  }
+
+  @media (max-width: 880px) {
+    padding: 50px 20px;
+  }
 `;
 
 const OuterDiv = styled.div`
+  max-width: 900px;
   width: 100%;
-  height: 400px;
+  height: 500px;
   border: 2px solid white;
   padding: 10px;
   margin: 0 auto;
-`;
 
-const EventSection = styled.div`
-  width: 1000px;
-  margin: 0 auto;
+  @media (max-width: 1024px) {
+    height: 420px;
+  }
 `;
 
 const EventContent = styled.div`
@@ -52,18 +95,29 @@ const EventContent = styled.div`
   font-size: 25px;
   line-height: 40px;
   align-items: center;
-`;
 
-const EventTime = styled.div`
-  width: 100px;
-  height: 100px;
-  font-size: 30px;
-  color: #fff;
-  margin-bottom: 50px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    line-height: 30px;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 12px;
+  }
 `;
 
 const StyledEventButton = styled.button`
-  width: 870px;
+  max-width: 870px;
+  width: 80%;
   border: none;
   padding: 50px;
   background-color: rgba(255, 255, 255, 0);
@@ -117,9 +171,9 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
   const dateStr = dateObj.toLocaleDateString();
 
   return (
-    <Wrapper>
+    <>
       <PageImg src={event.img} />
-      <EventSection>
+      <Wrapper>
         <EventTitle>{event.bar}</EventTitle>
         <EventTime>{dateStr}</EventTime>
         <OuterDiv>
@@ -136,8 +190,8 @@ const EventPage: React.FC<IEventProps> = (props: IEventProps) => {
             </Button>
           </EventButton>
         </StyledEventButton>
-      </EventSection>
-    </Wrapper>
+      </Wrapper>
+    </>
   );
 };
 

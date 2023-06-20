@@ -437,7 +437,6 @@ const Comment = styled.li`
     height: 200px;
     line-height: 22px;
     overflow-y: auto;
-
     -ms-overflow-style: none;
     scrollbar-width: none;
 
