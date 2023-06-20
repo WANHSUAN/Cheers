@@ -10,6 +10,10 @@ const Wrapper = styled.div`
   width: 90%;
   margin: 0 auto;
   padding-top: 160px;
+
+  @media (max-width: 414px) {
+    padding-top: 110px;
+  }
 `;
 
 const RecommendationTitle = styled.h1`
@@ -95,6 +99,10 @@ const RecItem = styled(Link)`
 const RecName = styled.h3`
   color: #fff;
   margin-bottom: 10px;
+
+  @media (max-width: 580px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const RecImg = styled.img`
