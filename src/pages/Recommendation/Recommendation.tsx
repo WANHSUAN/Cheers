@@ -6,7 +6,8 @@ import {AuthContext} from "../../Context/AuthContext";
 import {db} from "../../utils/firebase";
 
 const Wrapper = styled.div`
-  width: 900px;
+  max-width: 900px;
+  width: 90%;
   margin: 0 auto;
   padding-top: 160px;
 `;
@@ -15,6 +16,19 @@ const RecommendationTitle = styled.h1`
   color: #fff;
   text-align: center;
   margin-bottom: 160px;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 100px;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const Strong = styled.strong`
@@ -22,13 +36,22 @@ const Strong = styled.strong`
 `;
 
 const RecSection = styled.div`
-  width: 900px;
+  max-width: 900px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   text-align: center;
   margin: 50px 0;
   gap: 50px;
+
+  @media (max-width: 1024px) {
+    gap: 30px;
+  }
+
+  @media (max-width: 768px) {
+    gap: 10px;
+  }
 `;
 
 const Flow = keyframes`
@@ -41,10 +64,19 @@ from {
 `;
 
 const RecItem = styled(Link)`
+  width: 250px;
   text-decoration: none;
   margin-bottom: 30px;
   display: ${(props) => (props.hidden ? "none" : "block")};
   animation: ${Flow} 1s alternate infinite;
+
+  @media (max-width: 580px) {
+    width: 180px;
+  }
+
+  @media (max-width: 414px) {
+    width: 150px;
+  }
 
   &:nth-child(odd) {
     animation-delay: 0.2s;
@@ -63,7 +95,6 @@ const RecItem = styled(Link)`
 const RecName = styled.h3`
   color: #fff;
   margin-bottom: 10px;
-  width: 250px;
 `;
 
 const RecImg = styled.img`
@@ -72,6 +103,11 @@ const RecImg = styled.img`
   border-radius: 50%;
   border: 2px solid #ffffff7c;
   box-shadow: 3px 3px 10px #ffffff7c;
+
+  @media (max-width: 580px) {
+    width: 150px;
+    height: 150px;
+  }
 
   &:hover {
     transition: ease 1s;
