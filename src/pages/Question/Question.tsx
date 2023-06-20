@@ -11,7 +11,8 @@ import "../Bar/Bar.css";
 import "./Question.css";
 
 const Wrapper = styled.div`
-  width: 1000px;
+  max-width: 1000px;
+  width: 80%;
   margin: 0 auto;
   padding-top: 60px;
 `;
@@ -24,18 +25,39 @@ const TestTitle = styled.p`
   font-size: 70px;
   color: #fff;
   margin: 270px 0 50px 0;
+
+  @media (max-width: 1280px) {
+    font-size: 60px;
+    margin: 200px 0 50px 0;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 50px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+    margin: 100px 0 50px 0;
+  }
 `;
 
 const TestSection = styled.div`
   margin: 200px auto 50px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1280px) {
+    margin: 100px auto 50px;
+  }
+
+  @media (max-width: 768px) {
+    margin: 50px auto;
+  }
 `;
 
 const SelectItemSection = styled.div``;
 
 const SelectItem = styled.div`
-  padding: 10px 0;
   text-align: left;
 `;
 
@@ -46,6 +68,10 @@ const RadLabel = styled.label`
   padding: 30px 25px;
   cursor: pointer;
   transition: 0.3s;
+
+  @media (max-width: 1024px) {
+    padding: 20px 15px;
+  }
 
   &:focus-within {
     background: hsla(0, 0%, 80%, 0.14);
@@ -60,6 +86,18 @@ const RadText = styled.div`
   font-size: 25px;
   font-weight: 900;
   transition: 0.3s;
+
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 1024px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 const SelectTime = styled.p`
@@ -67,10 +105,31 @@ const SelectTime = styled.p`
   color: #d19b18;
   margin: 20px 0;
 
+  @media (max-width: 1024px) {
+    font-size: 30px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 25px;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 18px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 15px;
+  }
+
   svg {
     width: 1.2em;
     height: 1.2em;
     margin-right: 20px;
+
+    @media (max-width: 768px) {
+      width: 1em;
+      height: 1em;
+    }
   }
 `;
 
@@ -120,11 +179,11 @@ const options = [
 ];
 
 const groups = {
-  time: "What is your preferred time?",
+  time: "Favorite time?",
   situation: "Alone or with others?",
   relationship: "Who will be joining you?",
-  category: "Do you prefer something special or classic?",
-  visual: "Do you prefer simplicity or visual appeal?",
+  category: "Special or Classic?",
+  visual: "Simplicity or Visual appeal?",
 };
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
@@ -211,7 +270,7 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
     <>
       <Wrapper>
         <TestTitleSection>
-          <TestTitle>Select Your Favorite Type!</TestTitle>
+          <TestTitle>Select Your Type!</TestTitle>
         </TestTitleSection>
 
         <TestSection>
@@ -251,8 +310,8 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
             </Alert>
           )}
           <EventButton onClick={handleButtonClick}>
-            <Button fontSize="40px" marginLeft="25px">
-              <BtnText fontSize="40px" marginLeft="25px">
+            <Button fontSize="40px" marginLeft="15px">
+              <BtnText fontSize="40px" marginLeft="15px">
                 Find the bars you like!
               </BtnText>
             </Button>

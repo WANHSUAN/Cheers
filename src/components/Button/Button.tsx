@@ -11,12 +11,18 @@ const BtnCircle = styled.span`
   position: absolute;
   top: 0;
   right: 95%;
+  width: 100%;
   height: 100%;
   border-radius: 100%;
-  width: 100%;
   box-shadow: 0 0 1px 1px #d19b18;
   transition: 0.3s linear;
   color: #fff;
+
+  @media (max-width: 768px) {
+    width: 80%;
+    height: 80%;
+    top: 10%;
+  }
 `;
 
 const BtnWhiteCircle = styled.span`
@@ -30,6 +36,11 @@ const BtnWhiteCircle = styled.span`
   background: #d19b18;
   display: flex;
   transition: 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 
   svg {
     width: 12px;
@@ -49,6 +60,10 @@ export const BtnText = styled.span<IButtonProps>`
   padding: 24px 0;
   transition: 0.3s linear;
   margin-left: ${(props) => props.marginLeft};
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const Btn = styled.div`
