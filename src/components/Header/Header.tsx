@@ -174,7 +174,6 @@ const NavOverlay = styled.div<IToggleProps>`
   top: -100%;
   left: 0;
   width: 100%;
-  /* height: 100vh; */
   height: ${({isToggle}) => (isToggle ? "100vh" : "0")};
   overflow: auto;
   padding: 4em;

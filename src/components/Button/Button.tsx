@@ -2,8 +2,8 @@ import {ReactNode} from "react";
 import styled from "styled-components/macro";
 
 interface IButtonProps {
-  fontSize: string;
-  marginLeft: string;
+  fontSize?: string;
+  marginLeft?: string;
   children?: ReactNode;
 }
 
@@ -64,9 +64,13 @@ export const BtnText = styled.span<IButtonProps>`
   @media (max-width: 768px) {
     font-size: 20px;
   }
+
+  @media (max-width: 580px) {
+    font-size: 15px;
+  }
 `;
 
-const Btn = styled.div`
+export const Btn = styled.div<IButtonProps>`
   display: inline-block;
   color: #d19b18;
   padding: 16px;
@@ -83,7 +87,7 @@ const Btn = styled.div`
     }
 
     ${BtnText} {
-      transform: translate(30px, -50%);
+      transform: translate(15px, -50%);
     }
   }
 `;

@@ -18,6 +18,7 @@ import {
 } from "firebase/firestore";
 import {createContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {Alert, CommentText} from "../components/Alert/Alert";
 import {db} from "../utils/firebase";
 
 export interface IBar {
@@ -79,6 +80,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [userUID, setUserUID] = useState<string>("");
   const [bars, setBars] = useState<IBar[]>([]);
+  const [showAlert, setShowAlert] = useState(true);
   const barsCollectionRef = collection(db, "bars");
 
   const navigate = useNavigate();
@@ -158,11 +160,27 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
     navigate("/", {replace: true});
   };
 
+  const showNativeAuthErrorMessage = (errorCode: any) => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3500);
+
+    return (
+      <>
+        {showAlert && (
+          <Alert color="#fba78d">
+            <CommentText>{errorCode}</CommentText>
+          </Alert>
+        )}
+      </>
+    );
+  };
+
   const nativeSignIn = async (auth: Auth, email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential: any) => {
         const user = userCredential.user;
-        console.log(user);
         if (user) {
           getUsers(user);
           navigate("/main");
@@ -172,10 +190,8 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         }
       })
       .catch((error) => {
-        console.log("native login error:", error);
         const errorCode = error.code;
-        console.log(errorCode);
-        // showNativeAuthErrorMessage(errorCode);
+        showNativeAuthErrorMessage(errorCode);
       });
   };
 
@@ -195,10 +211,8 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         setIsLogin(true);
       })
       .catch((error) => {
-        console.log("native signup error:", error);
         const errorCode = error.code;
-        console.log(errorCode);
-        // showNativeAuthErrorMessage(errorCode);
+        showNativeAuthErrorMessage(errorCode);
       });
   };
 

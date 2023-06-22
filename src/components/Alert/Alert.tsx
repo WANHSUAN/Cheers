@@ -35,9 +35,9 @@ const dropInFadeOut = keyframes`
 
 const Flash = styled.div`
   display: block;
-  position: fixed;
-  top: 100px;
-  right: 31%;
+  position: absolute;
+  top: -55%;
+  left: 23%;
   width: 550px;
   height: 100px;
   padding: 20px 25px 20px 85px;
@@ -51,11 +51,44 @@ const Flash = styled.div`
   opacity: 0;
   align-items: center;
   animation: ${dropInFadeOut} 3.5s 0.4s cubic-bezier(0.32, 1.75, 0.65, 0.91);
+
+  @media (max-width: 1280px) {
+    width: 400px;
+    height: 60px;
+    top: -50%;
+    left: 30%;
+    font-size: 13px;
+    padding: 0 0 0 60px;
+  }
+
+  @media (max-width: 1024px) {
+    left: 25%;
+  }
+
+  @media (max-width: 1024px) {
+    left: 18%;
+  }
+
+  @media (max-width: 580px) {
+    width: 200px;
+    height: 80px;
+    left: 28%;
+    padding: 10px 0 0 30px;
+    line-height: 20px;
+  }
+
+  @media (max-width: 414px) {
+    left: 20%;
+  }
+
+  @media (max-width: 360px) {
+    left: 16%;
+  }
 `;
 
 const FlashIcon = styled.div`
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 0;
   width: 1.8em;
   height: 100%;
@@ -64,14 +97,26 @@ const FlashIcon = styled.div`
   color: #fff;
   font-size: 36px;
   font-weight: 300;
-  transform: translate(0, -50%);
+
+  @media (max-width: 1280px) {
+    width: 1.5em;
+    font-size: 25px;
+  }
 `;
 
 const Icon = styled.div`
   position: absolute;
-  top: 55%;
-  left: 15%;
-  transform: translate(0, -50%);
+  top: 33px;
+  left: 13px;
+
+  @media (max-width: 1280px) {
+    top: 15px;
+    left: 5px;
+  }
+
+  @media (max-width: 580px) {
+    top: 28px;
+  }
 `;
 
 export const CommentText = styled.div`

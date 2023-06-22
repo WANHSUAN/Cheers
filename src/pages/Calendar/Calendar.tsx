@@ -213,6 +213,14 @@ const OuterDiv = styled.div`
   position: relative;
   background-color: #ffffffbb;
   box-shadow: 5px 3px 10px #ffffff7c;
+
+  @media (max-width: 1024px) {
+    height: 400px;
+  }
+
+  @media (max-width: 580px) {
+    height: 250px;
+  }
 `;
 
 const InnerDiv = styled.div`
@@ -223,6 +231,15 @@ const InnerDiv = styled.div`
   background-color: #ffffffbb;
   padding: 40px;
   box-shadow: 5px 3px 10px #ffffff7c;
+
+  @media (max-width: 1024px) {
+    height: 430px;
+  }
+
+  @media (max-width: 580px) {
+    height: 280px;
+    padding: 20px;
+  }
 `;
 
 const Delete = styled.div`
@@ -230,6 +247,16 @@ const Delete = styled.div`
   font-size: 2rem;
   color: #d19b18;
   text-align: right;
+
+  @media (max-width: 1024px) {
+    height: 20px;
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 580px) {
+    height: 10px;
+    font-size: 1rem;
+  }
 
   &:hover {
     cursor: pointer;
@@ -242,9 +269,20 @@ const EventSection = styled.div`
   width: 600px;
   height: 500px;
   position: absolute;
-  top: 13%;
-  left: 12%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   border-radius: 10px;
+
+  @media (max-width: 1024px) {
+    width: 450px;
+    height: 350px;
+  }
+
+  @media (max-width: 580px) {
+    width: 350px;
+    height: 250px;
+  }
 `;
 
 const EventTitle = styled.p`
@@ -252,20 +290,58 @@ const EventTitle = styled.p`
   font-size: 2rem;
   margin: 20px 0 30px;
   font-weight: 700;
+
+  @media (max-width: 1024px) {
+    font-size: 1.5rem;
+    margin: 10px 0 20px;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 1rem;
+  }
 `;
 
 const EventName = styled.p`
   color: #000;
   font-size: 1.5rem;
   margin-bottom: 40px;
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 580px) {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
 `;
 
 const EventContent = styled.p`
+  height: 150px;
   color: #000000ac;
   font-size: 1rem;
-  line-height: 18px;
+  line-height: 25px;
   text-align: left;
   white-space: pre-wrap;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    height: 150px;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 580px) {
+    height: 80px;
+    line-height: 20px;
+    font-size: 0.5rem;
+  }
 `;
 
 const StyledEventButton = styled.button`
@@ -275,13 +351,22 @@ const StyledEventButton = styled.button`
   background-color: rgba(255, 255, 255, 0);
   position: absolute;
   bottom: 5%;
-  right: 50%;
+  left: 35%;
   cursor: pointer;
+
+  @media (max-width: 1024px) {
+    left: 30%;
+  }
 `;
+
 const EventButton = styled(Link)`
   text-decoration: none;
   color: #d19b18;
   font-size: 1.5rem;
+
+  @media (max-width: 1024px) {
+    font-size: 1rem;
+  }
 `;
 
 interface IEvent {
