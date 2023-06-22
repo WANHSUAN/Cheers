@@ -10,10 +10,6 @@ const Wrapper = styled.div`
   width: 90%;
   margin: 0 auto;
   padding-top: 160px;
-
-  @media (max-width: 414px) {
-    padding-top: 110px;
-  }
 `;
 
 const RecommendationTitle = styled.h1`

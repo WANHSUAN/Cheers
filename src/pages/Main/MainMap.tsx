@@ -255,7 +255,7 @@ const Address = (props: IAddressProps) => {
     const infoWindow = new window.google.maps.InfoWindow();
 
     const locationButton = document.createElement("button");
-    locationButton.textContent = "Current Location";
+    locationButton.textContent = "⌖";
     locationButton.classList.add("custom-map-control-button");
 
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
@@ -403,10 +403,10 @@ const Address = (props: IAddressProps) => {
         <div class="infowindow">
           <h2>${barName}</h2>  <br />
           <img src="${barImg}" />
-          <p>${barDate} ${barHours}</p> <br />
-          <p>${barAddress}</p> <br />
-          <p>${barTel}</p> <br />
-          <a href="/bars/${barLink}">&#128279;</i></a>
+          <p><strong>Opening Time:</strong> <br />${barDate} ${barHours}</p> <br />
+          <p><strong>Address:</strong> <br />${barAddress}</p> <br />
+          <p><strong>Tel:</strong> <br />${barTel}</p> <br />
+          <a href="/bars/${barLink}">Go to Website!</i></a>
           </div>
         `);
         infoWindow.open(map, marker);

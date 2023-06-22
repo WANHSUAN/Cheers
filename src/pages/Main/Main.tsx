@@ -35,6 +35,11 @@ const LabelCheck = styled.span`
   justify-content: center;
   transition: border 0.3s ease;
 
+  @media (max-width: 768px) {
+    width: 25px;
+    height: 25px;
+  }
+
   &:hover {
     border: 3px solid rgba(0, 0, 0, 0.2);
   }
@@ -83,7 +88,8 @@ const Check = keyframes`
     background: #00d47877;
     border: 0;
     opacity: 1;
-  }`;
+  }
+  `;
 
 const EventCheckbox = styled.input`
   display: none;
@@ -106,6 +112,10 @@ const EventLabel = styled.label``;
 
 const EventCenter = styled.div`
   width: 40px;
+
+  @media (max-width: 768px) {
+    width: 30px;
+  }
 `;
 
 const IconLink = styled.link``;
@@ -214,13 +224,17 @@ const LinkImage = styled.image`
 `;
 
 const Rotate = keyframes`
-to {
-    transform: rotate(360deg);
+0% {
+  transform: rotate(0deg);
+}
+100% {
+  transform: rotate(360deg);
   }
 `;
 
 const LinkText = styled.text`
   animation: ${Rotate} normal infinite 20s linear;
+  -webkit-animation: ${Rotate} normal infinite 20s linear;
   transform-origin: 50% 50%;
 `;
 
@@ -814,11 +828,6 @@ const AllBarSection = styled.div`
   @media (max-width: 1280px) {
     gap: 20px;
   }
-
-  @media (max-width: 768px) {
-    gap: 10px;
-    margin-top: 50px;
-  }
 `;
 
 const BarSection = styled(Link)`
@@ -826,10 +835,6 @@ const BarSection = styled(Link)`
 
   @media (max-width: 768px) {
     height: 200px;
-  }
-
-  @media (max-width: 414px) {
-    height: 100px;
   }
 `;
 
@@ -840,18 +845,6 @@ const BarTitle = styled.div`
   padding-top: 10px;
   color: #ffffffb9;
   margin: 20px 0;
-
-  @media (max-width: 768px) {
-    width: 180px;
-  }
-
-  @media (max-width: 580px) {
-    width: 150px;
-  }
-
-  @media (max-width: 414px) {
-    width: 130px;
-  }
 `;
 
 const CalendarSection = styled.div``;
@@ -995,16 +988,13 @@ const MapTitle = styled.p`
 `;
 
 const AlertWrapper = styled.div`
-  position: absolute;
-  top: 35%;
-  left: 32%;
-  z-index: 3;
-  animation: ${fadeIn} 1s ease-in-out;
+  width: 100%;
 `;
 
 const Background = styled.div`
-  width: 100vw;
-  height: 100vh;
+  max-width: 1100px;
+  width: 100%;
+  height: 100%;
   background-color: #0000009d;
   position: fixed;
   z-index: 2;
@@ -1019,15 +1009,54 @@ const AlertSection = styled.div`
   border-radius: 20px;
   text-align: left;
   padding: 40px;
-  position: absolute;
+  margin: 0 auto;
+  position: fixed;
   top: 50%;
-  left: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  animation: ${fadeIn} 1s ease-in-out;
+
+  @media (max-width: 1280px) {
+    width: 500px;
+    height: 300px;
+    padding: 20px;
+  }
+
+  @media (max-width: 768px) {
+    width: 350px;
+    height: 200px;
+    padding: 10px;
+  }
+
+  @media (max-width: 414px) {
+    width: 250px;
+    height: 150px;
+  }
 `;
 
 const AlertMessage = styled.div`
   font-size: 2rem;
   padding: 40px 20px;
   line-height: 60px;
+
+  @media (max-width: 1280px) {
+    font-size: 1.5rem;
+    padding: 30px 10px;
+    line-height: 45px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 20px 10px;
+    line-height: 30px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 0.8rem;
+    padding: 10px;
+    line-height: 30px;
+  }
 `;
 
 const AlertCheck = styled.div`
@@ -1035,6 +1064,18 @@ const AlertCheck = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 25px;
+
+  @media (max-width: 1280px) {
+    margin-top: 15px;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
+
+  @media (max-width: 414px) {
+    margin-top: 0px;
+  }
 `;
 
 const ButtonSection = styled.div``;
@@ -1044,11 +1085,39 @@ const CheckboxWrapper = styled.label`
   width: 250px;
   text-align: left;
   margin: 30px;
+
+  @media (max-width: 1280px) {
+    width: 200px;
+  }
+
+  @media (max-width: 768px) {
+    width: 150px;
+    margin: 20px 10px;
+  }
+
+  @media (max-width: 414px) {
+    width: 130px;
+    margin: 10px;
+  }
 `;
 
 const CheckboxLabel = styled.span`
   font-size: 30px;
   margin-left: 10px;
+
+  @media (max-width: 1280px) {
+    font-size: 20px;
+    padding-top: 5px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+
+  @media (max-width: 414px) {
+    font-size: 10px;
+    padding-top: 8px;
+  }
 `;
 
 const StyledEnterButton = styled.button`
@@ -1059,6 +1128,23 @@ const StyledEnterButton = styled.button`
   border-radius: 8px;
   box-shadow: 3px 3px 8px #605d5d82;
   background-color: #ffffffe3;
+
+  @media (max-width: 1280px) {
+    width: 80px;
+    height: 40px;
+    font-size: 15px;
+  }
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 25px;
+    font-size: 10px;
+  }
+
+  @media (max-width: 414px) {
+    width: 35px;
+    font-size: 10px;
+  }
 
   &:hover {
     background-color: #edb06e;
@@ -1087,6 +1173,25 @@ const CloseButton = styled.button`
   color: #000;
   box-shadow: 3px 3px 8px #605d5d82;
   background-color: #ffffffe3;
+
+  @media (max-width: 1280px) {
+    width: 80px;
+    height: 40px;
+    font-size: 15px;
+    margin-left: 10px;
+  }
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 25px;
+    font-size: 10px;
+    margin-left: 5px;
+  }
+
+  @media (max-width: 414px) {
+    width: 35px;
+    font-size: 10px;
+  }
 
   &:hover {
     background-color: #edb06e;
@@ -1357,10 +1462,9 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
 
   return (
     <>
-      {showAlert && <Background />}
-      <AlertWrapper>
-        {showAlert &&
-          events.map((event, index) => {
+      {showAlert && (
+        <AlertWrapper>
+          {events.map((event, index) => {
             return hasEvent[index] ? (
               <AlertSection key={index}>
                 <AlertMessage>
@@ -1402,7 +1506,9 @@ const Alert = ({events}: {events: IAlertEvent[]}) => {
               </AlertSection>
             ) : null;
           })}
-      </AlertWrapper>
+          <Background />
+        </AlertWrapper>
+      )}
     </>
   );
 };
