@@ -22,6 +22,10 @@
   outline-color: #d19b18;
 }
 
+.ais-SearchBox-input[type="search"]::-webkit-search-cancel-button {
+  display: none;
+}
+
 .ais-SearchBox-submit {
   width: 50px;
   height: 50px;

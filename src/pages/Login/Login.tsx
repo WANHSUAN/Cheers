@@ -96,14 +96,9 @@ const SloganSection = styled.div`
   flex-wrap: wrap;
   margin: 0 auto;
   height: 90vh;
-
-  @media (max-width: 1440px) {
-    /* height: 75vh; */
-  }
 `;
 
 const SecondSection = styled.div`
-  /* height: 100vh; */
   background-color: #d19b18;
   display: flex;
   margin: auto;
