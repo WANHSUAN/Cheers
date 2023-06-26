@@ -852,11 +852,11 @@ const MemberScore = (props: {getBar: () => Promise<void>}) => {
         </StarSection>
         <div>
           <button className="mainContainer" type="submit" onClick={handleClick}>
-            <a href="#" className="commentButton">
+            <div className="commentButton">
               <div className="commentButton__line"></div>
               <div className="commentButton__line"></div>
               <span className="commentButton__text">Confirm</span>
-            </a>
+            </div>
           </button>
           {showFlash && (
             <Alert color="#d19b18">
