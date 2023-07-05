@@ -20,7 +20,7 @@ const CalendarWrapper = styled.div`
 const CalendarSection = styled.div`
   max-width: 800px;
   width: 85%;
-  height: 720px;
+  height: 820px;
   background-color: #ffffff33;
   border: 1px solid #ffffff7c;
   box-shadow: 2px 3px 10px #a27610;
