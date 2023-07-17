@@ -167,6 +167,13 @@ const EventButton = styled.button`
   text-align: left;
 `;
 
+interface IBar {
+  id: string;
+  name: string;
+  img: string;
+  type: string[];
+}
+
 interface IOption {
   text: string;
   hashtag: string;
@@ -197,18 +204,13 @@ const groups = {
 };
 
 const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
-  const [loading, setLoading] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
+  const [finalBars, setFinalBars] = useState<IBar[]>([]);
   const {userUID, bars} = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
   }, []);
 
   const [selectedOptions, setSelectedOptions] = useState<IOption[]>([]);
@@ -239,6 +241,16 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       newSelectedOptions.push(option);
     }
     setSelectedOptions(newSelectedOptions);
+
+    const selectedGroupOptionHashtags = newSelectedOptions.map(
+      (o) => o.hashtag
+    );
+    const selectedBars = bars?.filter((bar) =>
+      selectedGroupOptionHashtags.every((hashtag) =>
+        bar?.type?.includes(hashtag)
+      )
+    );
+    setFinalBars(selectedBars);
   };
 
   const handleButtonClick = async () => {
@@ -273,65 +285,56 @@ const QuestionPage: React.FC<IQuestionProps> = (props: IQuestionProps) => {
 
   return (
     <>
-      {loading ? (
-        <LoadingWrapper>
-          <LoadingBeer
-            src={require("../Question/loadingBeer.gif")}
-            alt="loading..."
-          />
-        </LoadingWrapper>
-      ) : (
-        <Wrapper>
-          <TestTitleSection>
-            <TestTitle>Select Your Type!</TestTitle>
-          </TestTitleSection>
+      <Wrapper>
+        <TestTitleSection>
+          <TestTitle>Select Your Type!</TestTitle>
+        </TestTitleSection>
 
-          <TestSection>
-            {Object.entries(groups).map(([key, label]) => (
-              <SelectItemSection key={key}>
-                <SelectTime>
-                  <MdOutlineLiquor />
-                  {label}
-                </SelectTime>
-                {options
-                  .filter((option) => option.group === key)
-                  .map((option) => (
-                    <SelectItem key={option.hashtag}>
-                      <RadLabel>
-                        <input
-                          type="radio"
-                          className="rad-input"
-                          name={option.group}
-                          value={option.text}
-                          checked={selectedOptions.some(
-                            (o) => o.text === option.text
-                          )}
-                          onChange={handleOptionChange}
-                        />
-                        <div className="rad-design"></div>
-                        <RadText> {option.hashtag}</RadText>
-                      </RadLabel>
-                    </SelectItem>
-                  ))}
-              </SelectItemSection>
-            ))}
-          </TestSection>
-          <Submit>
-            {showFlash && (
-              <Alert color="#fba78d">
-                <CommentText>No matching Bar!</CommentText>
-              </Alert>
-            )}
-            <EventButton onClick={handleButtonClick}>
-              <Button fontSize="40px" marginLeft="15px">
-                <BtnText fontSize="40px" marginLeft="15px">
-                  Find the bars you like!
-                </BtnText>
-              </Button>
-            </EventButton>
-          </Submit>
-        </Wrapper>
-      )}
+        <TestSection>
+          {Object.entries(groups).map(([key, label]) => (
+            <SelectItemSection key={key}>
+              <SelectTime>
+                <MdOutlineLiquor />
+                {label}
+              </SelectTime>
+              {options
+                .filter((option) => option.group === key)
+                .map((option) => (
+                  <SelectItem key={option.hashtag}>
+                    <RadLabel>
+                      <input
+                        type="radio"
+                        className="rad-input"
+                        name={option.group}
+                        value={option.text}
+                        checked={selectedOptions.some(
+                          (o) => o.text === option.text
+                        )}
+                        onChange={handleOptionChange}
+                      />
+                      <div className="rad-design"></div>
+                      <RadText> {option.hashtag}</RadText>
+                    </RadLabel>
+                  </SelectItem>
+                ))}
+            </SelectItemSection>
+          ))}
+        </TestSection>
+        <Submit>
+          {showFlash && (
+            <Alert color="#fba78d">
+              <CommentText>No matching Bar!</CommentText>
+            </Alert>
+          )}
+          <EventButton onClick={handleButtonClick}>
+            <Button fontSize="40px" marginLeft="15px">
+              <BtnText fontSize="40px" marginLeft="15px">
+                Find the bars you like!
+              </BtnText>
+            </Button>
+          </EventButton>
+        </Submit>
+      </Wrapper>
     </>
   );
 };
